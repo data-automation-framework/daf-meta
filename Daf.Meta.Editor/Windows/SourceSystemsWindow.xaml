@@ -1,0 +1,93 @@
+﻿<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors -->
+<Window x:Class="Daf.Meta.Editor.Windows.SourceSystemsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Daf.Meta.Editor.Windows"
+        mc:Ignorable="d"
+		xmlns:vm="clr-namespace:Daf.Meta.Editor.ViewModels"
+		xmlns:Daf.Meta="clr-namespace:Daf.Meta;assembly=Daf.Meta"
+		xmlns:System="clr-namespace:System;assembly=mscorlib"
+		xmlns:pt="http://propertytools.org/wpf"
+        Title="Source Systems" Height="280" Width="500">
+	<Window.DataContext>
+		<vm:SourceSystemsViewModel/>
+	</Window.DataContext>
+	<Grid>
+		<DockPanel>
+			<Menu DockPanel.Dock="Top" Height="20" Background="Transparent" >
+				<MenuItem Header="_File">
+					<MenuItem Header="_Close" />
+				</MenuItem>
+			</Menu>
+			<ToolBarTray DockPanel.Dock="Top" IsLocked="True">
+				<ToolBar>
+					<Button Command="{Binding AddSourceSystemCommand}" ToolTip="Add a new source system.">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Icons/server_add.png" />
+						</StackPanel>
+					</Button>
+					<Button Command="{Binding DeleteSourceSystemCommand}" ToolTip="Remove a source system.">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Icons/server_delete.png" />
+						</StackPanel>
+					</Button>
+				</ToolBar>
+			</ToolBarTray>
+			<ListView Name="sourceSystemList" SelectionMode="Single" ItemsSource="{Binding SourceSystems}" SelectedItem="{Binding SelectedSourceSystem, Mode=TwoWay}">
+				<ListView.View>
+					<GridView>
+						<GridViewColumn Header="Source Systems" Width="130" DisplayMemberBinding="{Binding Path=Name}" />
+					</GridView>
+				</ListView.View>
+			</ListView>
+			<pt:PropertyGrid SelectedObject="{Binding SelectedSourceSystem}" TabVisibility="Collapsed" />
+			<!--<StackPanel Margin="10">
+				<StackPanel.Style>
+					<Style TargetType="{x:Type StackPanel}">
+						<Setter Property="Visibility" Value="Hidden"/>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding Source={StaticResource AppController}, Path=SourceSystemSelected}" Value="True">
+								<Setter Property="Visibility" Value="Visible"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</StackPanel.Style>
+				<Label>
+					<StackPanel Orientation="Horizontal" >
+						<Image Source="../Icons/bullet_green.png" />
+						<AccessText Text="_Name:" />
+						<TextBox Width="200" Name="txtName" Text="{Binding ElementName=sourceSystemList, Path=SelectedItem.Name}" RenderTransformOrigin="0.5,0.5" TextChanged="TxtName_TextChanged" >
+							<TextBox.RenderTransform>
+								<TransformGroup>
+									<ScaleTransform/>
+									<SkewTransform/>
+									<RotateTransform/>
+									<TranslateTransform X="6"/>
+								</TransformGroup>
+							</TextBox.RenderTransform>
+						</TextBox>
+					</StackPanel>
+				</Label>
+				<Label>
+					<StackPanel Orientation="Horizontal" >
+						<Image Source="../Icons/bullet_green.png" />
+						<AccessText Text="_ShortName:" />
+						<TextBox Width="200" Name="txtShortName" Text="{Binding ElementName=sourceSystemList, Path=SelectedItem.ShortName}" RenderTransformOrigin="0.5,0.5" >
+							<TextBox.RenderTransform>
+								<TransformGroup>
+									<ScaleTransform/>
+									<SkewTransform/>
+									<RotateTransform/>
+									<TranslateTransform X="6"/>
+								</TransformGroup>
+							</TextBox.RenderTransform>
+						</TextBox>
+					</StackPanel>
+				</Label>
+			</StackPanel>-->
+		</DockPanel>
+	</Grid>
+</Window>

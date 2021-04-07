@@ -1,0 +1,77 @@
+﻿<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors -->
+<Window x:Class="Daf.Meta.Editor.Windows.AddDataSourceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Daf.Meta.Editor.Windows"
+		xmlns:vm="clr-namespace:Daf.Meta.Editor.ViewModels"
+		xmlns:Daf.Meta="clr-namespace:Daf.Meta;assembly=Daf.Meta"
+		xmlns:System="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Add new data source" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered">
+	<Window.DataContext>
+		<vm:AddDataSourceViewModel/>
+	</Window.DataContext>
+	<Window.Resources>
+		<ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
+							ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="Daf.Meta:DataSourceType"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+	</Window.Resources>
+	<Grid Margin="5">
+		<StackPanel Margin="10">
+			<Label>
+				<StackPanel Orientation="Horizontal" >
+					<Image Source="../Icons/bullet_green.png" />
+					<AccessText Text="_Name:" />
+					<TextBox MinWidth="250" Name="nameText" RenderTransformOrigin="0.5,0.5" Text="{Binding Path=Name}">
+						<TextBox.RenderTransform>
+							<TransformGroup>
+								<ScaleTransform/>
+								<SkewTransform/>
+								<RotateTransform/>
+								<TranslateTransform X="6"/>
+							</TransformGroup>
+						</TextBox.RenderTransform>
+					</TextBox>
+				</StackPanel>
+			</Label>
+			<Label>
+				<StackPanel Orientation="Horizontal" >
+					<Image Source="../Icons/bullet_green.png" />
+					<AccessText Text="_SourceSystem:" />
+					<ComboBox SelectedIndex="0" Name="TestBox1" ItemsSource="{Binding Path=SourceSystems}" SelectedItem="{Binding SelectedSourceSystem}" DisplayMemberPath="Name" />
+				</StackPanel>
+			</Label>
+			<Label>
+				<StackPanel Orientation="Horizontal" >
+					<Image Source="../Icons/bullet_green.png" />
+					<AccessText Text="_Tenant:" />
+					<ComboBox SelectedIndex="0" Name="TestBox2" ItemsSource="{Binding Path=Tenants}" SelectedItem="{Binding SelectedTenant}" DisplayMemberPath="Name" />
+				</StackPanel>
+			</Label>
+			<Label>
+				<StackPanel Orientation="Horizontal" >
+					<Image Source="../Icons/bullet_green.png" />
+					<AccessText Text="_DataSourceType:" />
+					<ComboBox SelectedIndex="0" Name="TestBox" ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedItem="{Binding SelectedDataSourceType}" />
+				</StackPanel>
+			</Label>
+			<Label>
+				<StackPanel Orientation="Horizontal" >
+					<Image Source="../Icons/bullet_green.png" />
+					<AccessText Text="_Connection:" />
+					<ComboBox SelectedIndex="0" Name="ConnectionBox" ItemsSource="{Binding Path=Connections}" SelectedItem="{Binding SelectedConnection}" DisplayMemberPath="Name" />
+				</StackPanel>
+			</Label>
+			<WrapPanel HorizontalAlignment="Right" Margin="0,15,0,0">
+				<Button IsDefault="True" Name="btnDialogOk" Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
+				<Button IsCancel="True" MinWidth="60">_Cancel</Button>
+			</WrapPanel>
+		</StackPanel>
+	</Grid>
+</Window>

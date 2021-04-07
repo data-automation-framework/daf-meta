@@ -1,0 +1,57 @@
+﻿<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors -->
+<Window x:Class="Daf.Meta.Editor.Windows.ConnectionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Daf.Meta.Editor.Windows"
+        mc:Ignorable="d"
+		xmlns:vm="clr-namespace:Daf.Meta.Editor.ViewModels"
+		xmlns:Daf.Meta="clr-namespace:Daf.Meta;assembly=Daf.Meta"
+		xmlns:System="clr-namespace:System;assembly=mscorlib"
+		xmlns:pt="http://propertytools.org/wpf"
+        Title="Connections" Height="280" Width="500">
+	<Window.DataContext>
+		<vm:ConnectionsViewModel/>
+	</Window.DataContext>
+	<Window.Resources>
+		<ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
+							ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="Daf.Meta:ConnectionType"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+	</Window.Resources>
+	<Grid>
+		<DockPanel>
+			<Menu DockPanel.Dock="Top" Height="20" Background="Transparent" >
+				<MenuItem Header="_File">
+					<MenuItem Header="_Close" />
+				</MenuItem>
+			</Menu>
+			<ToolBarTray DockPanel.Dock="Top" IsLocked="True">
+				<ToolBar>
+					<Button Command="{Binding AddConnectionCommand}" CommandParameter="{x:Type local:AddConnectionWindow}" ToolTip="Add new connection.">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Icons/database_add.png" />
+						</StackPanel>
+					</Button>
+					<Button Command="{Binding DeleteConnectionCommand}" ToolTip="Remove connection.">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Icons/database_delete.png" />
+						</StackPanel>
+					</Button>
+				</ToolBar>
+			</ToolBarTray>
+			<ListView Name="connectionList" SelectionMode="Single" ItemsSource="{Binding Connections}" SelectedItem="{Binding SelectedConnection, Mode=TwoWay}">
+				<ListView.View>
+					<GridView>
+						<GridViewColumn Header="Connections" Width="140" DisplayMemberBinding="{Binding Path=Name}" />
+					</GridView>
+				</ListView.View>
+			</ListView>
+			<pt:PropertyGrid SelectedObject="{Binding SelectedConnection}" TabVisibility="Collapsed" />
+		</DockPanel>
+	</Grid>
+</Window>

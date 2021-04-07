@@ -1,0 +1,100 @@
+﻿<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors -->
+<Window x:Class="Daf.Meta.Editor.Windows.DataWarehouseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Daf.Meta.Editor.Windows"
+		mc:Ignorable="d"
+		xmlns:vm="clr-namespace:Daf.Meta.Editor.ViewModels"
+		xmlns:Daf.Meta="clr-namespace:Daf.Meta;assembly=Daf.Meta"
+		xmlns:System="clr-namespace:System;assembly=mscorlib"
+		xmlns:pt="http://propertytools.org/wpf"
+		xmlns:editor="clr-namespace:Daf.Meta.Editor"
+		Title="Data Warehouse Configuration" Height="1000" Width="1400">
+	<Window.DataContext>
+		<vm:DataWarehouseViewModel/>
+	</Window.DataContext>
+	<Window.Resources>
+		<ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
+							ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="Daf.Meta:ConnectionType"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+		<local:DictionaryValueConverter x:Key="DictionaryValueConverterKey"/>
+		<editor:CustomControlFactory x:Key="CustomControlFactory"/>
+	</Window.Resources>
+	<Grid>
+		<DockPanel>
+			<Menu DockPanel.Dock="Top" Height="20" Background="Transparent" >
+				<MenuItem Header="_File">
+					<MenuItem Header="_Close" />
+				</MenuItem>
+			</Menu>
+			<pt:PropertyGrid SelectedObject="{Binding}" TabVisibility="Collapsed" ControlFactory="{StaticResource CustomControlFactory}" />
+			<!--<StackPanel Margin="10">
+				<DockPanel>
+					<ListView DockPanel.Dock="Left" Name="connectionList" SelectionMode="Single" SelectionChanged="ConnectionList_SelectionChanged">
+						<ListView.View>
+							<GridView>
+								<GridViewColumn Width="140" DisplayMemberBinding="{Binding Path=Key}">
+									<GridViewColumnHeader Content="Connections" IsEnabled="False" />
+								</GridViewColumn>
+							</GridView>
+						</ListView.View>
+					</ListView>
+					<Label DockPanel.Dock="Top">
+						<StackPanel Orientation="Horizontal" >
+							<AccessText Text="_ProdStagingDatabaseName:" />
+							<TextBox Width="200" Text="{Binding ElementName=connectionList, Path=SelectedItem.Value.Name, Converter={StaticResource DictionaryValueConverterKey}}" RenderTransformOrigin="0.5, 0.5" Margin="6, 0, 0, 0" />
+						</StackPanel>
+					</Label>
+					<Label DockPanel.Dock="Top">
+						<StackPanel Orientation="Horizontal" >
+							<Image Source="/Icons/bullet_green.png" />
+							<AccessText Text="_ProdStagingDatabaseConnectionType:" />
+							<ComboBox SelectedItem="{Binding ElementName=connectionList, Path=SelectedItem.Value.ConnectionType, Converter={StaticResource DictionaryValueConverterKey}}" ItemsSource="{Binding Source={StaticResource dataFromEnum}}" />
+						</StackPanel>
+					</Label>
+					<Label DockPanel.Dock="Top">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Icons/bullet_blue.png" />
+							<AccessText Text="_ProdStagingDatabaseConnectionString:" />
+							<TextBox Width="800" Text="{Binding ElementName=connectionList, Path=SelectedItem.Value.ConnectionString, Converter={StaticResource DictionaryValueConverterKey}}" RenderTransformOrigin="0.5,0.5" >
+								<TextBox.RenderTransform>
+									<TransformGroup>
+										<ScaleTransform/>
+										<SkewTransform/>
+										<RotateTransform/>
+										<TranslateTransform X="15"/>
+									</TransformGroup>
+								</TextBox.RenderTransform>
+								<TextBox.ContextMenu>
+									<ContextMenu>
+										<MenuItem Command="Cut">
+											<MenuItem.Icon>
+												<Image Source="/Icons/cut.png" />
+											</MenuItem.Icon>
+										</MenuItem>
+										<MenuItem Command="Copy">
+											<MenuItem.Icon>
+												<Image Source="/Icons/page_white_copy.png" />
+											</MenuItem.Icon>
+										</MenuItem>
+										<MenuItem Command="Paste">
+											<MenuItem.Icon>
+												<Image Source="/Icons/page_white_paste.png" />
+											</MenuItem.Icon>
+										</MenuItem>
+									</ContextMenu>
+								</TextBox.ContextMenu>
+							</TextBox>
+						</StackPanel>
+					</Label>
+				</DockPanel>
+			</StackPanel>-->
+		</DockPanel>
+	</Grid>
+</Window>

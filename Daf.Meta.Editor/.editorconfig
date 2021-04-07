@@ -1,0 +1,10 @@
+[*.cs]
+
+#### Code analysis ####
+
+# CA1002: Do not expose generic lists
+# This appears to be necessary for WPF to work properly.
+dotnet_diagnostic.CA1002.severity = none
+
+# CA2227: Collection properties should be read only
+dotnet_diagnostic.CA2227.severity = none

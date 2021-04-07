@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
+  "version": "0.0", // Change this to, for example, 1.2-alpha when creating preview releases.
+  "nugetPackageVersion": {
+    "semVer": 2
+  },
+  "versionHeightOffset": -1, // Subtract 1 from the computed version height, resulting in the first commit having minor version 0 instead of 1.
+  "gitCommitIdShortAutoMinimum": 7, // Setting this to 7 matches Github short commit ids.
+  "publicReleaseRefSpec": [
+    "^refs/heads/master$", // Drop the commit id suffix when building from the master branch...
+    "^refs/heads/release/\\d+(\\.\\d+)?$" // ... Or when building servicing releases from a branch named release/N or release/N.N
+  ],
+}

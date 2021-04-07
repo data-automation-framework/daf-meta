@@ -1,0 +1,37 @@
+﻿<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors -->
+<Window x:Class="Daf.Meta.Editor.Windows.AddHubRelationshipWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Daf.Meta.Editor.Windows"
+		xmlns:vm="clr-namespace:Daf.Meta.Editor.ViewModels"
+		xmlns:Daf.Meta="clr-namespace:Daf.Meta;assembly=Daf.Meta"
+		xmlns:System="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Add new hub relationship" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+	<Window.DataContext>
+		<vm:AddHubRelationshipViewModel/>
+	</Window.DataContext>
+	<Grid>
+		<StackPanel Margin="10">
+			<Label>
+				<StackPanel Orientation="Horizontal" >
+					<Image Source="../Icons/bullet_green.png" />
+					<!--<AccessText Text="_Staging Column:" />-->
+					<!--"{Binding Path=Number, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"-->
+					<!--<ComboBox Name="stagingColumn" HorizontalAlignment="Left" ItemsSource="{Binding Path=selectedDataSource.StagingTable.Columns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0" />-->
+					<AccessText Text="_Hub:" />
+					<ComboBox Name="hub" HorizontalAlignment="Left" ItemsSource="{Binding Hubs}" SelectedItem="{Binding SelectedHub, Mode=TwoWay}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0" />
+					<!--<AccessText Text="_Order:" />-->
+					<!--<TextBox HorizontalAlignment="Left" Text="0" MinWidth="28" Margin="8, 0, 0, 0" IsEnabled="False" />-->
+				</StackPanel>
+			</Label>
+			<WrapPanel HorizontalAlignment="Right" Margin="0,15,0,0">
+				<Button IsDefault="True" Name="btnDialogOk" Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
+				<Button IsCancel="True" MinWidth="60">_Cancel</Button>
+			</WrapPanel>
+		</StackPanel>
+	</Grid>
+</Window>

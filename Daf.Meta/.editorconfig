@@ -1,0 +1,39 @@
+[*.cs]
+
+#### Code analysis ####
+
+# CA1002: Do not expose generic lists
+# This CA should be removed (and the warnings corrected), but it requires major changes in DW.
+dotnet_diagnostic.CA1002.severity = none
+
+# CA1024: Use properties where appropriate
+# This CA should be removed (and the warnings corrected), but it requires major changes in DW.
+dotnet_diagnostic.CA1024.severity = none
+
+# CA1036: Override methods on comparable types
+# This CA should be removed (and the warnings corrected), when time allows.
+dotnet_diagnostic.CA1036.severity = none
+
+# CA1054: URI parameters should not be strings
+# This CA should be removed (and the warnings corrected), but it requires major changes in DW and Editor.
+dotnet_diagnostic.CA1054.severity = none
+
+# CA1055: URI return values should not be strings
+# This CA should be removed (and the warnings corrected), but it requires major changes in DW and Editor.
+dotnet_diagnostic.CA1055.severity = none
+
+# CA1056: URI properties should not be strings
+# This CA should be removed (and the warnings corrected), but it requires major changes in DW and Editor.
+dotnet_diagnostic.CA1056.severity = none
+
+# CA1309: Use ordinal string comparison
+# Using ordinal strign comparison is harmful when, for example, sorting lists to be displayed or serialized.
+dotnet_diagnostic.CA1309.severity = none
+
+# CA1721: Property names should not match get methods
+# This CA should be removed (and the warnings corrected), but it requires major changes in DW.
+dotnet_diagnostic.CA1721.severity = none
+
+# CA1819: Properties should not return arrays
+# This CA should possibly be removed (and the warnings corrected), but it requires major changes in DW.
+dotnet_diagnostic.CA1819.severity = none

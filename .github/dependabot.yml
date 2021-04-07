@@ -1,0 +1,22 @@
+version: 2
+updates:
+  # Enable version updates for nuget
+  - package-ecosystem: "nuget"
+    # Look in the root directory
+    directory: "/"
+    # Check for updates once a week
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "18:00"
+      timezone: "Europe/Stockholm"
+  # Enable version updates for github actions
+  - package-ecosystem: "github-actions"
+    # Look in the root directory
+    directory: "/"
+    # Check for updates once a week
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "18:00"
+      timezone: "Europe/Stockholm"

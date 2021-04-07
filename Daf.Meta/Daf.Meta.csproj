@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/data-automation-framework/daf-meta</RepositoryUrl>
+    <PackageId>Daf.Meta</PackageId>
+    <Description>Data Vault 2.0 metadata library and editor, designed to be used with Daf.Core</Description>
+    <Authors>bjorhn;petlofg</Authors>
+    <PackageTags>Data Automation Framework;DW;Data Warehouse;ETL;Data Vault;Metadata</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Dahomey.Json" Version="1.10.3" />
+    <PackageReference Include="LumenWorksCsvReader" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.2" />
+    <PackageReference Include="MySqlConnector" Version="1.3.2" />
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.3.37">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="PropertyTools" Version="3.1.0" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+    <PackageReference Include="System.Data.Odbc" Version="5.0.0" />
+  </ItemGroup>
+</Project>

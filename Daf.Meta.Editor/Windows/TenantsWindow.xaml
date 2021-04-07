@@ -1,0 +1,49 @@
+﻿<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors -->
+<Window x:Class="Daf.Meta.Editor.Windows.TenantsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Daf.Meta.Editor.Windows"
+        mc:Ignorable="d"
+		xmlns:vm="clr-namespace:Daf.Meta.Editor.ViewModels"
+		xmlns:Daf.Meta="clr-namespace:Daf.Meta;assembly=Daf.Meta"
+		xmlns:System="clr-namespace:System;assembly=mscorlib"
+		xmlns:pt="http://propertytools.org/wpf"
+        Title="Tenants" Height="280" Width="500">
+	<Window.DataContext>
+		<vm:TenantsViewModel/>
+	</Window.DataContext>
+	<Grid>
+		<DockPanel>
+			<Menu DockPanel.Dock="Top" Height="20" Background="Transparent" >
+				<MenuItem Header="_File">
+					<MenuItem Header="_Close" />
+				</MenuItem>
+			</Menu>
+			<ToolBarTray DockPanel.Dock="Top" IsLocked="True">
+				<ToolBar>
+					<Button Command="{Binding AddTenantCommand}" ToolTip="Add a new tenant.">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Icons/server_add.png" />
+						</StackPanel>
+					</Button>
+					<Button Command="{Binding DeleteTenantCommand}" ToolTip="Remove a tenant.">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Icons/server_delete.png" />
+						</StackPanel>
+					</Button>
+				</ToolBar>
+			</ToolBarTray>
+			<ListView Name="tenantList" SelectionMode="Single" ItemsSource="{Binding Tenants}" SelectedItem="{Binding SelectedTenant, Mode=TwoWay}">
+				<ListView.View>
+					<GridView>
+						<GridViewColumn Header="Tenants" Width="130" DisplayMemberBinding="{Binding Path=Name}" />
+					</GridView>
+				</ListView.View>
+			</ListView>
+			<pt:PropertyGrid SelectedObject="{Binding SelectedTenant}" TabVisibility="Collapsed" />
+		</DockPanel>
+	</Grid>
+</Window>

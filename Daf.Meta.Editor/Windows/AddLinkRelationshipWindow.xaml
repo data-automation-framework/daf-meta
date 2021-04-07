@@ -1,0 +1,38 @@
+﻿<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors -->
+<Window x:Class="Daf.Meta.Editor.Windows.AddLinkRelationshipWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Daf.Meta.Editor.Windows"
+		xmlns:vm="clr-namespace:Daf.Meta.Editor.ViewModels"
+		xmlns:Daf.Meta="clr-namespace:Daf.Meta;assembly=Daf.Meta"
+		xmlns:System="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Add new link relationship" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+	<Window.DataContext>
+		<vm:AddLinkRelationshipViewModel/>
+	</Window.DataContext>
+	<Grid>
+		<StackPanel Margin="10">
+			<Label>
+				<StackPanel Orientation="Horizontal" >
+					<Image Source="../Icons/bullet_green.png" />
+					<!--<AccessText Text="_Staging Column:" />-->
+					<!--<ComboBox Name="stagingColumnName" HorizontalAlignment="Left" ItemsSource="{Binding Path=selectedDataSource.StagingTable.Columns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0" />-->
+					<AccessText Text="_Link:" />
+					<ComboBox Name="link" HorizontalAlignment="Left" ItemsSource="{Binding Links}" SelectedItem="{Binding SelectedLink, Mode=TwoWay}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0" />
+					<!--<AccessText Text="_Order:" />-->
+					<!--<TextBox Name="order" HorizontalAlignment="Left" Text="0" MinWidth="28" Margin="8, 0, 0, 0" />-->
+					<!--<AccessText Text="_Driving:" />-->
+					<!--<CheckBox Name="driving" HorizontalAlignment="Left" Margin="8, 0, 0, 0" />-->
+				</StackPanel>
+			</Label>
+			<WrapPanel HorizontalAlignment="Right" Margin="0,15,0,0">
+				<Button IsDefault="True" Name="btnDialogOk" Click="btnDialogOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
+				<Button IsCancel="True" MinWidth="60">_Cancel</Button>
+			</WrapPanel>
+		</StackPanel>
+	</Grid>
+</Window>
