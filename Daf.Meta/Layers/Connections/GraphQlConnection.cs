@@ -2,7 +2,6 @@
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
 using Dahomey.Json.Attributes;
-using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Layers.Connections
 {
@@ -16,8 +15,6 @@ namespace Daf.Meta.Layers.Connections
 
 		private string? _authorizationToken;
 
-		[Category("GRAPHQL")]
-		[SortIndex(100)]
 		public string? AuthorizationToken
 		{
 			get { return _authorizationToken; }
@@ -34,8 +31,6 @@ namespace Daf.Meta.Layers.Connections
 
 		private string? _encryptedCredential;
 
-		[Category("GRAPHQL")]
-		[SortIndex(100)]
 		public string? EncryptedCredential
 		{
 			get { return _encryptedCredential; }
@@ -52,17 +47,17 @@ namespace Daf.Meta.Layers.Connections
 
 		private string? _baseUrl;
 
-		[Category("GRAPHQL")]
-		[SortIndex(100)]
 		public string? BaseUrl
 		{
-			get { return _baseUrl; }
+			get
+			{
+				return _baseUrl;
+			}
 			set
 			{
 				if (_baseUrl != value)
 				{
 					_baseUrl = value;
-
 					NotifyPropertyChanged("BaseUrl");
 				}
 			}

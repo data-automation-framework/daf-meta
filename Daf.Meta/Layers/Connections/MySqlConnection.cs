@@ -2,7 +2,6 @@
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
 using Dahomey.Json.Attributes;
-using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Layers.Connections
 {
@@ -17,8 +16,6 @@ namespace Daf.Meta.Layers.Connections
 
 		private string _connectionString;
 
-		[Category("Database")]
-		[SortIndex(100)]
 		public string ConnectionString
 		{
 			get { return _connectionString; }
