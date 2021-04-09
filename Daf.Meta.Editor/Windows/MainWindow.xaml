@@ -17,9 +17,6 @@
 		xmlns:pt="http://propertytools.org/wpf"
 		Closing="MainWindow_Closing"
 		Title="Nucleus Data Vault 2.0 Metadata Editor" Height="800" Width="1460">
-	<Window.DataContext>
-		<vm:MainViewModel/>
-	</Window.DataContext>
 	<Window.Resources>
 		<ObjectDataProvider x:Key="dataTypeEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
 			<ObjectDataProvider.MethodParameters>

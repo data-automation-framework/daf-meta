@@ -3,10 +3,9 @@
 
 using System;
 using System.Collections.ObjectModel;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Input;
 using Daf.Meta.Layers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -18,13 +17,14 @@ namespace Daf.Meta.Editor.ViewModels
 		public RelayCommand<Type?> AddSatelliteCommand { get; }
 		public RelayCommand DeleteSatelliteCommand { get; }
 
-		public SatelliteViewModel()
+		public SatelliteViewModel(IWindowService windowService)
 		{
-			_windowService = Ioc.Default.GetService<IWindowService>()!;
+			_windowService = windowService;
 
 			AssignAllCommand = new RelayCommand<Satellite?>(AssignAll);
 			AddSatelliteCommand = new RelayCommand<Type?>(AddSatellite);
 			DeleteSatelliteCommand = new RelayCommand(DeleteSatellite, CanDeleteSatellite);
+			_windowService = windowService;
 
 			//WeakReferenceMessenger.Default.Register<SatelliteViewModel, ModifiedRelationships>(this, (r, m) => { ModifiedRelationships(); });
 		}

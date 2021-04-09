@@ -6,26 +6,27 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
 	public class HubsViewModel : ObservableObject
 	{
-		public HubsViewModel()
+		public HubsViewModel(IMessageBoxService mbService, IWindowService windowService)
 		{
-			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
-			_windowService = Ioc.Default.GetService<IWindowService>()!;
+			_mbService = mbService;
+			_windowService = windowService;
 
 			AddHubCommand = new RelayCommand<Type?>(OpenAddHubDialog);
 			DeleteHubCommand = new RelayCommand(OpenDeleteHubDialog, CanDeleteHub);
 			AddHubColumnCommand = new RelayCommand(OpenAddHubColumnDialog);
 			DeleteHubColumnCommand = new RelayCommand(DeleteHubColumn, CanDeleteHubColumn);
 			RenameHubCommand = new RelayCommand<Type?>(RenameHub);
+			_mbService = mbService;
+			_windowService = windowService;
 		}
 
 		private readonly IMessageBoxService _mbService;

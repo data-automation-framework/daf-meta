@@ -9,7 +9,6 @@ using System.Linq;
 using System.Windows;
 using Microsoft.Data.SqlClient;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Daf.Meta.Layers;
@@ -74,10 +73,10 @@ namespace Daf.Meta.Editor.ViewModels
 		public RelayCommand<Type?> GetMetadataCommand { get; }
 		public RelayCommand<Type?> CopyDataSourceCommand { get; }
 
-		public MainViewModel()
+		public MainViewModel(IMessageBoxService mbService, IWindowService windowService, HubsViewModel hubsVM, LinksViewModel linksVM, GeneralViewModel generalVM, LoadViewModel loadVM, StagingViewModel stagingVM, HubRelationshipViewModel hubRelationshipVM, LinkRelationshipViewModel linkRelationshipVM, SatelliteViewModel satelliteVM)
 		{
-			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
-			_windowService = Ioc.Default.GetService<IWindowService>()!;
+			_mbService = mbService;
+			_windowService = windowService;
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteHub>(this, (r, m) => DeleteHubFromModel(m.Hub));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Hub));
@@ -100,22 +99,18 @@ namespace Daf.Meta.Editor.ViewModels
 
 			_dataSources = Model.DataSources;
 
-			HubsVM = new HubsViewModel
-			{
-				Hubs = new(Model.Hubs.Select(hub => new HubViewModel(hub))),
-			};
+			HubsVM = hubsVM;
+			HubsVM.Hubs = new(Model.Hubs.Select(hub => new HubViewModel(hub)));
 
-			LinksVM = new LinksViewModel
-			{
-				Links = new(Model.Links.Select(link => new LinkViewModel(link))),
-			};
+			LinksVM = linksVM;
+			LinksVM.Links = new(Model.Links.Select(link => new LinkViewModel(link)));
 
-			GeneralVM = new GeneralViewModel();
-			LoadVM = new LoadViewModel();
-			StagingVM = new StagingViewModel();
-			HubRelationshipVM = new HubRelationshipViewModel();
-			LinkRelationshipVM = new LinkRelationshipViewModel();
-			SatelliteVM = new SatelliteViewModel();
+			GeneralVM = generalVM;
+			LoadVM = loadVM;
+			StagingVM = stagingVM;
+			HubRelationshipVM = hubRelationshipVM;
+			LinkRelationshipVM = linkRelationshipVM;
+			SatelliteVM = satelliteVM;
 
 			NewFileCommand = new RelayCommand(NewFile);
 			OpenFileCommand = new RelayCommand(OpenFile);

@@ -1,22 +1,70 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
+using System;
 using Daf.Meta.Editor.ViewModels;
 using Daf.Meta.Layers;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace Daf.Meta.Editor.Tests
 {
+	//using (IServiceScope scope = serviceProvider.CreateScope())
+	//		{
+	//			scope.ServiceProvider.GetRequiredService<MainViewModel>();
+	//		}
+
 	/// <summary>
 	/// Tests that Hubs stay synchronised across Model and ViewModel when Hubs are added, removed or re-named,
 	/// going from Model to ViewModel and vice versa. Also for testing the same behavior for BusinessKeys.
 	/// </summary>
-	public class HubsViewModelTests : IClassFixture<TestFixture>
+	[Collection("Sequential")]
+	public class HubsViewModelTests
 	{
+
+		//private readonly Mock<IMessageBoxService> _mbServiceMock = new();
+		//private readonly Mock<IWindowService> _windowServiceMock = new();
+
+
+		public HubsViewModelTests()
+		{
+		}
+
+		private static IServiceProvider CreateServiceProvider()
+		{
+			ServiceCollection services = new();
+			services.AddScoped<IMessageBoxService, MessageBoxService>();
+			services.AddScoped<IWindowService, WindowService>();
+
+			services.AddScoped<MainViewModel>();
+			services.AddScoped<HubsViewModel>();
+			services.AddScoped<LinksViewModel>();
+			services.AddScoped<GeneralViewModel>();
+			services.AddScoped<LoadViewModel>();
+			services.AddScoped<StagingViewModel>();
+			services.AddScoped<HubRelationshipViewModel>();
+			services.AddScoped<LinkRelationshipViewModel>();
+			services.AddScoped<SatelliteViewModel>();
+
+			return services.BuildServiceProvider();
+		}
+
+		private MainViewModel CreateNewMVM()
+		{
+			MainViewModel.MetadataPath = null;
+
+			IServiceProvider serviceProvider = CreateServiceProvider();
+
+			using (IServiceScope scope = serviceProvider.CreateScope())
+			{
+				return scope.ServiceProvider.GetRequiredService<MainViewModel>();
+			}
+		}
+
 		[Fact]
 		public void Setup_ConfirmEmpty_CollectionsEmpty()
 		{
-			MainViewModel MVM = new();
+			MainViewModel MVM = CreateNewMVM();
 
 			// Confirm that both Model.Hubs and HubsVM.Hubs are empty.
 			Assert.Empty(MVM.Model.Hubs);
@@ -32,7 +80,7 @@ namespace Daf.Meta.Editor.Tests
 			// can be made to the model that will be reflected in the View Model.
 			Model.Initialize();
 			Model.Instance.Hubs.Add(new Hub("New Hub"));
-			MainViewModel MVM = new();
+			MainViewModel MVM = CreateNewMVM();
 
 			Assert.Equal(MVM.Model.Hubs.Count, MVM.HubsVM.Hubs.Count);
 			Assert.Same(MVM.Model.Hubs[0], MVM.HubsVM.Hubs[0].Hub);
@@ -41,7 +89,7 @@ namespace Daf.Meta.Editor.Tests
 		[Fact]
 		public void AddHub_AddSingleHubToViewModel_SynchronisesWithModel()
 		{
-			MainViewModel MVM = new();
+			MainViewModel MVM = CreateNewMVM();
 
 			MVM.HubsVM.AddHub("New Hub");
 
@@ -55,7 +103,7 @@ namespace Daf.Meta.Editor.Tests
 		[InlineData(2)]
 		public void AddHub_AddSeveralHubsToViewModel_SynchronisesWithModel(int index)
 		{
-			MainViewModel MVM = new();
+			MainViewModel MVM = CreateNewMVM();
 
 			MVM.HubsVM.AddHub($"New Hub");
 			MVM.HubsVM.AddHub($"New Hub");
@@ -73,7 +121,7 @@ namespace Daf.Meta.Editor.Tests
 		[InlineData(1)]
 		public void DeleteHub_AddHubViewModelsThenDelete_SynchronisesWithModel(int index)
 		{
-			MainViewModel MVM = new();
+			MainViewModel MVM = CreateNewMVM();
 
 			// Test will fail if Hubs are identical by value even if they're not the same object.
 			MVM.HubsVM.AddHub($"New Hub1");
@@ -93,7 +141,7 @@ namespace Daf.Meta.Editor.Tests
 		[Fact]
 		public void AddHubColumn_CreateHubViewModelThenAddBusinessKeyViewModel_SynchronisesWithModel()
 		{
-			MainViewModel MVM = new();
+			MainViewModel MVM = CreateNewMVM();
 
 			MVM.HubsVM.AddHub($"New Hub");
 			// Must set the SelectedHub as AddHubColumn() takes no arguments.
@@ -112,7 +160,7 @@ namespace Daf.Meta.Editor.Tests
 		[Fact]
 		public void DeleteHubColumn_CreateHubViewModelWithColumnsThenDeleteColumns_SynchronisesWithModel()
 		{
-			MainViewModel MVM = new();
+			MainViewModel MVM = CreateNewMVM();
 
 			// AddHub sets SelectedHub to the new HubViewModel that's been created.
 			MVM.HubsVM.AddHub($"New Hub");
@@ -133,7 +181,7 @@ namespace Daf.Meta.Editor.Tests
 		[Fact]
 		public void AddLink_AddSingleLinkToViewModel_SynchronisesWithModel()
 		{
-			MainViewModel MVM = new();
+			MainViewModel MVM = CreateNewMVM();
 
 			MVM.LinksVM.AddLink("New Link");
 
@@ -147,8 +195,7 @@ namespace Daf.Meta.Editor.Tests
 		[InlineData(2)]
 		public void AddLink_AddSeveralLinksToViewModel_SynchronisesWithModel(int index)
 		{
-			MainViewModel MVM = new();
-
+			MainViewModel MVM = CreateNewMVM();
 			MVM.LinksVM.AddLink($"New Link");
 			MVM.LinksVM.AddLink($"New Link");
 			MVM.LinksVM.AddLink($"New Link");
@@ -165,8 +212,7 @@ namespace Daf.Meta.Editor.Tests
 		[InlineData(1)]
 		public void DeleteLink_AddLinkViewModelsThenDelete_SynchronisesWithModel(int index)
 		{
-			MainViewModel MVM = new();
-
+			MainViewModel MVM = CreateNewMVM();
 			// Test will fail if Links are identical by value even if they're not the same object.
 			MVM.LinksVM.AddLink($"New Link1");
 			MVM.LinksVM.AddLink($"New Link2");
@@ -185,8 +231,7 @@ namespace Daf.Meta.Editor.Tests
 		[Fact]
 		public void AddLinkColumn_CreateLinkViewModelThenAddBusinessKeyViewModel_SynchronisesWithModel()
 		{
-			MainViewModel MVM = new();
-
+			MainViewModel MVM = CreateNewMVM();
 			MVM.LinksVM.AddLink($"New Link");
 			// Must set the SelectedLink as AddLinkColumn() takes no arguments.
 			MVM.LinksVM.SelectedLink = MVM.LinksVM.Links[0];
@@ -204,8 +249,7 @@ namespace Daf.Meta.Editor.Tests
 		[Fact]
 		public void DeleteLinkColumn_CreateLinkViewModelWithColumnsThenDeleteColumns_SynchronisesWithModel()
 		{
-			MainViewModel MVM = new();
-
+			MainViewModel MVM = CreateNewMVM();
 			// AddLink sets SelectedLink to the new LinkViewModel that's been created.
 			MVM.LinksVM.AddLink($"New Link");
 
