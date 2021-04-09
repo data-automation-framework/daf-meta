@@ -40,6 +40,9 @@ namespace Daf.Meta.Editor
 			services.AddScoped<HubRelationshipViewModel>();
 			services.AddScoped<LinkRelationshipViewModel>();
 			services.AddScoped<SatelliteViewModel>();
+			services.AddScoped<TenantsViewModel>();
+			services.AddScoped<SourceSystemsViewModel>();
+			services.AddScoped<ConnectionsViewModel>();
 
 			return services.BuildServiceProvider();
 		}

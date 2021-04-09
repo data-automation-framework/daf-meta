@@ -38,6 +38,9 @@ namespace Daf.Meta.Editor.Tests
 			services.AddScoped<HubRelationshipViewModel>();
 			services.AddScoped<LinkRelationshipViewModel>();
 			services.AddScoped<SatelliteViewModel>();
+			services.AddScoped<TenantsViewModel>();
+			services.AddScoped<SourceSystemsViewModel>();
+			services.AddScoped<ConnectionsViewModel>();
 
 			return services.BuildServiceProvider();
 		}

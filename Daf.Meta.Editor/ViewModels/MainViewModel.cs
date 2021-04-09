@@ -60,6 +60,7 @@ namespace Daf.Meta.Editor.ViewModels
 		public HubRelationshipViewModel HubRelationshipVM { get; }
 		public LinkRelationshipViewModel LinkRelationshipVM { get; }
 		public SatelliteViewModel SatelliteVM { get; }
+		public ConnectionsViewModel ConnectionsVM { get; }
 
 		public RelayCommand NewFileCommand { get; }
 		public RelayCommand OpenFileCommand { get; }
@@ -73,7 +74,7 @@ namespace Daf.Meta.Editor.ViewModels
 		public RelayCommand<Type?> GetMetadataCommand { get; }
 		public RelayCommand<Type?> CopyDataSourceCommand { get; }
 
-		public MainViewModel(IMessageBoxService mbService, IWindowService windowService, HubsViewModel hubsVM, LinksViewModel linksVM, GeneralViewModel generalVM, LoadViewModel loadVM, StagingViewModel stagingVM, HubRelationshipViewModel hubRelationshipVM, LinkRelationshipViewModel linkRelationshipVM, SatelliteViewModel satelliteVM)
+		public MainViewModel(IMessageBoxService mbService, IWindowService windowService, HubsViewModel hubsVM, LinksViewModel linksVM, GeneralViewModel generalVM, LoadViewModel loadVM, StagingViewModel stagingVM, HubRelationshipViewModel hubRelationshipVM, LinkRelationshipViewModel linkRelationshipVM, SatelliteViewModel satelliteVM, ConnectionsViewModel connectionsViewModel)
 		{
 			_mbService = mbService;
 			_windowService = windowService;
@@ -111,7 +112,7 @@ namespace Daf.Meta.Editor.ViewModels
 			HubRelationshipVM = hubRelationshipVM;
 			LinkRelationshipVM = linkRelationshipVM;
 			SatelliteVM = satelliteVM;
-
+			ConnectionsVM = connectionsViewModel;
 			NewFileCommand = new RelayCommand(NewFile);
 			OpenFileCommand = new RelayCommand(OpenFile);
 			SaveCommand = new RelayCommand(Save, CanSave);
@@ -236,9 +237,11 @@ namespace Daf.Meta.Editor.ViewModels
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
 
-			ConnectionsViewModel connectionsViewModel = new(Model.Connections);
+			//ConnectionsViewModel connectionsViewModel = new(Model.Connections);
 
-			_windowService.ShowDialog(windowType, connectionsViewModel);
+			ConnectionsVM.Connections = Model.Connections;
+
+			_windowService.ShowDialog(windowType, ConnectionsVM);
 		}
 
 		private void OpenSourceSystemsWindow(Type? windowType)
@@ -246,9 +249,9 @@ namespace Daf.Meta.Editor.ViewModels
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
 
-			SourceSystemsViewModel sourceSystemsViewModel = new(Model.SourceSystems);
+			//SourceSystemsViewModel sourceSystemsViewModel = new(Model.SourceSystems);
 
-			_windowService.ShowDialog(windowType, sourceSystemsViewModel);
+			//_windowService.ShowDialog(windowType, sourceSystemsViewModel);
 		}
 
 		private void OpenTenantsWindow(Type? windowType)
@@ -256,9 +259,9 @@ namespace Daf.Meta.Editor.ViewModels
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
 
-			TenantsViewModel tenantsViewModel = new(Model.Tenants);
+			//TenantsViewModel tenantsViewModel = new(Model.Tenants);
 
-			_windowService.ShowDialog(windowType, tenantsViewModel);
+			//_windowService.ShowDialog(windowType, tenantsViewModel);
 		}
 
 		private void AddDataSource(Type? windowType)
