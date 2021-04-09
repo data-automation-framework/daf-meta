@@ -1,0 +1,778 @@
+{
+  "Build": "All",
+  "BusinessKey": "L_GLEntry",
+  "CollectionReference": "value",
+  "Connection": "SourceSystem (Some Company B)",
+  "ConnectionRetryAttempts": 0,
+  "ConnectionRetryMinutes": 0,
+  "DataSourceType": "Rest",
+  "DefaultLoadWidth": "Full",
+  "DerivedType": "Rest",
+  "DestinationType": "Sql",
+  "FileName": "CA_GLEntry",
+  "GenerateLatestViews": true,
+  "HubRelationships": [
+    {
+      "Hub": "H_GLEntry",
+      "Mappings": [
+        {
+          "HubColumn": "H_GLEntryNaturalKey",
+          "StagingColumn": "GLEntry"
+        }
+      ]
+    },
+    {
+      "Hub": "H_GLAccount",
+      "Mappings": [
+        {
+          "HubColumn": "H_GLAccountNaturalKey",
+          "StagingColumn": "GLAccount"
+        }
+      ]
+    },
+    {
+      "Hub": "H_User",
+      "Mappings": [
+        {
+          "HubColumn": "H_UserNaturalKey",
+          "StagingColumn": "User"
+        }
+      ]
+    }
+  ],
+  "IncrementalExpression": "@concat(\u0027$filter={load} gt \u0027, coalesce({incremental}, \u0027null\u0027))",
+  "IncrementalQuery": "SELECT CONVERT(VARCHAR(50), CAST(MAX({Incremental}) AS DATETIMEOFFSET), 127) AS {Incremental}\r\nFROM dv.S_SSB_CA_GLEntry_T",
+  "IncrementalStagingColumn": "LastModifiedDateTime",
+  "LinkRelationships": [
+    {
+      "Link": "L_GLEntry",
+      "Mappings": [
+        {
+          "LinkColumn": "H_GLEntryNaturalKey",
+          "StagingColumn": "GLEntry"
+        },
+        {
+          "LinkColumn": "H_GLAccountNaturalKey",
+          "StagingColumn": "GLAccount"
+        },
+        {
+          "LinkColumn": "H_UserNaturalKey",
+          "StagingColumn": "User"
+        }
+      ]
+    }
+  ],
+  "LoadTable": {
+    "Columns": [
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "AddCurrencyCreditAmount",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "AddCurrencyDebitAmount",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "AdditionalCurrencyAmount",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "BalAccountNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "BalAccountType",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "BusinessUnitCode",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "CreditAmount",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "DebitAmount",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "DimensionSetID",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "DocumentDate",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "DocumentNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "DocumentType",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "EntryNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "ExternalDocumentNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "FAEntryNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "FAEntryType",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "GLAccountNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "GenBusPostingGroup",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "GenPostingType",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "GenProdPostingGroup",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "GlobalDimension1Code",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "GlobalDimension2Code",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "ICPartnerCode",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "JobNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "JournalBatchName",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "LastModifiedDateTime",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "PostingDate",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "PriorYearEntry",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "ProdOrderNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "ReasonCode",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "ReversedbyEntryNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "ReversedEntryNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "SourceCode",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "SourceNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "SourceType",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "TaxAreaCode",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "TaxGroupCode",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "TaxLiable",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "TransactionNo",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "UseTax",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "UserID",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "VATAmount",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "VATBusPostingGroup",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "VATProdPostingGroup",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "Amount",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "Description",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "Quantity",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "Reversed",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "AccountId",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "GLAccountName",
+        "Nullable": true
+      }
+    ]
+  },
+  "MergeToBlob": false,
+  "Name": "GLEntry",
+  "PaginationLinkIsRelative": false,
+  "PaginationNextLink": "@odata.nextLink",
+  "Parameters": [],
+  "RelativeUrl": "services/data/v49.0/query",
+  "Satellites": [
+    {
+      "Name": "S_SSB_CA_GLEntry_T",
+      "Type": "Transaction"
+    }
+  ],
+  "SaveCookie": false,
+  "SourceSystem": "SourceSystem (Company B)",
+  "StagingTable": {
+    "Columns": [
+      {
+        "DataType": "Decimal",
+        "LoadColumn": "AddCurrencyCreditAmount",
+        "Name": "AddCurrencyCreditAmount",
+        "Nullable": false,
+        "Precision": 19,
+        "Satellite": "S_SSB_CA_GLEntry_T",
+        "Scale": 7
+      },
+      {
+        "DataType": "Decimal",
+        "LoadColumn": "AddCurrencyDebitAmount",
+        "Name": "AddCurrencyDebitAmount",
+        "Nullable": false,
+        "Precision": 19,
+        "Satellite": "S_SSB_CA_GLEntry_T",
+        "Scale": 7
+      },
+      {
+        "DataType": "Decimal",
+        "LoadColumn": "AdditionalCurrencyAmount",
+        "Name": "AdditionalCurrencyAmount",
+        "Nullable": false,
+        "Precision": 19,
+        "Satellite": "S_SSB_CA_GLEntry_T",
+        "Scale": 7
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 20,
+        "LoadColumn": "BalAccountNo",
+        "Name": "BalAccountNumber",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 15,
+        "LoadColumn": "BalAccountType",
+        "Name": "BalAccountType",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "LoadColumn": "BusinessUnitCode",
+        "Name": "BusinessUnit",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Decimal",
+        "LoadColumn": "CreditAmount",
+        "Name": "CreditAmount",
+        "Nullable": false,
+        "Precision": 19,
+        "Satellite": "S_SSB_CA_GLEntry_T",
+        "Scale": 7
+      },
+      {
+        "DataType": "Decimal",
+        "LoadColumn": "DebitAmount",
+        "Name": "DebitAmount",
+        "Nullable": false,
+        "Precision": 19,
+        "Satellite": "S_SSB_CA_GLEntry_T",
+        "Scale": 7
+      },
+      {
+        "DataType": "Int",
+        "LoadColumn": "DimensionSetID",
+        "Name": "DimensionSetID",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Date",
+        "LoadColumn": "DocumentDate",
+        "Name": "DocumentDate",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "LoadColumn": "DocumentNo",
+        "Name": "DocumentNumber",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 15,
+        "LoadColumn": "DocumentType",
+        "Name": "DocumentType",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Int",
+        "LoadColumn": "EntryNo",
+        "Name": "GLEntry",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 40,
+        "LoadColumn": "ExternalDocumentNo",
+        "Name": "ExternalDocumentNumber",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Int",
+        "LoadColumn": "FAEntryNo",
+        "Name": "FAEntryNumber",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "LoadColumn": "FAEntryType",
+        "Name": "FAEntryType",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 50,
+        "LoadColumn": "GLAccountNo",
+        "Name": "GLAccount",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 15,
+        "LoadColumn": "GenBusPostingGroup",
+        "Name": "GenBusPostingGroup",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 15,
+        "LoadColumn": "GenPostingType",
+        "Name": "GenPostingType",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 15,
+        "LoadColumn": "GenProdPostingGroup",
+        "Name": "GenProdPostingGroup",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "LoadColumn": "GlobalDimension1Code",
+        "Name": "GlobalDimension1",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "LoadColumn": "GlobalDimension2Code",
+        "Name": "GlobalDimension2",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "LoadColumn": "ICPartnerCode",
+        "Name": "ICPartner",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "LoadColumn": "JobNo",
+        "Name": "JobNumber",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 10,
+        "LoadColumn": "JournalBatchName",
+        "Name": "JournalBatchName",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "DateTimeOffset",
+        "LoadColumn": "LastModifiedDateTime",
+        "Name": "LastModifiedDateTime",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T",
+        "Scale": 3
+      },
+      {
+        "DataType": "Date",
+        "LoadColumn": "PostingDate",
+        "Name": "PostingDate",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Bit",
+        "LoadColumn": "PriorYearEntry",
+        "Name": "PriorYearEntry",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "LoadColumn": "ProdOrderNo",
+        "Name": "ProdOrderNumber",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "LoadColumn": "ReasonCode",
+        "Name": "Reason",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Int",
+        "LoadColumn": "ReversedbyEntryNo",
+        "Name": "ReversedByEntryNumber",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Int",
+        "LoadColumn": "ReversedEntryNo",
+        "Name": "ReversedEntryNumber",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 15,
+        "LoadColumn": "SourceCode",
+        "Name": "Source",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 20,
+        "LoadColumn": "SourceNo",
+        "Name": "SourceNumber",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 20,
+        "LoadColumn": "SourceType",
+        "Name": "SourceType",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "LoadColumn": "TaxAreaCode",
+        "Name": "TaxArea",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "LoadColumn": "TaxGroupCode",
+        "Name": "TaxGroup",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Bit",
+        "LoadColumn": "TaxLiable",
+        "Name": "TaxLiable",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Int",
+        "LoadColumn": "TransactionNo",
+        "Name": "TransactionNumber",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Bit",
+        "LoadColumn": "UseTax",
+        "Name": "UseTax",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 40,
+        "LoadColumn": "UserID",
+        "Name": "User",
+        "Nullable": false
+      },
+      {
+        "DataType": "Decimal",
+        "LoadColumn": "VATAmount",
+        "Name": "VATAmount",
+        "Nullable": false,
+        "Precision": 19,
+        "Satellite": "S_SSB_CA_GLEntry_T",
+        "Scale": 7
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 15,
+        "LoadColumn": "VATBusPostingGroup",
+        "Name": "VATBusPostingGroup",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 15,
+        "LoadColumn": "VATProdPostingGroup",
+        "Name": "VATProdPostingGroup",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Decimal",
+        "LoadColumn": "Amount",
+        "Name": "Amount",
+        "Nullable": false,
+        "Precision": 19,
+        "Satellite": "S_SSB_CA_GLEntry_T",
+        "Scale": 7
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 150,
+        "LoadColumn": "Description",
+        "Name": "Description",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Int",
+        "LoadColumn": "Quantity",
+        "Name": "Quantity",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "Bit",
+        "LoadColumn": "Reversed",
+        "Name": "Reversed",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "UniqueIdentifier",
+        "LoadColumn": "AccountId",
+        "Name": "AccountID",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 70,
+        "LoadColumn": "GLAccountName",
+        "Name": "GLAccountName",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_GLEntry_T"
+      }
+    ]
+  },
+  "Tenant": "Company A"
+}
