@@ -1,0 +1,307 @@
+[
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Driving": true,
+        "Length": 18,
+        "Name": "H_SalesForceAccountNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 18,
+        "Name": "H_SalesForceUserNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 3,
+        "Name": "H_CurrencyNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "L_Account"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Driving": true,
+        "Length": 20,
+        "Name": "H_DimensionNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "Int",
+        "Driving": true,
+        "Name": "H_DimensionSetNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "Int",
+        "Driving": false,
+        "Name": "H_DimensionValueNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "L_Dimension"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "Int",
+        "Driving": true,
+        "Name": "H_GLEntryNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 50,
+        "Name": "H_GLAccountNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 40,
+        "Name": "H_UserNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "L_GLEntry"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Driving": true,
+        "Length": 18,
+        "Name": "H_LeadNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 18,
+        "Name": "H_SalesForceUserNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 9,
+        "Name": "H_CustomerNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 3,
+        "Name": "H_CurrencyNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "L_Lead"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Driving": true,
+        "Length": 18,
+        "Name": "H_OpportunityNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 18,
+        "Name": "H_SalesForceUserNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 18,
+        "Name": "H_ContactNaturalKey",
+        "Nullable": true
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 30,
+        "Name": "H_HubNaturalKey",
+        "Nullable": true
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 9,
+        "Name": "H_CustomerNaturalKey",
+        "Nullable": true
+      }
+    ],
+    "Name": "L_Opportunity"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "Int",
+        "Driving": true,
+        "Name": "H_PostedApprovalEntryNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 50,
+        "Name": "H_UserNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 3,
+        "Name": "H_CurrencyNaturalKey",
+        "Nullable": true
+      }
+    ],
+    "Name": "L_PostedApprovalEntry"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Driving": true,
+        "Length": 18,
+        "Name": "H_ProjectNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 30,
+        "Name": "H_HubNaturalKey",
+        "Nullable": true
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 18,
+        "Name": "H_SalesForceUserNaturalKey",
+        "Nullable": true
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 30,
+        "Name": "H_CustomerNaturalKey",
+        "Nullable": true
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 18,
+        "Name": "H_ContactNaturalKey",
+        "Nullable": true
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 3,
+        "Name": "H_CurrencyNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "L_Project"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Driving": true,
+        "Length": 18,
+        "Name": "H_TaskNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 30,
+        "Name": "H_HubNaturalKey",
+        "Nullable": true
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 18,
+        "Name": "H_SalesForceAccountNaturalKey",
+        "Nullable": true
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 18,
+        "Name": "H_SalesForceUserNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 3,
+        "Name": "H_CurrencyNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "L_Task"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Driving": true,
+        "Length": 18,
+        "Name": "H_TimeOnNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 3,
+        "Name": "H_CurrencyNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 18,
+        "Name": "H_SalaryNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "L_TimeOn"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Driving": true,
+        "Length": 30,
+        "Name": "H_VendorNaturalKey",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Driving": false,
+        "Length": 3,
+        "Name": "H_CurrencyNaturalKey",
+        "Nullable": true
+      }
+    ],
+    "Name": "L_Vendor"
+  }
+]

@@ -1,0 +1,218 @@
+[
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 18,
+        "Name": "H_ContactNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_Contact"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 3,
+        "Name": "H_CurrencyNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_Currency"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "Name": "H_CustomerNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_Customer"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 20,
+        "Name": "H_DimensionNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_Dimension"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "Int",
+        "Name": "H_DimensionSetNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_DimensionSet"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "Int",
+        "Name": "H_DimensionValueNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_DimensionValue"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 50,
+        "Name": "H_GLAccountNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_GLAccount"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "Int",
+        "Name": "H_GLEntryNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_GLEntry"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "Name": "H_HubNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_Hub"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 18,
+        "Name": "H_LeadNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_Lead"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 18,
+        "Name": "H_OpportunityNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_Opportunity"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "Int",
+        "Name": "H_PostedApprovalEntryNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_PostedApprovalEntry"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 18,
+        "Name": "H_ProjectNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_Project"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 18,
+        "Name": "H_SalaryNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_Salary"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 18,
+        "Name": "H_SalesForceAccountNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_SalesForceAccount"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 18,
+        "Name": "H_SalesForceUserNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_SalesForceUser"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 18,
+        "Name": "H_TaskNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_Task"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 18,
+        "Name": "H_TimeOnNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_TimeOn"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 50,
+        "Name": "H_UserNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_User"
+  },
+  {
+    "BusinessKeys": [
+      {
+        "DataType": "VarChar",
+        "Length": 30,
+        "Name": "H_VendorNaturalKey",
+        "Nullable": false
+      }
+    ],
+    "Name": "H_Vendor"
+  }
+]

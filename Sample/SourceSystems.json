@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "OtherSourceSystem (Company A)",
+    "ShortName": "OSSA"
+  },
+  {
+    "Name": "SourceSystem (Company A)",
+    "ShortName": "SSA"
+  },
+  {
+    "Name": "SourceSystem (Company B)",
+    "ShortName": "SSB"
+  }
+]
