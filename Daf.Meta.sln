@@ -20,32 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daf.Meta.Editor.Tests", "Daf.Meta.Editor.Tests\Daf.Meta.Editor.Tests.csproj", "{23B76CA7-1702-42A4-8A7D-AEBCBDD3C1B9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample Metadata", "Sample Metadata", "{46AB51C3-C177-4F29-97CA-AAFD7590B644}"
-	ProjectSection(SolutionItems) = preProject
-		Sample Metadata\Connections.json = Sample Metadata\Connections.json
-		Sample Metadata\Hubs.json = Sample Metadata\Hubs.json
-		Sample Metadata\Links.json = Sample Metadata\Links.json
-		Sample Metadata\Model.json = Sample Metadata\Model.json
-		Sample Metadata\SourceSystems.json = Sample Metadata\SourceSystems.json
-		Sample Metadata\Tenants.json = Sample Metadata\Tenants.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataSources", "DataSources", "{03EB8B66-139A-44D0-BEAB-6A9C4E01D600}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OSSA", "OSSA", "{585DE2D7-F601-4E79-954F-EA1A730617FB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SSB", "SSB", "{B3E133DD-7CE1-4FFC-BB0C-9B1F4CD43163}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CA", "CA", "{EE98F9FD-51EF-479D-A748-EED1F3278A5A}"
-	ProjectSection(SolutionItems) = preProject
-		Sample Metadata\DataSources\OSSA\CA\Lead.json = Sample Metadata\DataSources\OSSA\CA\Lead.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CA", "CA", "{7CFC0452-08AC-49C0-AAF2-FC0A9F032BA3}"
-	ProjectSection(SolutionItems) = preProject
-		Sample Metadata\DataSources\SSB\CA\GLEntry.json = Sample Metadata\DataSources\SSB\CA\GLEntry.json
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,13 +45,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{03EB8B66-139A-44D0-BEAB-6A9C4E01D600} = {46AB51C3-C177-4F29-97CA-AAFD7590B644}
-		{585DE2D7-F601-4E79-954F-EA1A730617FB} = {03EB8B66-139A-44D0-BEAB-6A9C4E01D600}
-		{B3E133DD-7CE1-4FFC-BB0C-9B1F4CD43163} = {03EB8B66-139A-44D0-BEAB-6A9C4E01D600}
-		{EE98F9FD-51EF-479D-A748-EED1F3278A5A} = {585DE2D7-F601-4E79-954F-EA1A730617FB}
-		{7CFC0452-08AC-49C0-AAF2-FC0A9F032BA3} = {B3E133DD-7CE1-4FFC-BB0C-9B1F4CD43163}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA23575B-DDD0-4E86-8A05-AD018CE46AAD}

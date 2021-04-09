@@ -204,16 +204,7 @@ namespace Daf.Meta.Editor.ViewModels
 		private static void LoadMetadata()
 		{
 			if (MetadataPath != null)
-			{
-				//if (!File.Exists(Path.Combine(MetadataPath, "Model.json")))
-				//	Model.Deserialize(MetadataPath);
-				//else
-				//{
-				//	MessageBox.Show("Metadata Path invalid. Initializing empty project.");
-				//	Model.Initialize(); // Create an empty Model.
-				//}
 				Model.Deserialize(MetadataPath);
-			}
 			else
 				Model.Initialize(); // Create an empty Model.
 		}
