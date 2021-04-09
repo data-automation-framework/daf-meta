@@ -1,0 +1,44 @@
+[
+  {
+    "Authorization": "OAuth2",
+    "BaseUrl": "https://test2.com",
+    "ClientID": "encrypted",
+    "ClientSecret": "encrypted",
+    "ConnectionType": "Rest",
+    "DerivedType": "Rest",
+    "GrantType": "Password",
+    "Name": "OtherSourceSystem (Some Company A)",
+    "Password": "encrypted",
+    "RestUser": "encrypted",
+    "TokenAbsoluteUrl": "https://test2.com/token",
+    "TokenBody": [],
+    "TokenJsonIdentifier": "access_token",
+    "TokenParameters": []
+  },
+  {
+    "Authorization": "Basic",
+    "BaseUrl": "https://test.com",
+    "ConnectionType": "Rest",
+    "DerivedType": "Rest",
+    "EncryptedCredential": "encrypted",
+    "GrantType": "Password",
+    "Name": "SourceSystem (Some Company A)",
+    "Password": "encrypted",
+    "RestUser": "apiuser",
+    "TokenBody": [],
+    "TokenParameters": []
+  },
+  {
+    "Authorization": "Basic",
+    "BaseUrl": "https://test.com",
+    "ConnectionType": "Rest",
+    "DerivedType": "Rest",
+    "EncryptedCredential": "encrypted",
+    "GrantType": "Password",
+    "Name": "SourceSystem (Some Company B)",
+    "Password": "encrypted",
+    "RestUser": "apiuser",
+    "TokenBody": [],
+    "TokenParameters": []
+  }
+]
