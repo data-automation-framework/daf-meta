@@ -1,0 +1,272 @@
+{
+  "Build": "All",
+  "BusinessKey": "L_Lead",
+  "CollectionReference": "records",
+  "Connection": "OtherSourceSystem (Some Company A)",
+  "ConnectionRetryAttempts": 0,
+  "ConnectionRetryMinutes": 0,
+  "DataSourceType": "Rest",
+  "DefaultLoadWidth": "Full",
+  "DerivedType": "Rest",
+  "DestinationType": "Sql",
+  "FileName": "CA_Lead",
+  "GenerateLatestViews": true,
+  "HubRelationships": [
+    {
+      "Hub": "H_Currency",
+      "Mappings": [
+        {
+          "HubColumn": "H_CurrencyNaturalKey",
+          "StagingColumn": "Currency"
+        }
+      ]
+    },
+    {
+      "Hub": "H_Customer",
+      "Mappings": [
+        {
+          "HubColumn": "H_CustomerNaturalKey",
+          "StagingColumn": "Customer"
+        }
+      ]
+    },
+    {
+      "Hub": "H_Lead",
+      "Mappings": [
+        {
+          "HubColumn": "H_LeadNaturalKey",
+          "StagingColumn": "Lead"
+        }
+      ]
+    },
+    {
+      "Hub": "H_SalesForceUser",
+      "Mappings": [
+        {
+          "HubColumn": "H_SalesForceUserNaturalKey",
+          "StagingColumn": "SalesForceUser"
+        }
+      ]
+    }
+  ],
+  "LinkRelationships": [
+    {
+      "Link": "L_Lead",
+      "Mappings": [
+        {
+          "LinkColumn": "H_LeadNaturalKey",
+          "StagingColumn": "Lead"
+        },
+        {
+          "LinkColumn": "H_SalesForceUserNaturalKey",
+          "StagingColumn": "SalesForceUser"
+        },
+        {
+          "LinkColumn": "H_CustomerNaturalKey",
+          "StagingColumn": "Customer"
+        },
+        {
+          "LinkColumn": "H_CurrencyNaturalKey",
+          "StagingColumn": "Currency"
+        }
+      ]
+    }
+  ],
+  "LoadTable": {
+    "Columns": [
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "Id",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 200,
+        "Name": "Name",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "CreatedDate",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "OwnerId",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "Company",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "LeadSource",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "Lead_Number__c",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "Lead_Type__c",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "Customer_ID__c",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "Status",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "Sales_Amount__c",
+        "Nullable": true
+      },
+      {
+        "DataType": "NVarChar",
+        "Length": 100,
+        "Name": "CurrencyIsoCode",
+        "Nullable": true
+      }
+    ]
+  },
+  "MergeToBlob": false,
+  "Name": "Lead",
+  "PaginationLinkIsRelative": true,
+  "PaginationNextLink": "nextRecordsUrl",
+  "Parameters": [
+    {
+      "Key": "q",
+      "Value": "SELECT Id, Name, CreatedDate, OwnerId, Company, LeadSource, Lead_Number__c, Lead_Type__c, Customer_ID__c, Status, Sales_Amount__c, CurrencyIsoCode FROM Lead"
+    }
+  ],
+  "RelativeUrl": "services/data/v49.0/query",
+  "Satellites": [
+    {
+      "Name": "S_SSB_CA_Lead",
+      "Type": "HashDiff"
+    },
+    {
+      "Name": "S_SSB_CA_Lead_E",
+      "Type": "Enabled"
+    }
+  ],
+  "SaveCookie": false,
+  "SourceSystem": "OtherSourceSystem (Company A)",
+  "StagingTable": {
+    "Columns": [
+      {
+        "DataType": "VarChar",
+        "Length": 18,
+        "LoadColumn": "Id",
+        "Name": "Lead",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 200,
+        "LoadColumn": "Name",
+        "Name": "Name",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_Lead"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 50,
+        "LoadColumn": "CreatedDate",
+        "Name": "CreatedDate",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_Lead"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 18,
+        "LoadColumn": "OwnerId",
+        "Name": "SalesForceUser",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 100,
+        "LoadColumn": "Company",
+        "Name": "Company",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_Lead"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 50,
+        "LoadColumn": "LeadSource",
+        "Name": "LeadSource",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_Lead"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 15,
+        "LoadColumn": "Lead_Number__c",
+        "Name": "LeadNumber",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_Lead"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 50,
+        "LoadColumn": "Lead_Type__c",
+        "Name": "LeadType",
+        "Nullable": true,
+        "Satellite": "S_SSB_CA_Lead"
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 9,
+        "LoadColumn": "Customer_ID__c",
+        "Name": "Customer",
+        "Nullable": false
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 20,
+        "LoadColumn": "Status",
+        "Name": "Status",
+        "Nullable": false,
+        "Satellite": "S_SSB_CA_Lead"
+      },
+      {
+        "DataType": "Decimal",
+        "LoadColumn": "Sales_Amount__c",
+        "Name": "SalesAmount",
+        "Nullable": true,
+        "Precision": 19,
+        "Satellite": "S_SSB_CA_Lead",
+        "Scale": 2
+      },
+      {
+        "DataType": "VarChar",
+        "Length": 3,
+        "LoadColumn": "CurrencyIsoCode",
+        "Name": "Currency",
+        "Nullable": false
+      }
+    ]
+  },
+  "Tenant": "Company A"
+}
