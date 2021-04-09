@@ -210,7 +210,7 @@ namespace Daf.Meta.Editor.ViewModels
 				else
 				{
 					MetadataPath = null;
-					MessageBox.Show("Stored Metadata path invalid. Initializing empty project instead.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+					MessageBox.Show("Stored Metadata path is invalid. Initializing an empty project instead.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
 					Model.Initialize(); // Create an empty Model.
 				}
 			}
