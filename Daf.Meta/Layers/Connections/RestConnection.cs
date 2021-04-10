@@ -103,10 +103,7 @@ namespace Daf.Meta.Layers.Connections
 
 		public string? ClientID
 		{
-			get
-			{
-				return _clientID;
-			}
+			get { return _clientID; }
 			set
 			{
 				if (_clientID != value)
@@ -121,10 +118,7 @@ namespace Daf.Meta.Layers.Connections
 
 		public string? ClientSecret
 		{
-			get
-			{
-				return _clientSecret;
-			}
+			get { return _clientSecret; }
 			set
 			{
 				if (_clientSecret != value)
@@ -155,10 +149,7 @@ namespace Daf.Meta.Layers.Connections
 
 		public string? RestUser
 		{
-			get
-			{
-				return _restUser;
-			}
+			get { return _restUser; }
 			set
 			{
 				if (_restUser != value)
@@ -173,10 +164,7 @@ namespace Daf.Meta.Layers.Connections
 
 		public string? Password
 		{
-			get
-			{
-				return _password;
-			}
+			get { return _password; }
 			set
 			{
 				if (_password != value)
