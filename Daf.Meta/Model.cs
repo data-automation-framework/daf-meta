@@ -80,7 +80,10 @@ namespace Daf.Meta
 
 			connection.ClearSubscribers();
 
-			Connections.Remove(connection);
+			if (Connections.Contains(connection))
+				Connections.Remove(connection);
+			else
+				throw new InvalidOperationException("Attempted to delete connection which does not exist in Model.Connections!");
 		}
 
 		public void AddSourceSystem(SourceSystem sourceSystem)

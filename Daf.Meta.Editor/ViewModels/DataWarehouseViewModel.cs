@@ -293,12 +293,6 @@ namespace Daf.Meta.Editor.ViewModels
 
 		// Preventing the inherited HasErrors property from showing up in the PropertyGrid.
 		[Browsable(false)]
-		public new bool HasErrors
-		{
-			get
-			{
-				return base.HasErrors;
-			}
-		}
+		public new bool HasErrors => base.HasErrors;
 	}
 }
