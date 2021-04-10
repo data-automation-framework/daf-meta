@@ -169,17 +169,11 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		//[Browsable(false)]
-		//public bool BasicOrOauth2Selected => Authorization is HttpAuthorization.Basic or HttpAuthorization.OAuth2;
-
 		[Browsable(false)]
 		public bool BasicOrOauth2Selected
 		{
 			get { return _restConnection.BasicOrOauth2Selected; }
 		}
-
-		//[Browsable(false)]
-		//public bool TokenOrOauth2Selected => Authorization is HttpAuthorization.Token or HttpAuthorization.OAuth2;
 
 		[Browsable(false)]
 		public bool TokenOrOauth2Selected
