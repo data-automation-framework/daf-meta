@@ -32,10 +32,7 @@ namespace Daf.Meta.Editor.ViewModels
 		[Browsable(false)]
 		public new bool HasErrors
 		{
-			get
-			{
-				return base.HasErrors;
-			}
+			get => base.HasErrors;
 		}
 	}
 }
