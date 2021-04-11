@@ -8,6 +8,8 @@ using System.Reflection;
 using System.Windows;
 using Daf.Meta.Layers;
 using Daf.Meta.Layers.DataSources;
+using Daf.Meta.Layers.Connections;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 
@@ -28,8 +30,8 @@ namespace Daf.Meta.Editor.ViewModels
 			_mbService = mbService;
 			_windowService = windowService;
 
-			AddConnectionCommand = new RelayCommand<Type?>(AddConnection);
-			DeleteConnectionCommand = new RelayCommand(DeleteConnection);
+			AddConnectionCommand = new RelayCommand<Type?>(OpenAddConnectionDialog);
+			DeleteConnectionCommand = new RelayCommand(OpenDeleteConnectionDialog);
 		}
 
 		public ConnectionsViewModel(ObservableCollection<Connection> connections, IMessageBoxService mbService, IWindowService windowService)
@@ -39,16 +41,16 @@ namespace Daf.Meta.Editor.ViewModels
 			_mbService = mbService; // TODO: Should be able to remove redundancy just by making connections nullable here.
 			_windowService = windowService;
 
-			AddConnectionCommand = new RelayCommand<Type?>(AddConnection);
-			DeleteConnectionCommand = new RelayCommand(DeleteConnection);
+			AddConnectionCommand = new RelayCommand<Type?>(OpenAddConnectionDialog);
+			DeleteConnectionCommand = new RelayCommand(OpenDeleteConnectionDialog);
 
 			SelectedConnection = Connections.FirstOrDefault();
 		}
 
 		public ObservableCollection<Connection> Connections { get; set; }
 
-		private Connection? _selectedConnection;
-		public Connection? SelectedConnection
+		private ConnectionViewModel? _selectedConnection;
+		public ConnectionViewModel? SelectedConnection
 		{
 			get { return _selectedConnection; }
 			set
@@ -57,7 +59,7 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private void AddConnection(Type? windowType)
+		private void OpenAddConnectionDialog(Type? windowType)
 		{
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
@@ -109,15 +111,35 @@ namespace Daf.Meta.Editor.ViewModels
 
 				connection.ConnectionType = connectionType;
 
-				// Add to view model
-				Connections.AddSorted(connection);
-
-				// Also add to base model?
-				//MainWindow.Model.AddHub(hub);
+				AddConnection(connection);
 			}
 		}
 
-		private void DeleteConnection()
+		internal void AddConnection(Connection connection)
+		{
+			switch (connection)
+			{
+				case RestConnection:
+					Connections.Add(new RestConnectionViewModel(connection));
+					break;
+				case OleDBConnection:
+					Connections.Add(new OleDBConnectionViewModel(connection));
+					break;
+				case OdbcConnection:
+					Connections.Add(new OdbcConnectionViewModel(connection));
+					break;
+				case MySqlConnection:
+					Connections.Add(new MySqlConnectionViewModel(connection));
+					break;
+				case GraphQlConnection:
+					Connections.Add(new GraphQlConnectionViewModel(connection));
+					break;
+			}
+
+			WeakReferenceMessenger.Default.Send(new AddConnection(connection));
+		}
+
+		private void OpenDeleteConnectionDialog()
 		{
 			if (SelectedConnection != null)
 			{
@@ -126,7 +148,7 @@ namespace Daf.Meta.Editor.ViewModels
 					// TODO: This is bad, fix it. "ConnectionDataSource" interface?
 					if (dataSource is SqlDataSource sqlDataSource)
 					{
-						if (sqlDataSource.Connection == SelectedConnection)
+						if (sqlDataSource.Connection == SelectedConnection.Connection)
 						{
 							string msg = "At least one data source is using the selected connection. Remove all data sources using the connection and try again.";
 							_mbService.Show(msg, "Connection in use", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -136,7 +158,7 @@ namespace Daf.Meta.Editor.ViewModels
 					}
 					else if (dataSource is RestDataSource restDataSource)
 					{
-						if (restDataSource.Connection == SelectedConnection)
+						if (restDataSource.Connection == SelectedConnection.Connection)
 						{
 							string msg = "At least one data source is using the selected connection. Remove all data sources using the connection and try again.";
 							_mbService.Show(msg, "Connection in use", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -146,7 +168,7 @@ namespace Daf.Meta.Editor.ViewModels
 					}
 					else if (dataSource is GraphQlDataSource graphQlDataSource)
 					{
-						if (graphQlDataSource.Connection == SelectedConnection)
+						if (graphQlDataSource.Connection == SelectedConnection.Connection)
 						{
 							string msg = "At least one data source is using the selected connection. Remove all data sources using the connection and try again.";
 							_mbService.Show(msg, "Connection in use", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -156,9 +178,15 @@ namespace Daf.Meta.Editor.ViewModels
 					}
 				}
 
-				//MainWindow.Model.RemoveConnection(selectedConnection);
-				Connections.Remove(SelectedConnection);
+				DeleteConnection(SelectedConnection);
 			}
+		}
+
+		internal void DeleteConnection(ConnectionViewModel connectionViewModel)
+		{
+			Connections.Remove(connectionViewModel);
+
+			WeakReferenceMessenger.Default.Send(new RemoveConnection(connectionViewModel.Connection));
 		}
 	}
 }

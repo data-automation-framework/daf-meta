@@ -19,7 +19,7 @@ namespace Daf.Meta
 	{
 		private static Model? _instance;
 
-		private const string CurrentFormatVersion = "1.0.0";
+		private const string CurrentFormatVersion = "0.0.1";
 
 		// Do not call this directly! This is required for JsonSerializer to work in .NET 5.0. Better solution to be implemented...
 		public Model(string formatVersion)
@@ -80,7 +80,10 @@ namespace Daf.Meta
 
 			connection.ClearSubscribers();
 
-			Connections.Remove(connection);
+			if (Connections.Contains(connection))
+				Connections.Remove(connection);
+			else
+				throw new InvalidOperationException("Attempted to delete connection which does not exist in Model.Connections!");
 		}
 
 		public void AddSourceSystem(SourceSystem sourceSystem)

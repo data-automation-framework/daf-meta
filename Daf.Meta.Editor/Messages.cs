@@ -132,4 +132,32 @@ namespace Daf.Meta.Editor
 		public StagingColumn BusinessKey { get; }
 		public Link Link { get; }
 	}
+
+	/// <summary>
+	/// Facilitates messages that inform MainViewModel that a specified Connection needs to be removed from Model.Connections.
+	/// <param name="connection">The Connection object to be removed.</param>
+	/// </summary>
+	public sealed class RemoveConnection
+	{
+		public RemoveConnection(Connection connection)
+		{
+			Connection = connection;
+		}
+
+		public Connection Connection { get; }
+	}
+
+	/// <summary>
+	/// Facilitates messages that inform MainViewModel that a new Connection needs to be created in Model.Connections.
+	/// <param name="connection">The Connection object to be added.</param>
+	/// </summary>
+	public sealed class AddConnection
+	{
+		public AddConnection(Connection connection)
+		{
+			Connection = connection;
+		}
+
+		public Connection Connection { get; }
+	}
 }

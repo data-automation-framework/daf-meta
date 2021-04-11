@@ -89,6 +89,9 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromLink>(this, (r, m) => DeleteBusinessKeyFromLink(m.Link, m.BusinessKey));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToLink>(this, (r, m) => AddBusinessKeyToLink(m.Link, m.BusinessKey));
 
+			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveConnection>(this, (r, m) => RemoveConnectionFromModel(m.Connection));
+			WeakReferenceMessenger.Default.Register<MainViewModel, AddConnection>(this, (r, m) => AddConnectionToModel(m.Connection));
+
 			LoadMetadata();
 
 			_model = Model.Instance;
@@ -251,6 +254,37 @@ namespace Daf.Meta.Editor.ViewModels
 			ConnectionsVM.Connections = Model.Connections;
 
 			_windowService.ShowDialog(windowType, ConnectionsVM);
+		}
+
+		internal static ObservableCollection<ConnectionViewModel> GetConnections(ObservableCollection<Connection> connections)
+		{
+			ObservableCollection<ConnectionViewModel> viewModels = new();
+
+			foreach (Connection connection in connections)
+			{
+				switch (connection)
+				{
+					case RestConnection:
+						viewModels.Add(new RestConnectionViewModel(connection));
+						break;
+					case OleDBConnection:
+						viewModels.Add(new OleDBConnectionViewModel(connection));
+						break;
+					case OdbcConnection:
+						viewModels.Add(new OdbcConnectionViewModel(connection));
+						break;
+					case MySqlConnection:
+						viewModels.Add(new MySqlConnectionViewModel(connection));
+						break;
+					case GraphQlConnection:
+						viewModels.Add(new GraphQlConnectionViewModel(connection));
+						break;
+					default:
+						throw new InvalidOperationException("Invalid connection type");
+				}
+			}
+
+			return viewModels;
 		}
 
 		private void OpenSourceSystemsWindow(Type? windowType)
@@ -619,7 +653,7 @@ namespace Daf.Meta.Editor.ViewModels
 		/// <summary>
 		/// Removes the Link that is wrapped by LinkViewModel.
 		/// </summary>
-		/// <param name="hub">The Link object that will be added to the Model.</param>
+		/// <param name="link">The Link object that will be added to the Model.</param>
 		private void AddLinkToModel(Link link)
 		{
 			Model.Links.Insert(0, link);
@@ -663,6 +697,24 @@ namespace Daf.Meta.Editor.ViewModels
 			{
 				throw new InvalidOperationException("The specified Link does not exist in Model.Links. Could not add StagingColumn.");
 			}
+		}
+
+		/// <summary>
+		/// Removes the Connection that is wrapped by ConnectionViewModel.
+		/// </summary>
+		/// <param name="connection">The Connection object that will be removed from the Model.</param>
+		private void RemoveConnectionFromModel(Connection connection)
+		{
+			Model.RemoveConnection(connection);
+		}
+
+		/// <summary>
+		/// Adds a new Connection to the Model.
+		/// </summary>
+		/// <param name="connection">The Connection object that will be added to the Model.</param>
+		private void AddConnectionToModel(Connection connection)
+		{
+			Model.AddConnection(connection);
 		}
 	}
 }
