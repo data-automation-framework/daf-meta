@@ -3,10 +3,9 @@
 
 using System;
 using System.Collections.ObjectModel;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Input;
 using Daf.Meta.Layers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -18,13 +17,15 @@ namespace Daf.Meta.Editor.ViewModels
 		public RelayCommand<Type?> AddLinkRelationshipCommand { get; }
 		public RelayCommand DeleteLinkRelationshipCommand { get; }
 
-		public LinkRelationshipViewModel()
+		public LinkRelationshipViewModel(IMessageBoxService mbService, IWindowService windowService)
 		{
-			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
-			_windowService = Ioc.Default.GetService<IWindowService>()!;
+			_mbService = mbService;
+			_windowService = windowService;
 
 			AddLinkRelationshipCommand = new RelayCommand<Type?>(AddLinkRelationship);
 			DeleteLinkRelationshipCommand = new RelayCommand(DeleteLinkRelationship, CanDeleteLinkRelationship);
+			_mbService = mbService;
+			_windowService = windowService;
 		}
 
 		private ObservableCollection<LinkRelationship>? _linkRelationships;

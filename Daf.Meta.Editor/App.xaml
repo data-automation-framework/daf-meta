@@ -4,7 +4,6 @@
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:local="clr-namespace:Daf.Meta.Editor"
-			 StartupUri="Windows/MainWindow.xaml"
 			 ShutdownMode="OnMainWindowClose">
 	<Application.Resources>
 		<Style TargetType="GridSplitter">

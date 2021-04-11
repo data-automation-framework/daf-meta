@@ -4,10 +4,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Input;
 using Daf.Meta.Layers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -18,21 +17,22 @@ namespace Daf.Meta.Editor.ViewModels
 		public RelayCommand AddSourceSystemCommand { get; }
 		public RelayCommand DeleteSourceSystemCommand { get; }
 
-		public SourceSystemsViewModel()
+		public SourceSystemsViewModel(IMessageBoxService mbService)
 		{
 			SourceSystems = null!;
 
-			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
+			_mbService = mbService;
 
 			AddSourceSystemCommand = new RelayCommand(AddSourceSystem);
 			DeleteSourceSystemCommand = new RelayCommand(DeleteSourceSystem);
+			_mbService = mbService;
 		}
 
-		public SourceSystemsViewModel(ObservableCollection<SourceSystem> sourceSystems)
+		public SourceSystemsViewModel(ObservableCollection<SourceSystem> sourceSystems, IMessageBoxService mbService) // TODO: Improve constructors.
 		{
 			SourceSystems = sourceSystems;
 
-			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
+			_mbService = mbService;
 
 			AddSourceSystemCommand = new RelayCommand(AddSourceSystem);
 			DeleteSourceSystemCommand = new RelayCommand(DeleteSourceSystem);

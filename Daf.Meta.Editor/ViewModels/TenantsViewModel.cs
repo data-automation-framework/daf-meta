@@ -18,17 +18,16 @@ namespace Daf.Meta.Editor.ViewModels
 		public RelayCommand AddTenantCommand { get; }
 		public RelayCommand DeleteTenantCommand { get; }
 
-		public TenantsViewModel()
+		public TenantsViewModel(IMessageBoxService mbService) // TODO: Improve constructors.
 		{
 			Tenants = null!;
 
-			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
-
 			AddTenantCommand = new RelayCommand(AddTenant);
 			DeleteTenantCommand = new RelayCommand(DeleteTenant);
+			_mbService = mbService;
 		}
 
-		public TenantsViewModel(ObservableCollection<Tenant> tenants)
+		public TenantsViewModel(ObservableCollection<Tenant> tenants, IMessageBoxService mbService)
 		{
 			Tenants = tenants;
 
@@ -38,6 +37,7 @@ namespace Daf.Meta.Editor.ViewModels
 			DeleteTenantCommand = new RelayCommand(DeleteTenant);
 
 			SelectedTenant = Tenants.FirstOrDefault();
+			_mbService = mbService;
 		}
 
 		public ObservableCollection<Tenant> Tenants { get; }

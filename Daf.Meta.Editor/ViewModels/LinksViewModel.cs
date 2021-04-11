@@ -6,26 +6,27 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
 	public class LinksViewModel : ObservableObject
 	{
-		public LinksViewModel()
+		public LinksViewModel(IMessageBoxService mbService, IWindowService windowService)
 		{
-			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
-			_windowService = Ioc.Default.GetService<IWindowService>()!;
+			_mbService = mbService;
+			_windowService = windowService;
 
 			AddLinkCommand = new RelayCommand<Type?>(OpenAddLinkDialog);
 			DeleteLinkCommand = new RelayCommand(OpenDeleteLinkDialog, CanDeleteLink);
 			AddLinkColumnCommand = new RelayCommand(OpenAddLinkColumnDialog);
 			DeleteLinkColumnCommand = new RelayCommand(DeleteLinkColumn, CanDeleteLinkColumn);
 			RenameLinkCommand = new RelayCommand<Type?>(RenameLink);
+			_mbService = mbService;
+			_windowService = windowService;
 		}
 
 		private readonly IMessageBoxService _mbService;

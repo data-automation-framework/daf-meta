@@ -12,9 +12,9 @@
 		xmlns:System="clr-namespace:System;assembly=mscorlib"
 		xmlns:pt="http://propertytools.org/wpf"
         Title="Connections" Height="280" Width="500">
-	<Window.DataContext>
+	<!--<Window.DataContext>
 		<vm:ConnectionsViewModel/>
-	</Window.DataContext>
+	</Window.DataContext>-->
 	<Window.Resources>
 		<ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
 							ObjectType="{x:Type System:Enum}">

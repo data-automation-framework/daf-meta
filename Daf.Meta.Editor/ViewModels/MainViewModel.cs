@@ -9,7 +9,6 @@ using System.Linq;
 using System.Windows;
 using Microsoft.Data.SqlClient;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Daf.Meta.Layers;
@@ -61,6 +60,7 @@ namespace Daf.Meta.Editor.ViewModels
 		public HubRelationshipViewModel HubRelationshipVM { get; }
 		public LinkRelationshipViewModel LinkRelationshipVM { get; }
 		public SatelliteViewModel SatelliteVM { get; }
+		public ConnectionsViewModel ConnectionsVM { get; }
 
 		public RelayCommand NewFileCommand { get; }
 		public RelayCommand OpenFileCommand { get; }
@@ -74,10 +74,10 @@ namespace Daf.Meta.Editor.ViewModels
 		public RelayCommand<Type?> GetMetadataCommand { get; }
 		public RelayCommand<Type?> CopyDataSourceCommand { get; }
 
-		public MainViewModel()
+		public MainViewModel(IMessageBoxService mbService, IWindowService windowService, HubsViewModel hubsVM, LinksViewModel linksVM, GeneralViewModel generalVM, LoadViewModel loadVM, StagingViewModel stagingVM, HubRelationshipViewModel hubRelationshipVM, LinkRelationshipViewModel linkRelationshipVM, SatelliteViewModel satelliteVM, ConnectionsViewModel connectionsViewModel)
 		{
-			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
-			_windowService = Ioc.Default.GetService<IWindowService>()!;
+			_mbService = mbService;
+			_windowService = windowService;
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteHub>(this, (r, m) => DeleteHubFromModel(m.Hub));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Hub));
@@ -103,23 +103,19 @@ namespace Daf.Meta.Editor.ViewModels
 
 			_dataSources = Model.DataSources;
 
-			HubsVM = new HubsViewModel
-			{
-				Hubs = new(Model.Hubs.Select(hub => new HubViewModel(hub))),
-			};
+			HubsVM = hubsVM;
+			HubsVM.Hubs = new(Model.Hubs.Select(hub => new HubViewModel(hub)));
 
-			LinksVM = new LinksViewModel
-			{
-				Links = new(Model.Links.Select(link => new LinkViewModel(link))),
-			};
+			LinksVM = linksVM;
+			LinksVM.Links = new(Model.Links.Select(link => new LinkViewModel(link)));
 
-			GeneralVM = new GeneralViewModel();
-			LoadVM = new LoadViewModel();
-			StagingVM = new StagingViewModel();
-			HubRelationshipVM = new HubRelationshipViewModel();
-			LinkRelationshipVM = new LinkRelationshipViewModel();
-			SatelliteVM = new SatelliteViewModel();
-
+			GeneralVM = generalVM;
+			LoadVM = loadVM;
+			StagingVM = stagingVM;
+			HubRelationshipVM = hubRelationshipVM;
+			LinkRelationshipVM = linkRelationshipVM;
+			SatelliteVM = satelliteVM;
+			ConnectionsVM = connectionsViewModel;
 			NewFileCommand = new RelayCommand(NewFile);
 			OpenFileCommand = new RelayCommand(OpenFile);
 			SaveCommand = new RelayCommand(Save, CanSave);
@@ -253,11 +249,11 @@ namespace Daf.Meta.Editor.ViewModels
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
 
-			ObservableCollection<ConnectionViewModel> viewModels = GetConnections(Model.Connections);
+			//ConnectionsViewModel connectionsViewModel = new(Model.Connections);
 
-			ConnectionsViewModel connectionsViewModel = new(viewModels);
+			ConnectionsVM.Connections = Model.Connections;
 
-			_windowService.ShowDialog(windowType, connectionsViewModel);
+			_windowService.ShowDialog(windowType, ConnectionsVM);
 		}
 
 		internal static ObservableCollection<ConnectionViewModel> GetConnections(ObservableCollection<Connection> connections)
@@ -296,9 +292,9 @@ namespace Daf.Meta.Editor.ViewModels
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
 
-			SourceSystemsViewModel sourceSystemsViewModel = new(Model.SourceSystems);
+			//SourceSystemsViewModel sourceSystemsViewModel = new(Model.SourceSystems);
 
-			_windowService.ShowDialog(windowType, sourceSystemsViewModel);
+			//_windowService.ShowDialog(windowType, sourceSystemsViewModel);
 		}
 
 		private void OpenTenantsWindow(Type? windowType)
@@ -306,9 +302,9 @@ namespace Daf.Meta.Editor.ViewModels
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
 
-			TenantsViewModel tenantsViewModel = new(Model.Tenants);
+			//TenantsViewModel tenantsViewModel = new(Model.Tenants);
 
-			_windowService.ShowDialog(windowType, tenantsViewModel);
+			//_windowService.ShowDialog(windowType, tenantsViewModel);
 		}
 
 		private void AddDataSource(Type? windowType)

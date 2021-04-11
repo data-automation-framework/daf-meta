@@ -6,13 +6,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Input;
 using Daf.Meta.Layers;
 using Daf.Meta.Layers.DataSources;
 using Daf.Meta.Layers.Connections;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -24,23 +23,23 @@ namespace Daf.Meta.Editor.ViewModels
 		public RelayCommand<Type?> AddConnectionCommand { get; }
 		public RelayCommand DeleteConnectionCommand { get; }
 
-		public ConnectionsViewModel()
+		public ConnectionsViewModel(IMessageBoxService mbService, IWindowService windowService)
 		{
 			Connections = null!;
 
-			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
-			_windowService = Ioc.Default.GetService<IWindowService>()!;
+			_mbService = mbService;
+			_windowService = windowService;
 
 			AddConnectionCommand = new RelayCommand<Type?>(OpenAddConnectionDialog);
 			DeleteConnectionCommand = new RelayCommand(OpenDeleteConnectionDialog);
 		}
 
-		public ConnectionsViewModel(ObservableCollection<ConnectionViewModel> connections)
+		public ConnectionsViewModel(ObservableCollection<Connection> connections, IMessageBoxService mbService, IWindowService windowService)
 		{
 			Connections = connections;
 
-			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
-			_windowService = Ioc.Default.GetService<IWindowService>()!;
+			_mbService = mbService; // TODO: Should be able to remove redundancy just by making connections nullable here.
+			_windowService = windowService;
 
 			AddConnectionCommand = new RelayCommand<Type?>(OpenAddConnectionDialog);
 			DeleteConnectionCommand = new RelayCommand(OpenDeleteConnectionDialog);
@@ -48,7 +47,7 @@ namespace Daf.Meta.Editor.ViewModels
 			SelectedConnection = Connections.FirstOrDefault();
 		}
 
-		public ObservableCollection<ConnectionViewModel> Connections { get; }
+		public ObservableCollection<Connection> Connections { get; set; }
 
 		private ConnectionViewModel? _selectedConnection;
 		public ConnectionViewModel? SelectedConnection
