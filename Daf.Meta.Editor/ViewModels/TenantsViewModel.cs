@@ -4,10 +4,10 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
-using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Daf.Meta.Editor.ViewModels
