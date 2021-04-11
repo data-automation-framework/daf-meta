@@ -30,7 +30,7 @@
 		<DockPanel>
 			<Menu DockPanel.Dock="Top" Height="20" Background="Transparent" >
 				<MenuItem Header="_File">
-					<MenuItem Header="_Close" />
+					<MenuItem Header="_Close" Click="Exit_Click"/>
 				</MenuItem>
 			</Menu>
 			<pt:PropertyGrid SelectedObject="{Binding}" TabVisibility="Collapsed" ControlFactory="{StaticResource CustomControlFactory}" />
