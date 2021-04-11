@@ -3,10 +3,12 @@
 
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -44,7 +46,7 @@ namespace Daf.Meta.Editor.ViewModels
 		private SourceSystemViewModel? _selectedSourceSystem;
 		public SourceSystemViewModel? SelectedSourceSystem
 		{
-			get { return _selectedSourceSystem; }
+			get => _selectedSourceSystem;
 			set
 			{
 				SetProperty(ref _selectedSourceSystem, value);
@@ -53,30 +55,33 @@ namespace Daf.Meta.Editor.ViewModels
 
 		private void AddSourceSystem()
 		{
-			//SourceSystem sourceSystem = new(name: "NewSourceSystem", shortName: "XYZ");
+			SourceSystem sourceSystem = new(name: "NewSourceSystem", shortName: "XYZ");
 
-			////Model.Instance.AddSourceSystems(source);
-			//SourceSystems.AddSorted(sourceSystem);
+			WeakReferenceMessenger.Default.Send(new AddSourceSystem(sourceSystem));
+
+			// AddSorted demands IComparable be implemented.
+			SourceSystems.Add(new SourceSystemViewModel(sourceSystem));
 		}
 
 		private void DeleteSourceSystem()
 		{
-			//if (SelectedSourceSystem != null)
-			//{
-			//	foreach (DataSource dataSource in Model.Instance.DataSources)
-			//	{
-			//		if (dataSource.SourceSystem == SelectedSourceSystem)
-			//		{
-			//			string msg = "At least one data source is using the selected source system. Remove all data sources using the source system and try again.";
-			//			_mbService.Show(msg, "Source system in use", MessageBoxButton.OK, MessageBoxImage.Information);
+			if (SelectedSourceSystem != null)
+			{
+				foreach (DataSource dataSource in Model.Instance.DataSources)
+				{
+					if (dataSource.SourceSystem == SelectedSourceSystem.SourceSystem)
+					{
+						string msg = "At least one data source is using the selected source system. Remove all data sources using the source system and try again.";
+						_mbService.Show(msg, "Source system in use", MessageBoxButton.OK, MessageBoxImage.Information);
 
-			//			return;
-			//		}
-			//	}
+						return;
+					}
+				}
 
-			//	//MainWindow.Model.RemoveSourceSystem(selectedSourceSystem);
-			//	SourceSystems.Remove(SelectedSourceSystem);
-			//}
+				WeakReferenceMessenger.Default.Send(new RemoveSourceSystem(SelectedSourceSystem.SourceSystem));
+
+				SourceSystems.Remove(SelectedSourceSystem);
+			}
 		}
 	}
 }

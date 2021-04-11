@@ -8,13 +8,15 @@ namespace Daf.Meta.Layers
 {
 	public class SourceSystemViewModel : ObservableValidator
 	{
-		private readonly SourceSystem SourceSystem;
-
 		public SourceSystemViewModel(SourceSystem sourceSystem)
 		{
 			SourceSystem = sourceSystem;
 		}
 
+		[Browsable(false)]
+		public SourceSystem SourceSystem { get; }
+
+		[Category("General")]
 		public string Name
 		{
 			get => SourceSystem.Name;
@@ -24,6 +26,7 @@ namespace Daf.Meta.Layers
 			}
 		}
 
+		[Category("General")]
 		public string ShortName
 		{
 			get => SourceSystem.ShortName;
