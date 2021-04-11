@@ -92,6 +92,9 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveConnection>(this, (r, m) => RemoveConnectionFromModel(m.Connection));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddConnection>(this, (r, m) => AddConnectionToModel(m.Connection));
 
+			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveSourceSystem>(this, (r, m) => RemoveSourceSystemFromModel(m.SourceSystem));
+			WeakReferenceMessenger.Default.Register<MainViewModel, AddSourceSystem>(this, (r, m) => AddSourceSystemToModel(m.SourceSystem));
+
 			LoadMetadata();
 
 			_model = Model.Instance;
@@ -296,7 +299,9 @@ namespace Daf.Meta.Editor.ViewModels
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
 
-			SourceSystemsViewModel sourceSystemsViewModel = new(Model.SourceSystems);
+			ObservableCollection<SourceSystemViewModel> sourceSystems = new(Model.SourceSystems.Select(sourceSystem => new SourceSystemViewModel(sourceSystem)));
+
+			SourceSystemsViewModel sourceSystemsViewModel = new(sourceSystems);
 
 			_windowService.ShowDialog(windowType, sourceSystemsViewModel);
 		}
@@ -719,6 +724,24 @@ namespace Daf.Meta.Editor.ViewModels
 		private void AddConnectionToModel(Connection connection)
 		{
 			Model.AddConnection(connection);
+		}
+
+		/// <summary>
+		/// Removes the SourceSystem that is wrapped by SourceSystemViewModel.
+		/// </summary>
+		/// <param name="sourceSystem">The SourceSystem object that will be removed from the Model.</param>
+		private void RemoveSourceSystemFromModel(SourceSystem sourceSystem)
+		{
+			Model.RemoveSourceSystem(sourceSystem);
+		}
+
+		/// <summary>
+		/// Adds a new SourceSystem to the Model.
+		/// </summary>
+		/// <param name="sourceSystem">The SourceSystem object that will be added to the Model.</param>
+		private void AddSourceSystemToModel(SourceSystem sourceSystem)
+		{
+			Model.AddSourceSystem(sourceSystem);
 		}
 	}
 }

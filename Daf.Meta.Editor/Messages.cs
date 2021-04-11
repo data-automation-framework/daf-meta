@@ -160,4 +160,32 @@ namespace Daf.Meta.Editor
 
 		public Connection Connection { get; }
 	}
+
+	/// <summary>
+	/// Facilitates messages that inform MainViewModel that a specified SourceSystem needs to be removed from Model.SourceSystems.
+	/// <param name="sourceSystem">The SourceSystem object to be removed.</param>
+	/// </summary>
+	public sealed class RemoveSourceSystem
+	{
+		public RemoveSourceSystem(SourceSystem sourceSystem)
+		{
+			SourceSystem = sourceSystem;
+		}
+
+		public SourceSystem SourceSystem { get; }
+	}
+
+	/// <summary>
+	/// Facilitates messages that inform MainViewModel that a new SourceSystem needs to be created in Model.SourceSystems.
+	/// <param name="sourceSystem">The SourceSystem object to be added.</param>
+	/// </summary>
+	public sealed class AddSourceSystem
+	{
+		public AddSourceSystem(SourceSystem sourceSystem)
+		{
+			SourceSystem = sourceSystem;
+		}
+
+		public SourceSystem SourceSystem { get; }
+	}
 }
