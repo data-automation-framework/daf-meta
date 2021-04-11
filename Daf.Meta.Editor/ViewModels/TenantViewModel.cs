@@ -1,60 +1,45 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
-using System;
+using System.ComponentModel;
+using Daf.Meta.Layers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
-namespace Daf.Meta.Layers
+namespace Daf.Meta.Editor.ViewModels
 {
-	public class TenantViewModel : PropertyChangedBaseClass, IComparable<Tenant>
+	public class TenantViewModel : ObservableValidator
 	{
-		public Tenant Tenant { get; }
 		public TenantViewModel(Tenant tenant)
 		{
 			Tenant = tenant;
 		}
 
+		[Browsable(false)]
+		public Tenant Tenant { get; }
+
+		[Category("General")]
 		public string Name
 		{
-			get { return _name; }
+			get => Tenant.Name;
 			set
 			{
-				if (_name != value)
-				{
-					_name = value;
+				SetProperty(Tenant.Name, value, Tenant, (tenant, name) => tenant.Name = name, true);
 
-					NotifyPropertyChanged("Name");
-				}
 			}
 		}
 
-		private string _shortName;
-
+		[Category("General")]
 		public string ShortName
 		{
-			get { return _shortName; }
+			get => Tenant.ShortName;
 			set
 			{
-				if (_shortName != value)
-				{
-					_shortName = value;
-
-					NotifyPropertyChanged("ShortName");
-				}
+				SetProperty(Tenant.ShortName, value, Tenant, (tenant, shortName) => tenant.ShortName = shortName, true);
 			}
 		}
 
-		public int CompareTo(Tenant? other)
-		{
-			if (other == null)
-				return -1;
-
-			if (Name == other.Name)
-				return 0;
-
-			if (string.Compare(Name, other.Name, StringComparison.InvariantCulture) < 0)
-				return -1;
-
-			return 1;
-		}
+		// Preventing the inherited HasErrors property from showing up in the PropertyGrid.
+		[Browsable(false)]
+		public new bool HasErrors => base.HasErrors;
 	}
 }

@@ -160,4 +160,32 @@ namespace Daf.Meta.Editor
 
 		public Connection Connection { get; }
 	}
+
+	/// <summary>
+	/// Facilitates messages that inform MainViewModel that a specified Tenant needs to be removed from Model.Tenants.
+	/// <param name="tenant">The Tenant object to be removed.</param>
+	/// </summary>
+	public sealed class RemoveTenant
+	{
+		public RemoveTenant(Tenant tenant)
+		{
+			Tenant = tenant;
+		}
+
+		public Tenant Tenant { get; }
+	}
+
+	/// <summary>
+	/// Facilitates messages that inform MainViewModel that a new Tenant needs to be created in Model.Tenants.
+	/// <param name="tenant">The Tenant object to be added.</param>
+	/// </summary>
+	public sealed class AddTenant
+	{
+		public AddTenant(Tenant tenant)
+		{
+			Tenant = tenant;
+		}
+
+		public Tenant Tenant { get; }
+	}
 }
