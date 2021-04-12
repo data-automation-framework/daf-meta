@@ -162,7 +162,7 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// For announcing to subscribers that a specified tenant will be removed.
+	/// For announcing to subscribers that a specified Tenant will be removed.
 	/// <param name="tenant">The Tenant object to be removed.</param>
 	/// </summary>
 	public sealed class RemoveTenant
@@ -176,7 +176,7 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// For announcing to subscribers that a new tenant has been created.
+	/// For announcing to subscribers that a new Tenant has been created.
 	/// <param name="tenant">The Tenant object that was created.</param>
 	/// </summary>
 	public sealed class AddTenant
@@ -187,5 +187,33 @@ namespace Daf.Meta.Editor
 		}
 
 		public Tenant Tenant { get; }
+	}
+
+	/// <summary>
+	/// For announcing to subscribers that a specified SourceSystem will be removed.
+	/// <param name="sourceSystem">The SourceSystem object to be removed.</param>
+	/// </summary>
+	public sealed class RemoveSourceSystem
+	{
+		public RemoveSourceSystem(SourceSystem sourceSystem)
+		{
+			SourceSystem = sourceSystem;
+		}
+
+		public SourceSystem SourceSystem { get; }
+	}
+
+	/// <summary>
+	/// For announcing to subscribers that a new SourceSystem has been created.
+	/// <param name="sourceSystem">The SourceSystem object to be added.</param>
+	/// </summary>
+	public sealed class AddSourceSystem
+	{
+		public AddSourceSystem(SourceSystem sourceSystem)
+		{
+			SourceSystem = sourceSystem;
+		}
+
+		public SourceSystem SourceSystem { get; }
 	}
 }

@@ -1,8 +1,10 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
+using System.Collections.ObjectModel;
 using Daf.Meta.Editor.ViewModels;
 using Daf.Meta.Layers;
+using Daf.Meta.Layers.Connections;
 using Xunit;
 
 namespace Daf.Meta.Editor.Tests
@@ -220,6 +222,21 @@ namespace Daf.Meta.Editor.Tests
 			MVM.LinksVM.DeleteLinkColumn();
 
 			Assert.DoesNotContain(linkColumnToDelete, MVM.Model.Links[0].BusinessKeys);
+		}
+
+		[Fact]
+		public void AddConnection_AddConnectionViewModel_SynchronisesWithModel()
+		{
+			MainViewModel MVM = new();
+
+			ObservableCollection<ConnectionViewModel> viewModels = MainViewModel.GetConnections(MVM.Model.Connections);
+
+			ConnectionsViewModel connectionsViewModel = new(viewModels);
+
+			connectionsViewModel.AddConnection(new RestConnection("New Connection"));
+
+			// Confirm that Model and ViewModel reference the same Connection object.
+			Assert.Same(MVM.Model.Connections[0], connectionsViewModel.Connections[0].Connection);
 		}
 	}
 }
