@@ -4,10 +4,11 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
-using Daf.Meta.Layers;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -28,7 +29,7 @@ namespace Daf.Meta.Editor.ViewModels
 			DeleteSourceSystemCommand = new RelayCommand(DeleteSourceSystem);
 		}
 
-		public SourceSystemsViewModel(ObservableCollection<SourceSystem> sourceSystems)
+		public SourceSystemsViewModel(ObservableCollection<SourceSystemViewModel> sourceSystems)
 		{
 			SourceSystems = sourceSystems;
 
@@ -40,12 +41,12 @@ namespace Daf.Meta.Editor.ViewModels
 			SelectedSourceSystem = SourceSystems.FirstOrDefault();
 		}
 
-		public ObservableCollection<SourceSystem> SourceSystems { get; }
+		public ObservableCollection<SourceSystemViewModel> SourceSystems { get; }
 
-		private SourceSystem? _selectedSourceSystem;
-		public SourceSystem? SelectedSourceSystem
+		private SourceSystemViewModel? _selectedSourceSystem;
+		public SourceSystemViewModel? SelectedSourceSystem
 		{
-			get { return _selectedSourceSystem; }
+			get => _selectedSourceSystem;
 			set
 			{
 				SetProperty(ref _selectedSourceSystem, value);
@@ -56,8 +57,10 @@ namespace Daf.Meta.Editor.ViewModels
 		{
 			SourceSystem sourceSystem = new(name: "NewSourceSystem", shortName: "XYZ");
 
-			//Model.Instance.AddSourceSystems(source);
-			SourceSystems.AddSorted(sourceSystem);
+			WeakReferenceMessenger.Default.Send(new AddSourceSystem(sourceSystem));
+
+			// AddSorted demands IComparable be implemented.
+			SourceSystems.Add(new SourceSystemViewModel(sourceSystem));
 		}
 
 		private void DeleteSourceSystem()
@@ -66,7 +69,7 @@ namespace Daf.Meta.Editor.ViewModels
 			{
 				foreach (DataSource dataSource in Model.Instance.DataSources)
 				{
-					if (dataSource.SourceSystem == SelectedSourceSystem)
+					if (dataSource.SourceSystem == SelectedSourceSystem.SourceSystem)
 					{
 						string msg = "At least one data source is using the selected source system. Remove all data sources using the source system and try again.";
 						_mbService.Show(msg, "Source system in use", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -75,7 +78,8 @@ namespace Daf.Meta.Editor.ViewModels
 					}
 				}
 
-				//MainWindow.Model.RemoveSourceSystem(selectedSourceSystem);
+				WeakReferenceMessenger.Default.Send(new RemoveSourceSystem(SelectedSourceSystem.SourceSystem));
+
 				SourceSystems.Remove(SelectedSourceSystem);
 			}
 		}

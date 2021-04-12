@@ -81,11 +81,13 @@ namespace Daf.Meta.Editor.ViewModels
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteHub>(this, (r, m) => DeleteHubFromModel(m.Hub));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Hub));
+
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromHubs>(this, (r, m) => DeleteBusinessKeyFromHub(m.Hub, m.BusinessKey));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub, m.BusinessKey));
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteLink>(this, (r, m) => DeleteLinkFromModel(m.Link));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddLinkToModel>(this, (r, m) => AddLinkToModel(m.Link));
+
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromLink>(this, (r, m) => DeleteBusinessKeyFromLink(m.Link, m.BusinessKey));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToLink>(this, (r, m) => AddBusinessKeyToLink(m.Link, m.BusinessKey));
 
@@ -94,6 +96,9 @@ namespace Daf.Meta.Editor.ViewModels
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveTenant>(this, (r, m) => RemoveTenantFromModel(m.Tenant));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddTenant>(this, (r, m) => AddTenantToModel(m.Tenant));
+
+			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveSourceSystem>(this, (r, m) => RemoveSourceSystemFromModel(m.SourceSystem));
+			WeakReferenceMessenger.Default.Register<MainViewModel, AddSourceSystem>(this, (r, m) => AddSourceSystemToModel(m.SourceSystem));
 
 			LoadMetadata();
 
@@ -299,7 +304,9 @@ namespace Daf.Meta.Editor.ViewModels
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
 
-			SourceSystemsViewModel sourceSystemsViewModel = new(Model.SourceSystems);
+			ObservableCollection<SourceSystemViewModel> sourceSystems = new(Model.SourceSystems.Select(sourceSystem => new SourceSystemViewModel(sourceSystem)));
+
+			SourceSystemsViewModel sourceSystemsViewModel = new(sourceSystems);
 
 			_windowService.ShowDialog(windowType, sourceSystemsViewModel);
 		}
@@ -742,6 +749,24 @@ namespace Daf.Meta.Editor.ViewModels
 		private void AddTenantToModel(Tenant tenant)
 		{
 			Model.AddTenant(tenant);
+		}
+
+		/// <summary>
+		/// Removes the SourceSystem that is wrapped by SourceSystemViewModel.
+		/// </summary>
+		/// <param name="sourceSystem">The SourceSystem object that will be removed from the Model.</param>
+		private void RemoveSourceSystemFromModel(SourceSystem sourceSystem)
+		{
+			Model.RemoveSourceSystem(sourceSystem);
+		}
+
+		/// <summary>
+		/// Adds a new SourceSystem to the Model.
+		/// </summary>
+		/// <param name="sourceSystem">The SourceSystem object that will be added to the Model.</param>
+		private void AddSourceSystemToModel(SourceSystem sourceSystem)
+		{
+			Model.AddSourceSystem(sourceSystem);
 		}
 	}
 }
