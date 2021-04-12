@@ -58,7 +58,7 @@ namespace Daf.Meta.Editor.ViewModels
 		public GeneralViewModel GeneralVM { get; }
 		public LoadViewModel LoadVM { get; }
 		public StagingViewModel StagingVM { get; }
-		public HubRelationshipViewModel HubRelationshipVM { get; }
+		public HubRelationshipsViewModel HubRelationshipVM { get; }
 		public LinkRelationshipViewModel LinkRelationshipVM { get; }
 		public SatelliteViewModel SatelliteVM { get; }
 
@@ -116,7 +116,7 @@ namespace Daf.Meta.Editor.ViewModels
 			GeneralVM = new GeneralViewModel();
 			LoadVM = new LoadViewModel();
 			StagingVM = new StagingViewModel();
-			HubRelationshipVM = new HubRelationshipViewModel();
+			HubRelationshipVM = new HubRelationshipsViewModel();
 			LinkRelationshipVM = new LinkRelationshipViewModel();
 			SatelliteVM = new SatelliteViewModel();
 
