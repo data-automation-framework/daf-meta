@@ -4,10 +4,11 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
-using Daf.Meta.Layers;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -28,7 +29,7 @@ namespace Daf.Meta.Editor.ViewModels
 			DeleteTenantCommand = new RelayCommand(DeleteTenant);
 		}
 
-		public TenantsViewModel(ObservableCollection<Tenant> tenants)
+		public TenantsViewModel(ObservableCollection<TenantViewModel> tenants)
 		{
 			Tenants = tenants;
 
@@ -40,12 +41,13 @@ namespace Daf.Meta.Editor.ViewModels
 			SelectedTenant = Tenants.FirstOrDefault();
 		}
 
-		public ObservableCollection<Tenant> Tenants { get; }
+		public ObservableCollection<TenantViewModel> Tenants { get; }
 
-		private Tenant? _selectedTenant;
-		public Tenant? SelectedTenant
+		private TenantViewModel? _selectedTenant;
+
+		public TenantViewModel? SelectedTenant
 		{
-			get { return _selectedTenant; }
+			get => _selectedTenant;
 			set
 			{
 				SetProperty(ref _selectedTenant, value);
@@ -56,8 +58,10 @@ namespace Daf.Meta.Editor.ViewModels
 		{
 			Tenant tenant = new(name: "NewTenant", shortName: "XYZ");
 
-			//Model.Instance.AddTenant(source);
-			Tenants.AddSorted(tenant);
+			WeakReferenceMessenger.Default.Send(new AddTenant(tenant));
+
+			// AddSorted demands IComparable be implemented.
+			Tenants.Add(new TenantViewModel(tenant));
 		}
 
 		private void DeleteTenant()
@@ -66,7 +70,7 @@ namespace Daf.Meta.Editor.ViewModels
 			{
 				foreach (DataSource dataSource in Model.Instance.DataSources)
 				{
-					if (dataSource.Tenant == SelectedTenant)
+					if (dataSource.Tenant == SelectedTenant.Tenant)
 					{
 						string msg = "At least one data source is using the selected tenant. Remove all data sources using the tenant and try again.";
 						_mbService.Show(msg, "Tenant in use", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -75,7 +79,8 @@ namespace Daf.Meta.Editor.ViewModels
 					}
 				}
 
-				//MainWindow.Model.RemoveTenant(selectedTenant);
+				WeakReferenceMessenger.Default.Send(new RemoveTenant(SelectedTenant.Tenant));
+
 				Tenants.Remove(SelectedTenant);
 			}
 		}
