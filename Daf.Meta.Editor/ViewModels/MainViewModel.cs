@@ -92,6 +92,9 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveConnection>(this, (r, m) => RemoveConnectionFromModel(m.Connection));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddConnection>(this, (r, m) => AddConnectionToModel(m.Connection));
 
+			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveTenant>(this, (r, m) => RemoveTenantFromModel(m.Tenant));
+			WeakReferenceMessenger.Default.Register<MainViewModel, AddTenant>(this, (r, m) => AddTenantToModel(m.Tenant));
+
 			LoadMetadata();
 
 			_model = Model.Instance;
@@ -306,7 +309,9 @@ namespace Daf.Meta.Editor.ViewModels
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
 
-			TenantsViewModel tenantsViewModel = new(Model.Tenants);
+			ObservableCollection<TenantViewModel> tenants = new(Model.Tenants.Select(tenant => new TenantViewModel(tenant)));
+
+			TenantsViewModel tenantsViewModel = new(tenants);
 
 			_windowService.ShowDialog(windowType, tenantsViewModel);
 		}
@@ -719,6 +724,24 @@ namespace Daf.Meta.Editor.ViewModels
 		private void AddConnectionToModel(Connection connection)
 		{
 			Model.AddConnection(connection);
+		}
+
+		/// <summary>
+		/// Removes the Tenant that is wrapped by TenantViewModel.
+		/// </summary>
+		/// <param name="tenant">The Tenant object that will be removed from the Model.</param>
+		private void RemoveTenantFromModel(Tenant tenant)
+		{
+			Model.RemoveTenant(tenant);
+		}
+
+		/// <summary>
+		/// Adds a new Tenant to the Model.
+		/// </summary>
+		/// <param name="tenant">The Tenant object that will be added to the Model.</param>
+		private void AddTenantToModel(Tenant tenant)
+		{
+			Model.AddTenant(tenant);
 		}
 	}
 }
