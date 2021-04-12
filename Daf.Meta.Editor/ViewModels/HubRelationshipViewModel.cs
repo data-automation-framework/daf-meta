@@ -8,12 +8,12 @@ namespace Daf.Meta.Editor.ViewModels
 {
 	public class HubRelationshipViewModel : ObservableValidator
 	{
-		public HubRelationshipViewModel(Hub hub)
+		public HubRelationshipViewModel(HubRelationship hubRelationship)
 		{
-			Hub = hub;
+			HubRelationship = hubRelationship;
 		}
 
-		public Hub Hub { get; }
+		public HubRelationship HubRelationship { get; }
 
 		//[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "We need at least an init setter in order to support deserialization.")]
 		//public ObservableCollection<HubMapping> Mappings { get; init; } = new ObservableCollection<HubMapping>();

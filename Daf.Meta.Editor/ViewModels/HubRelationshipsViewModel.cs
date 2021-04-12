@@ -3,10 +3,10 @@
 
 using System;
 using System.Collections.ObjectModel;
+using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
-using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -23,31 +23,25 @@ namespace Daf.Meta.Editor.ViewModels
 			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
 			_windowService = Ioc.Default.GetService<IWindowService>()!;
 
-			AddHubRelationshipCommand = new RelayCommand<Type?>(AddHubRelationship);
+			AddHubRelationshipCommand = new RelayCommand<Type?>(OpenAddHubRelationshipDialog);
 			DeleteHubRelationshipCommand = new RelayCommand(DeleteHubRelationship, CanDeleteHubRelationship);
 		}
 
-		private ObservableCollection<HubRelationship>? _hubRelationships;
+		private ObservableCollection<HubRelationshipViewModel>? _hubRelationships;
 
-		public ObservableCollection<HubRelationship>? HubRelationships
+		public ObservableCollection<HubRelationshipViewModel>? HubRelationships
 		{
-			get
-			{
-				return _hubRelationships;
-			}
+			get => _hubRelationships;
 			set
 			{
 				SetProperty(ref _hubRelationships, value);
 			}
 		}
 
-		private HubRelationship? _selectedHubRelationship;
-		public HubRelationship? SelectedHubRelationship
+		private HubRelationshipViewModel? _selectedHubRelationship;
+		public HubRelationshipViewModel? SelectedHubRelationship
 		{
-			get
-			{
-				return _selectedHubRelationship;
-			}
+			get => _selectedHubRelationship;
 			set
 			{
 				SetProperty(ref _selectedHubRelationship, value);
@@ -60,10 +54,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 		public DataSource? SelectedDataSource
 		{
-			get
-			{
-				return _selectedDataSource;
-			}
+			get => _selectedDataSource;
 			set
 			{
 				SetProperty(ref _selectedDataSource, value);
@@ -75,7 +66,7 @@ namespace Daf.Meta.Editor.ViewModels
 			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.StagingTable?.Columns!); }
 		}
 
-		private void AddHubRelationship(Type? windowType)
+		private void OpenAddHubRelationshipDialog(Type? windowType)
 		{
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
@@ -87,61 +78,71 @@ namespace Daf.Meta.Editor.ViewModels
 
 			if (dialogResult)
 			{
-				//StagingColumn stagingColumn = inputDialog.StagingColumn;
-
 				Hub hub = ((AddHubRelationshipViewModel)dataContext!).SelectedHub!;
 
-				//foreach (var x in selectedDataSource.HubRelationships)
-				//{
-				//	foreach (var y in x.Mappings)
-				//	{
-				//		if (y.StagingColumn == stagingColumn)
-				//		{
-				//			string msg = $"Staging column {stagingColumn.Name} already has a hub assigned! No change was made.";
-				//			MessageBoxResult result =
-				//			  MessageBox.Show(
-				//				msg,
-				//				"Column already has a hub assigned",
-				//				MessageBoxButton.OK,
-				//				MessageBoxImage.Exclamation);
+				AddHubRelationship(hub);
+			}
+		}
 
-				//			return;
-				//		}
-				//	}
-				//}
+		private void AddHubRelationship(Hub hub) // TODO: Fix app crashing when no hub is selected in AddHub-window.
+		{
+			//StagingColumn stagingColumn = inputDialog.StagingColumn;
 
-				//foreach (StagingColumn column in selectedDataSource.StagingTable.Columns)
-				//{
-				//	if (column == stagingColumn)
-				//	{
-				HubRelationship hubRelationship = new(hub);
 
-				foreach (StagingColumn bk in hub.BusinessKeys)
+			//foreach (var x in selectedDataSource.HubRelationships)
+			//{
+			//	foreach (var y in x.Mappings)
+			//	{
+			//		if (y.StagingColumn == stagingColumn)
+			//		{
+			//			string msg = $"Staging column {stagingColumn.Name} already has a hub assigned! No change was made.";
+			//			MessageBoxResult result =
+			//			  MessageBox.Show(
+			//				msg,
+			//				"Column already has a hub assigned",
+			//				MessageBoxButton.OK,
+			//				MessageBoxImage.Exclamation);
+
+			//			return;
+			//		}
+			//	}
+			//}
+
+			//foreach (StagingColumn column in selectedDataSource.StagingTable.Columns)
+			//{
+			//	if (column == stagingColumn)
+			//	{
+			HubRelationship hubRelationship = new(hub);
+
+			foreach (StagingColumn bk in hub.BusinessKeys)
+			{
+				HubMapping hubMapping = new(bk);
+
+				hubMapping.PropertyChanged += (s, e) =>
 				{
-					HubMapping hubMapping = new(bk);
-
-					hubMapping.PropertyChanged += (s, e) =>
-					{
-						hubRelationship.NotifyPropertyChanged("HubMapping");
-					};
-
-					hubRelationship.Mappings.Add(hubMapping);
-				}
-
-				hubRelationship.PropertyChanged += (s, e) =>
-				{
-					SelectedDataSource.NotifyPropertyChanged("HubRelationship");
+					hubRelationship.NotifyPropertyChanged("HubMapping");
 				};
 
-				SelectedDataSource.HubRelationships.Add(hubRelationship);
-
-				// TODO: businessKeyComboBox is in Satellite, we need to send it a message to run the equivalent command.
-				//businessKeyComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
-
-				//break;
-				//}
-				//}
+				hubRelationship.Mappings.Add(hubMapping);
 			}
+
+			if (SelectedDataSource == null)
+				throw new InvalidOperationException("SelectedDataSource was null!");
+
+
+			hubRelationship.PropertyChanged += (s, e) =>
+			{
+				SelectedDataSource.NotifyPropertyChanged("HubRelationship");
+			};
+
+			SelectedDataSource.HubRelationships.Add(hubRelationship);
+
+			// TODO: businessKeyComboBox is in Satellite, we need to send it a message to run the equivalent command.
+			//businessKeyComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
+
+			//break;
+			//}
+			//}
 		}
 
 		private bool CanDeleteHubRelationship()
@@ -156,14 +157,14 @@ namespace Daf.Meta.Editor.ViewModels
 		{
 			if (SelectedDataSource != null && SelectedHubRelationship != null)
 			{
-				foreach (HubMapping hubMapping in SelectedHubRelationship.Mappings)
+				foreach (HubMapping hubMapping in SelectedHubRelationship.HubRelationship.Mappings)
 				{
 					hubMapping.ClearSubscribers();
 				}
 
-				SelectedHubRelationship.ClearSubscribers();
+				SelectedHubRelationship.HubRelationship.ClearSubscribers();
 
-				SelectedDataSource.HubRelationships.Remove(SelectedHubRelationship);
+				SelectedDataSource.HubRelationships.Remove(SelectedHubRelationship.HubRelationship);
 
 				// TODO: businessKeyComboBox is in Satellite, we need to send it a message to run the equivalent command.
 				//businessKeyComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
