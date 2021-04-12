@@ -81,11 +81,13 @@ namespace Daf.Meta.Editor.ViewModels
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteHub>(this, (r, m) => DeleteHubFromModel(m.Hub));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Hub));
+
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromHubs>(this, (r, m) => DeleteBusinessKeyFromHub(m.Hub, m.BusinessKey));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub, m.BusinessKey));
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteLink>(this, (r, m) => DeleteLinkFromModel(m.Link));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddLinkToModel>(this, (r, m) => AddLinkToModel(m.Link));
+
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromLink>(this, (r, m) => DeleteBusinessKeyFromLink(m.Link, m.BusinessKey));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToLink>(this, (r, m) => AddBusinessKeyToLink(m.Link, m.BusinessKey));
 
