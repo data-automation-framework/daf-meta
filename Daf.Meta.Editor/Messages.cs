@@ -160,4 +160,32 @@ namespace Daf.Meta.Editor
 
 		public Connection Connection { get; }
 	}
+
+	/// <summary>
+	/// For announcing to subscribers that a specified tenant will be removed.
+	/// <param name="tenant">The Tenant object to be removed.</param>
+	/// </summary>
+	public sealed class RemoveTenant
+	{
+		public RemoveTenant(Tenant tenant)
+		{
+			Tenant = tenant;
+		}
+
+		public Tenant Tenant { get; }
+	}
+
+	/// <summary>
+	/// For announcing to subscribers that a new tenant has been created.
+	/// <param name="tenant">The Tenant object that was created.</param>
+	/// </summary>
+	public sealed class AddTenant
+	{
+		public AddTenant(Tenant tenant)
+		{
+			Tenant = tenant;
+		}
+
+		public Tenant Tenant { get; }
+	}
 }
