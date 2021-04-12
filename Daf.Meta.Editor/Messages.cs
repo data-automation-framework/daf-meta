@@ -162,7 +162,7 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a specified Tenant needs to be removed from Model.Tenants.
+	/// For announcing to subscribers that a specified tenant will be removed.
 	/// <param name="tenant">The Tenant object to be removed.</param>
 	/// </summary>
 	public sealed class RemoveTenant
@@ -176,8 +176,8 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a new Tenant needs to be created in Model.Tenants.
-	/// <param name="tenant">The Tenant object to be added.</param>
+	/// For announcing to subscribers that a new tenant has been created.
+	/// <param name="tenant">The Tenant object that was created.</param>
 	/// </summary>
 	public sealed class AddTenant
 	{
