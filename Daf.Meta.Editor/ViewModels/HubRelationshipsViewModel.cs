@@ -7,6 +7,7 @@ using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -25,6 +26,10 @@ namespace Daf.Meta.Editor.ViewModels
 
 			AddHubRelationshipCommand = new RelayCommand<Type?>(OpenAddHubRelationshipDialog);
 			DeleteHubRelationshipCommand = new RelayCommand(DeleteHubRelationship, CanDeleteHubRelationship);
+
+			// Do we want to add/remove hubs from current list? Or do we want to recreate the list from scratch?
+			//WeakReferenceMessenger.Default.Register<HubRelationshipsViewModel, RemoveBusinessKeyColumnFromHubs>(this, (r, m) => DeleteBusinessKeyFromHub(m.Hub, m.BusinessKey));
+			//WeakReferenceMessenger.Default.Register<HubRelationshipsViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub, m.BusinessKey));
 		}
 
 		private ObservableCollection<HubRelationshipViewModel>? _hubRelationships;
