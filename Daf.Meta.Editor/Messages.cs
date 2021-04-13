@@ -216,4 +216,38 @@ namespace Daf.Meta.Editor
 
 		public SourceSystem SourceSystem { get; }
 	}
+
+	/// <summary>
+	/// For announcing to subscribers that a new HubRelationship has been created.
+	/// <param name="hub">The Hub that the HubRelationship belongs to.</param>
+	/// <param name="dataSource">The DataSource that the HubRelationship belongs to.</param>
+	/// </summary>
+	public sealed class AddHubRelationship
+	{
+		public AddHubRelationship(Hub hub, DataSource dataSource)
+		{
+			Hub = hub;
+			DataSource = dataSource;
+		}
+
+		public Hub Hub { get; }
+		public DataSource DataSource { get; }
+	}
+
+	/// <summary>
+	/// For announcing to subscribers that a HubRelationship needs to be removed.
+	/// <param name="hub">The Hub that the HubRelationship belongs to.</param>
+	/// <param name="dataSource">The DataSource that the HubRelationship belongs to.</param>
+	/// </summary>
+	public sealed class RemoveHubRelationship
+	{
+		public RemoveHubRelationship(HubRelationship hubRelationship, DataSource dataSource)
+		{
+			HubRelationship = hubRelationship;
+			DataSource = dataSource;
+		}
+
+		public HubRelationship HubRelationship { get; }
+		public DataSource DataSource { get; }
+	}
 }

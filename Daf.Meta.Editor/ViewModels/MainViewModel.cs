@@ -83,7 +83,7 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Hub));
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromHubs>(this, (r, m) => DeleteBusinessKeyFromHub(m.Hub, m.BusinessKey));
-			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub, m.BusinessKey));
+			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub));
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteLink>(this, (r, m) => DeleteLinkFromModel(m.Link));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddLinkToModel>(this, (r, m) => AddLinkToModel(m.Link));
@@ -99,6 +99,9 @@ namespace Daf.Meta.Editor.ViewModels
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveSourceSystem>(this, (r, m) => RemoveSourceSystemFromModel(m.SourceSystem));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddSourceSystem>(this, (r, m) => AddSourceSystemToModel(m.SourceSystem));
+
+			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubRelationship>(this, (r, m) => AddHubRelationshipToModel(m.Hub, m.DataSource));
+			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveHubRelationship>(this, (r, m) => RemoveHubRelationshipFromModel(m.HubRelationship, m.DataSource));
 
 			LoadMetadata();
 
@@ -648,16 +651,18 @@ namespace Daf.Meta.Editor.ViewModels
 		/// </summary>
 		/// <param name="hub">The hub that the StagingColumn will be added to.</param>
 		/// <param name="businessKey">The StagingColumn that will be added.</param>
-		private void AddBusinessKeyToHub(Hub hub, StagingColumn businessKey)
+		private void AddBusinessKeyToHub(Hub hub)
 		{
-			if (Model.Hubs.Contains(hub))
-			{
-				hub.BusinessKeys.Add(businessKey);
-			}
-			else
-			{
-				throw new InvalidOperationException("The specified Hub does not exist in Model.Hubs. Could not add StagingColumn.");
-			}
+			Model.AddBusinessKeyToHub(hub);
+
+			//if (Model.Hubs.Contains(hub))
+			//{
+			//	hub.BusinessKeys.Add(businessKey);
+			//}
+			//else
+			//{
+			//	throw new InvalidOperationException("The specified Hub does not exist in Model.Hubs. Could not add StagingColumn.");
+			//}
 		}
 
 		/// <summary>
@@ -774,5 +779,36 @@ namespace Daf.Meta.Editor.ViewModels
 		{
 			Model.AddSourceSystem(sourceSystem);
 		}
+
+		/// <summary>
+		/// Adds a new HubRelationship to the Model.
+		/// </summary>
+		/// <param name="hub">The Hub object associated with the new HubRelationship.</param>
+		/// <param name="dataSource">The DataSource to which the HubRelationship will be added.</param>
+		private void AddHubRelationshipToModel(Hub hub, DataSource dataSource)
+		{
+			Model.AddHubRelationship(hub, dataSource);
+
+			// Regenerate HubRelationshipsVM
+			HubRelationshipVM.HubRelationships = new(dataSource.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
+		}
+
+		/// <summary>
+		/// Adds a new HubRelationship to the Model.
+		/// </summary>
+		/// <param name="hub">The Hub object associated with the new HubRelationship.</param>
+		/// <param name="dataSource">The DataSource to which the HubRelationship will be added.</param>
+		private void RemoveHubRelationshipFromModel(HubRelationship hub, DataSource dataSource)
+		{
+			Model.RemoveHubRelationship(hub, dataSource);
+
+			// Regenerate HubRelationshipsVM
+			HubRelationshipVM.HubRelationships = new(dataSource.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
+		}
+
+		//private void RegenerateHubRelationshipsVM()
+		//{
+		//	HubRelationshipVM.HubRelationships = new(dataSource.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
+		//}
 	}
 }
