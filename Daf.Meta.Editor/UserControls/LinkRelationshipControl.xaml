@@ -22,6 +22,7 @@
 					</Button>
 				</Label>
 				<ListBox Name="linkRelationships" HorizontalAlignment="Left" ItemsSource="{Binding LinkRelationships}" SelectedItem="{Binding SelectedLinkRelationship, Mode=TwoWay}">
+					<!--Template is required to disable scrolling within the listboxes and allow the scrollviewer that wraps the control to take precedence. -->
 					<ListBox.Template>
 						<ControlTemplate TargetType="ListBox">
 							<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
@@ -41,6 +42,7 @@
 								<StackPanel Grid.Column="0">
 									<TextBlock HorizontalAlignment="Left" Text="{Binding Path=Link.Name}" MinWidth="240" />
 									<ListBox HorizontalAlignment="Left" ItemsSource="{Binding Path=Mappings}">
+										<!--Template is required to disable scrolling within the listboxes and allow the scrollviewer that wraps the control to take precedence. -->
 										<ListBox.Template>
 											<ControlTemplate TargetType="ListBox">
 												<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
