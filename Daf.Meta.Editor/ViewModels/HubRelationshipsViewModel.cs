@@ -64,6 +64,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 		public ObservableCollection<StagingColumn>? StagingColumns
 		{
+			// This needs to be fixed so it refers to ColumnViewModels instead, but have to make View Model for DataSource first.
 			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.StagingTable?.Columns!); }
 		}
 

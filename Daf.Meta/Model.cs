@@ -980,12 +980,20 @@ namespace Daf.Meta
 			}
 		}
 
+		public static void DeleteBusinessKey(Hub hub, StagingColumn businessKey)
+		{
+			if (hub == null || businessKey == null)
+				throw new InvalidOperationException("Hub or BusinessKey was null!");
+
+			hub.RemoveBusinessKeyColumn(businessKey);
+		}
+
 		public static void AddBusinessKey(Hub hub, StagingColumn businessKey)
 		{
 			if (hub == null || businessKey == null)
 				throw new InvalidOperationException("Hub or BusinessKey was null!");
 
-			hub.BusinessKeys.Add(businessKey);
+			hub.BusinessKeys.Add(businessKey); // Should use Hub.AddBusinessKeyColumn instead?
 
 			// Check if the Hub belongs to any HubRelationship, and if so add a new HubMapping.
 			foreach (DataSource dataSource in Instance.DataSources)

@@ -83,7 +83,7 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Hub));
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromHubs>(this, (r, m) => DeleteBusinessKeyFromHub(m.Hub, m.BusinessKey));
-			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub));
+			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub, m.BusinessKey));
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteLink>(this, (r, m) => DeleteLinkFromModel(m.Link));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddLinkToModel>(this, (r, m) => AddLinkToModel(m.Link));
@@ -627,23 +627,9 @@ namespace Daf.Meta.Editor.ViewModels
 		/// Removes the StagingColumn that is wrapped by BusinessKeyViewModel.
 		/// </summary>
 		/// <param name="businessKey">The StagingColumn that will be deleted.</param>
-		private void DeleteBusinessKeyFromHub(Hub hub, StagingColumn businessKey)
+		private static void DeleteBusinessKeyFromHub(Hub hub, StagingColumn businessKey)
 		{
-			if (Model.Hubs.Contains(hub))
-			{
-				if (hub.BusinessKeys.Contains(businessKey))
-				{
-					hub.BusinessKeys.Remove(businessKey);
-				}
-				else
-				{
-					throw new InvalidOperationException("The specified Hub does not contain the specified BusinessKey in its list of BusinessKeys.");
-				}
-			}
-			else
-			{
-				throw new InvalidOperationException("The specified Hub does not exist in Model.Hubs.");
-			}
+			Model.DeleteBusinessKey(hub, businessKey);
 		}
 
 		/// <summary>
