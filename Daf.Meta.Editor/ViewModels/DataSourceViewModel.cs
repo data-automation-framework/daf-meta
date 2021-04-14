@@ -26,8 +26,6 @@ namespace Daf.Meta.Editor.ViewModels
 			//LinkRelationships.CollectionChanged += LinkRelationshipsChanged;
 		}
 
-		private string _name; // This is initialized in the constructor of each derived class.
-
 		[Category("General")]
 		[Description("The name of the data source")]
 		public string Name
@@ -42,25 +40,25 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		[Browsable(false)]
-		public string QualifiedName
-		{
-			get { return $"{SourceSystem.ShortName}_{Tenant.ShortName}_{Name}"; }
-			set
-			{
-				NotifyPropertyChanged("QualifiedName");
-			}
-		}
+		//[Browsable(false)]
+		//public string QualifiedName
+		//{
+		//	get => DataSource.QualifiedName;
+		//	set
+		//	{
+		//		NotifyPropertyChanged("QualifiedName");
+		//	}
+		//}
 
-		[Browsable(false)]
-		public string TenantName
-		{
-			get { return $"{Tenant.ShortName}_{Name}"; }
-			set
-			{
-				NotifyPropertyChanged("TenantName");
-			}
-		}
+		//[Browsable(false)]
+		//public string TenantName
+		//{
+		//	get { return $"{Tenant.ShortName}_{Name}"; }
+		//	set
+		//	{
+		//		NotifyPropertyChanged("TenantName");
+		//	}
+		//}
 
 		[Browsable(false)]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
