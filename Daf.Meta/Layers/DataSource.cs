@@ -13,7 +13,6 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Daf.Meta.JsonConverters;
-using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Layers
 {
@@ -31,8 +30,6 @@ namespace Daf.Meta.Layers
 
 		private string _name; // This is initialized in the constructor of each derived class.
 
-		[Category("General")]
-		[Description("The name of the data source")]
 		public string Name
 		{
 			get { return _name; }
@@ -49,7 +46,6 @@ namespace Daf.Meta.Layers
 			}
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		public string QualifiedName
 		{
@@ -60,7 +56,6 @@ namespace Daf.Meta.Layers
 			}
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		public string TenantName
 		{
@@ -71,16 +66,12 @@ namespace Daf.Meta.Layers
 			}
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
 		public ObservableCollection<SourceSystem> SourceSystems => Model.Instance.SourceSystems;
 
 		private SourceSystem _sourceSystem; // This is initialized in the constructor of each derived class. Dahomey.Json doesn't support constructors in abstract classes.
 
-		[Category("General")]
-		[ItemsSourceProperty("SourceSystems")]
-		[DisplayMemberPath("Name")]
 		[JsonConverter(typeof(SourceSystemConverter))]
 		public SourceSystem SourceSystem
 		{
@@ -99,16 +90,12 @@ namespace Daf.Meta.Layers
 			}
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
 		public ObservableCollection<Tenant> Tenants => Model.Instance.Tenants;
 
 		private Tenant _tenant; // This is initialized in the constructor of each derived class. Dahomey.Json doesn't support constructors in abstract classes.
 
-		[Category("General")]
-		[ItemsSourceProperty("Tenants")]
-		[DisplayMemberPath("Name")]
 		[JsonConverter(typeof(TenantConverter))]
 		public Tenant Tenant
 		{
@@ -129,7 +116,6 @@ namespace Daf.Meta.Layers
 
 		private DataSourceType _dataSourceType;
 
-		[Browsable(false)]
 		public DataSourceType DataSourceType
 		{
 			get { return _dataSourceType; }
@@ -145,8 +131,6 @@ namespace Daf.Meta.Layers
 
 		private DestinationType _destinationType;
 
-		[Category("General")]
-		[SelectorStyle(SelectorStyle.ComboBox)]
 		public DestinationType DestinationType
 		{
 			get { return _destinationType; }
@@ -173,7 +157,6 @@ namespace Daf.Meta.Layers
 
 		private LoadWidth _defaultLoadWidth;
 
-		[Category("General")]
 		public LoadWidth DefaultLoadWidth
 		{
 			get { return _defaultLoadWidth; }
@@ -190,7 +173,6 @@ namespace Daf.Meta.Layers
 
 		private bool _generateLatestViews;
 
-		[Category("General")]
 		public bool GenerateLatestViews
 		{
 			get { return _generateLatestViews; }
@@ -207,7 +189,6 @@ namespace Daf.Meta.Layers
 
 		private bool? _containsMultiStructuredJson;
 
-		[Category("General")]
 		public bool? ContainsMultiStructuredJson
 		{
 			get { return _containsMultiStructuredJson; }
@@ -224,7 +205,6 @@ namespace Daf.Meta.Layers
 
 		private string? _fileName;
 
-		[Category("General")]
 		public string? FileName
 		{
 			get { return _fileName; }
@@ -241,7 +221,6 @@ namespace Daf.Meta.Layers
 
 		private string? _incrementalStagingColumn;
 
-		[Category("General")]
 		public string? IncrementalStagingColumn
 		{
 			get { return _incrementalStagingColumn; }
@@ -259,7 +238,6 @@ namespace Daf.Meta.Layers
 		private string? _incrementalQuery;
 
 		[DataType(DataType.MultilineText)]
-		[Category("General")]
 		public string? IncrementalQuery
 		{
 			get { return _incrementalQuery; }
@@ -276,7 +254,6 @@ namespace Daf.Meta.Layers
 
 		private string? _businessDateColumn;
 
-		[Category("General")]
 		public string? BusinessDateColumn
 		{
 			get { return _businessDateColumn; }
@@ -293,8 +270,6 @@ namespace Daf.Meta.Layers
 
 		private string? _sqlSelectQuery;
 
-		[Category("General")]
-		[Description("The custom select query that is run against the load table when loading the staging table.")]
 		public string? SqlSelectQuery
 		{
 			get { return _sqlSelectQuery; }
@@ -311,7 +286,6 @@ namespace Daf.Meta.Layers
 
 		private string? _azureLinkedServiceReference;
 
-		[Category("Azure")]
 		public string? AzureLinkedServiceReference
 		{
 			get { return _azureLinkedServiceReference; }
@@ -328,8 +302,6 @@ namespace Daf.Meta.Layers
 
 		private Build _build;
 
-		[Category("General")]
-		[SelectorStyle(SelectorStyle.ComboBox)]
 		public Build Build
 		{
 			get { return _build; }
@@ -346,7 +318,6 @@ namespace Daf.Meta.Layers
 
 		private string? _errorHandling;
 
-		[Category("General")]
 		public string? ErrorHandling
 		{
 			get { return _errorHandling; }
@@ -363,7 +334,6 @@ namespace Daf.Meta.Layers
 
 		private BusinessKey? _businessKey;
 
-		[Browsable(false)]
 		[JsonConverter(typeof(BusinessKeyConverter))]
 		public BusinessKey? BusinessKey
 		{
@@ -387,19 +357,14 @@ namespace Daf.Meta.Layers
 			return Model.Instance.GetBusinessKey(BusinessKey.Name);
 		}
 
-		[Browsable(false)]
 		public ObservableCollection<HubRelationship> HubRelationships { get; } = new ObservableCollection<HubRelationship>();
 
-		[Browsable(false)]
 		public ObservableCollection<LinkRelationship> LinkRelationships { get; } = new ObservableCollection<LinkRelationship>();
 
-		[Browsable(false)]
 		public ObservableCollection<Satellite> Satellites { get; } = new ObservableCollection<Satellite>();
 
-		[Browsable(false)]
 		public LoadTable? LoadTable { get; set; } = new LoadTable();
 
-		[Browsable(false)]
 		public StagingTable? StagingTable { get; set; } = new StagingTable();
 
 		public abstract DataSource Clone();
@@ -708,7 +673,6 @@ namespace Daf.Meta.Layers
 			}
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		public ObservableCollection<StagingColumn> HubList
 		{
@@ -803,7 +767,6 @@ namespace Daf.Meta.Layers
 			return relevantKeySet.ToList();
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		public ObservableCollection<StagingColumn>? LinkList
 		{
@@ -872,7 +835,6 @@ namespace Daf.Meta.Layers
 			return sortedLinkList;
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		public ObservableCollection<StagingColumn> ColumnsNotInHubsOrLinks
 		{
@@ -930,7 +892,6 @@ namespace Daf.Meta.Layers
 			}
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		public ObservableCollection<StagingColumn> SatelliteList
 		{
@@ -1049,7 +1010,6 @@ namespace Daf.Meta.Layers
 			}
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		public ObservableCollection<BusinessKey> AssociatedBusinessKeys { get; } = new ObservableCollection<BusinessKey>();
 
@@ -1068,7 +1028,6 @@ namespace Daf.Meta.Layers
 			return linkList;
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		public List<string> SatelliteNames
 		{
@@ -1275,7 +1234,6 @@ namespace Daf.Meta.Layers
 			return satelliteList;
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		public Dictionary<string, List<StagingColumn>> HubandHubColumns
 		{

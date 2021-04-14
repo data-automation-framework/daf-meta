@@ -10,23 +10,20 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Daf.Meta.JsonConverters;
+using Daf.Meta.Layers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using PropertyTools.DataAnnotations;
 
-namespace Daf.Meta.Layers
+namespace Daf.Meta.Editor.ViewModels
 {
-	public abstract class DataSource : PropertyChangedBaseClass, IComparable<DataSource>
+	public abstract class DataSourceViewModel : ObservableValidator
 	{
-		protected DataSource(string name, SourceSystem sourceSystem, Tenant tenant)
+		public DataSource DataSource { get; }
+		protected DataSourceViewModel(DataSource dataSource)
 		{
-			_name = name;
-			_sourceSystem = sourceSystem;
-			_tenant = tenant;
-
-			HubRelationships.CollectionChanged += HubRelationshipsChanged;
-			LinkRelationships.CollectionChanged += LinkRelationshipsChanged;
+			DataSource = dataSource;
+			//HubRelationships.CollectionChanged += HubRelationshipsChanged;
+			//LinkRelationships.CollectionChanged += LinkRelationshipsChanged;
 		}
 
 		private string _name; // This is initialized in the constructor of each derived class.
@@ -35,22 +32,17 @@ namespace Daf.Meta.Layers
 		[Description("The name of the data source")]
 		public string Name
 		{
-			get { return _name; }
+			get => DataSource.Name;
 			set
 			{
-				if (_name != value)
-				{
-					_name = value;
+				SetProperty(DataSource.Name, value, DataSource, (dataSource, name) => dataSource.Name = name, true);
 
-					NotifyPropertyChanged("Name");
-					QualifiedName = string.Empty; // Update QualifiedName's bindings without changing its value.
-					TenantName = string.Empty; // Update TenantName's bindings without changing its value.
-				}
+				//QualifiedName = string.Empty; // Update QualifiedName's bindings without changing its value.
+				//TenantName = string.Empty; // Update TenantName's bindings without changing its value.
 			}
 		}
 
 		[Browsable(false)]
-		[JsonIgnore]
 		public string QualifiedName
 		{
 			get { return $"{SourceSystem.ShortName}_{Tenant.ShortName}_{Name}"; }
@@ -61,7 +53,6 @@ namespace Daf.Meta.Layers
 		}
 
 		[Browsable(false)]
-		[JsonIgnore]
 		public string TenantName
 		{
 			get { return $"{Tenant.ShortName}_{Name}"; }
@@ -72,7 +63,6 @@ namespace Daf.Meta.Layers
 		}
 
 		[Browsable(false)]
-		[JsonIgnore]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
 		public ObservableCollection<SourceSystem> SourceSystems => Model.Instance.SourceSystems;
 
@@ -81,49 +71,28 @@ namespace Daf.Meta.Layers
 		[Category("General")]
 		[ItemsSourceProperty("SourceSystems")]
 		[DisplayMemberPath("Name")]
-		[JsonConverter(typeof(SourceSystemConverter))]
 		public SourceSystem SourceSystem
 		{
-			get
-			{
-				return _sourceSystem;
-			}
+			get => DataSource.SourceSystem;
 			set
 			{
-				if (_sourceSystem != value)
-				{
-					_sourceSystem = value;
-
-					NotifyPropertyChanged("SourceSystem");
-				}
+				SetProperty(DataSource.SourceSystem, value, DataSource, (dataSource, sourceSystem) => dataSource.SourceSystem = sourceSystem, true);
 			}
 		}
 
 		[Browsable(false)]
-		[JsonIgnore]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
 		public ObservableCollection<Tenant> Tenants => Model.Instance.Tenants;
-
-		private Tenant _tenant; // This is initialized in the constructor of each derived class. Dahomey.Json doesn't support constructors in abstract classes.
 
 		[Category("General")]
 		[ItemsSourceProperty("Tenants")]
 		[DisplayMemberPath("Name")]
-		[JsonConverter(typeof(TenantConverter))]
 		public Tenant Tenant
 		{
-			get
-			{
-				return _tenant;
-			}
+			get => DataSource.Tenant;
 			set
 			{
-				if (_tenant != value)
-				{
-					_tenant = value;
-
-					NotifyPropertyChanged("Tenant");
-				}
+				SetProperty(DataSource.Tenant, value, DataSource, (dataSource, tenant) => dataSource.Tenant = tenant, true);
 			}
 		}
 
@@ -143,13 +112,11 @@ namespace Daf.Meta.Layers
 			}
 		}
 
-		private DestinationType _destinationType;
-
 		[Category("General")]
 		[SelectorStyle(SelectorStyle.ComboBox)]
 		public DestinationType DestinationType
 		{
-			get { return _destinationType; }
+			get => DataSource.DestinationType;
 			set
 			{
 				if (_destinationType != value)
@@ -171,211 +138,126 @@ namespace Daf.Meta.Layers
 			}
 		}
 
-		private LoadWidth _defaultLoadWidth;
-
 		[Category("General")]
 		public LoadWidth DefaultLoadWidth
 		{
-			get { return _defaultLoadWidth; }
+			get => DataSource.DefaultLoadWidth;
 			set
 			{
-				if (_defaultLoadWidth != value)
-				{
-					_defaultLoadWidth = value;
-
-					NotifyPropertyChanged("DefaultLoadWidth");
-				}
+				SetProperty(DataSource.DefaultLoadWidth, value, DataSource, (dataSource, defaultLoadWidth) => dataSource.DefaultLoadWidth = defaultLoadWidth, true);
 			}
 		}
-
-		private bool _generateLatestViews;
 
 		[Category("General")]
 		public bool GenerateLatestViews
 		{
-			get { return _generateLatestViews; }
+			get => DataSource.GenerateLatestViews;
 			set
 			{
-				if (_generateLatestViews != value)
-				{
-					_generateLatestViews = value;
-
-					NotifyPropertyChanged("GenerateLatestViews");
-				}
+				SetProperty(DataSource.GenerateLatestViews, value, DataSource, (dataSource, generateLatestViews) => dataSource.GenerateLatestViews = generateLatestViews, true);
 			}
 		}
-
-		private bool? _containsMultiStructuredJson;
 
 		[Category("General")]
 		public bool? ContainsMultiStructuredJson
 		{
-			get { return _containsMultiStructuredJson; }
+			get => DataSource.ContainsMultiStructuredJson;
 			set
 			{
-				if (_containsMultiStructuredJson != value)
-				{
-					_containsMultiStructuredJson = value;
-
-					NotifyPropertyChanged("ContainsMultiStructuredJson");
-				}
+				SetProperty(DataSource.ContainsMultiStructuredJson, value, DataSource, (dataSource, containsMultiStructuredJson) => dataSource.ContainsMultiStructuredJson = containsMultiStructuredJson, true);
 			}
 		}
-
-		private string? _fileName;
 
 		[Category("General")]
 		public string? FileName
 		{
-			get { return _fileName; }
+			get => DataSource.FileName;
 			set
 			{
-				if (_fileName != value)
-				{
-					_fileName = value;
-
-					NotifyPropertyChanged("FileName");
-				}
+				SetProperty(DataSource.FileName, value, DataSource, (dataSource, fileName) => dataSource.FileName = fileName, true);
 			}
 		}
-
-		private string? _incrementalStagingColumn;
 
 		[Category("General")]
 		public string? IncrementalStagingColumn
 		{
-			get { return _incrementalStagingColumn; }
+			get => IncrementalStagingColumn;
 			set
 			{
-				if (_incrementalStagingColumn != value)
-				{
-					_incrementalStagingColumn = value;
-
-					NotifyPropertyChanged("IncrementalStagingColumn");
-				}
+				SetProperty(DataSource.IncrementalStagingColumn, value, DataSource, (dataSource, incrementalStagingColumn) => dataSource.IncrementalStagingColumn = incrementalStagingColumn, true);
 			}
 		}
-
-		private string? _incrementalQuery;
 
 		[DataType(DataType.MultilineText)]
 		[Category("General")]
 		public string? IncrementalQuery
 		{
-			get { return _incrementalQuery; }
+			get => DataSource.IncrementalQuery;
 			set
 			{
-				if (_incrementalQuery != value)
-				{
-					_incrementalQuery = value;
-
-					NotifyPropertyChanged("IncrementalQuery");
-				}
+				SetProperty(DataSource.IncrementalQuery, value, DataSource, (dataSource, incrementalQuery) => dataSource.IncrementalQuery = incrementalQuery, true);
 			}
 		}
-
-		private string? _businessDateColumn;
 
 		[Category("General")]
 		public string? BusinessDateColumn
 		{
-			get { return _businessDateColumn; }
+			get => DataSource.BusinessDateColumn;
 			set
 			{
-				if (_businessDateColumn != value)
-				{
-					_businessDateColumn = value;
-
-					NotifyPropertyChanged("BusinessDateColumn");
-				}
+				SetProperty(DataSource.BusinessDateColumn, value, DataSource, (dataSource, businessDateColumn) => dataSource.BusinessDateColumn = businessDateColumn, true);
 			}
 		}
-
-		private string? _sqlSelectQuery;
 
 		[Category("General")]
 		[Description("The custom select query that is run against the load table when loading the staging table.")]
 		public string? SqlSelectQuery
 		{
-			get { return _sqlSelectQuery; }
+			get => DataSource.SqlSelectQuery;
 			set
 			{
-				if (_sqlSelectQuery != value)
-				{
-					_sqlSelectQuery = value;
-
-					NotifyPropertyChanged("SqlSelectQuery");
-				}
+				SetProperty(DataSource.SqlSelectQuery, value, DataSource, (dataSource, sqlSelectQuery) => dataSource.SqlSelectQuery = sqlSelectQuery, true);
 			}
 		}
-
-		private string? _azureLinkedServiceReference;
 
 		[Category("Azure")]
 		public string? AzureLinkedServiceReference
 		{
-			get { return _azureLinkedServiceReference; }
+			get => DataSource.AzureLinkedServiceReference;
 			set
 			{
-				if (_azureLinkedServiceReference != value)
-				{
-					_azureLinkedServiceReference = value;
-
-					NotifyPropertyChanged("AzureLinkedServiceReference");
-				}
+				SetProperty(DataSource.AzureLinkedServiceReference, value, DataSource, (dataSource, azureLinkedServiceReference) => dataSource.AzureLinkedServiceReference = azureLinkedServiceReference, true);
 			}
 		}
-
-		private Build _build;
 
 		[Category("General")]
 		[SelectorStyle(SelectorStyle.ComboBox)]
 		public Build Build
 		{
-			get { return _build; }
+			get => DataSource.Build;
 			set
 			{
-				if (_build != value)
-				{
-					_build = value;
-
-					NotifyPropertyChanged("Build");
-				}
+				SetProperty(DataSource.Build, value, DataSource, (dataSource, build) => dataSource.Build = build, true);
 			}
 		}
-
-		private string? _errorHandling;
 
 		[Category("General")]
 		public string? ErrorHandling
 		{
-			get { return _errorHandling; }
+			get => DataSource.ErrorHandling;
 			set
 			{
-				if (_errorHandling != value)
-				{
-					_errorHandling = value;
-
-					NotifyPropertyChanged("ErrorHandling");
-				}
+				SetProperty(DataSource.ErrorHandling, value, DataSource, (dataSource, errorHandling) => dataSource.ErrorHandling = errorHandling, true);
 			}
 		}
 
-		private BusinessKey? _businessKey;
-
 		[Browsable(false)]
-		[JsonConverter(typeof(BusinessKeyConverter))]
 		public BusinessKey? BusinessKey
 		{
-			get { return _businessKey; }
+			get => DataSource.BusinessKey;
 			set
 			{
-				if (_businessKey != value)
-				{
-					_businessKey = value;
-
-					NotifyPropertyChanged("BusinessKey");
-				}
+				SetProperty(DataSource.BusinessKey, value, DataSource, (dataSource, businessKey) => dataSource.BusinessKey = businessKey, true);
 			}
 		}
 
@@ -709,7 +591,6 @@ namespace Daf.Meta.Layers
 		}
 
 		[Browsable(false)]
-		[JsonIgnore]
 		public ObservableCollection<StagingColumn> HubList
 		{
 			get
@@ -804,7 +685,6 @@ namespace Daf.Meta.Layers
 		}
 
 		[Browsable(false)]
-		[JsonIgnore]
 		public ObservableCollection<StagingColumn>? LinkList
 		{
 			get
@@ -873,7 +753,6 @@ namespace Daf.Meta.Layers
 		}
 
 		[Browsable(false)]
-		[JsonIgnore]
 		public ObservableCollection<StagingColumn> ColumnsNotInHubsOrLinks
 		{
 			get
@@ -931,7 +810,6 @@ namespace Daf.Meta.Layers
 		}
 
 		[Browsable(false)]
-		[JsonIgnore]
 		public ObservableCollection<StagingColumn> SatelliteList
 		{
 			get
@@ -1050,7 +928,6 @@ namespace Daf.Meta.Layers
 		}
 
 		[Browsable(false)]
-		[JsonIgnore]
 		public ObservableCollection<BusinessKey> AssociatedBusinessKeys { get; } = new ObservableCollection<BusinessKey>();
 
 		public HashSet<string> GetLinkNames()
@@ -1069,7 +946,6 @@ namespace Daf.Meta.Layers
 		}
 
 		[Browsable(false)]
-		[JsonIgnore]
 		public List<string> SatelliteNames
 		{
 			get
@@ -1276,7 +1152,6 @@ namespace Daf.Meta.Layers
 		}
 
 		[Browsable(false)]
-		[JsonIgnore]
 		public Dictionary<string, List<StagingColumn>> HubandHubColumns
 		{
 			get

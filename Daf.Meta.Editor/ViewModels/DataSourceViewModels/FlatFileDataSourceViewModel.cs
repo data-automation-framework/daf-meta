@@ -2,10 +2,10 @@
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
 using Dahomey.Json.Attributes;
+using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Layers.DataSources
 {
-	[JsonDiscriminator("FlatFile")]
 	public class FlatFileDataSource : DataSource
 	{
 		public FlatFileDataSource(string name, SourceSystem sourceSystem, Tenant tenant) : base(name, sourceSystem, tenant)
@@ -14,6 +14,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private uint? _codePage { get; set; }
 
+		[Category("FlatFile")]
+		[SortIndex(100)]
 		public uint? CodePage
 		{
 			get { return _codePage; }
@@ -30,6 +32,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _format;
 
+		[Category("FlatFile")]
+		[SortIndex(100)]
 		public string? Format
 		{
 			get { return _format; }
@@ -46,6 +50,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _rowDelimiter;
 
+		[Category("FlatFile")]
+		[SortIndex(100)]
 		public string? RowDelimiter
 		{
 			get { return _rowDelimiter; }
@@ -62,6 +68,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _columnDelimiter;
 
+		[Category("FlatFile")]
+		[SortIndex(100)]
 		public string? ColumnDelimiter
 		{
 			get { return _columnDelimiter; }
@@ -78,6 +86,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private bool? _textQualified;
 
+		[Category("FlatFile")]
+		[SortIndex(100)]
 		public bool? TextQualified
 		{
 			get { return _textQualified; }
@@ -94,6 +104,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _textQualifier;
 
+		[Category("FlatFile")]
+		[SortIndex(100)]
 		public string? TextQualifier
 		{
 			get { return _textQualifier; }
@@ -110,6 +122,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private bool? _headersInFirstRow;
 
+		[Category("FlatFile")]
+		[SortIndex(100)]
 		public bool? HeadersInFirstRow
 		{
 			get { return _headersInFirstRow; }
@@ -126,6 +140,10 @@ namespace Daf.Meta.Layers.DataSources
 
 		private uint _businessDateOffset;
 
+		[Category("FlatFile")]
+		[SortIndex(100)]
+		[Spinnable(1, 10)]
+		[Width(60)]
 		public uint BusinessDateOffset
 		{
 			get { return _businessDateOffset; }
@@ -142,6 +160,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _fileDateRegex;
 
+		[Category("FlatFile")]
+		[SortIndex(100)]
 		public string? FileDateRegex
 		{
 			get { return _fileDateRegex; }
