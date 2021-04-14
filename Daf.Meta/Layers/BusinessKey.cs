@@ -33,13 +33,13 @@ namespace Daf.Meta.Layers
 		/// Adds a new StagingColumn to <see cref="BusinessKeys">BusinessKeys</see>.
 		/// </summary>
 		/// <returns>The staging column object which was added to the collection.</returns>
-		public StagingColumn AddBusinessKeyColumn()
+		public StagingColumn AddBusinessKeyColumn() // Want to remove this method.
 		{
 			StagingColumn stagingColumn = new(name: "New Column");
 
 			stagingColumn.PropertyChanged += (s, e) =>
 			{
-				NotifyPropertyChanged("StagingColumn");
+				NotifyPropertyChanged("StagingColumn"); // I don't know what this does. There's no property named StagingColumn??
 			};
 
 			BusinessKeys.Add(stagingColumn);

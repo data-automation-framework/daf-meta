@@ -651,18 +651,9 @@ namespace Daf.Meta.Editor.ViewModels
 		/// </summary>
 		/// <param name="hub">The hub that the StagingColumn will be added to.</param>
 		/// <param name="businessKey">The StagingColumn that will be added.</param>
-		private void AddBusinessKeyToHub(Hub hub)
+		private static void AddBusinessKeyToHub(Hub hub, StagingColumn businessKey)
 		{
-			Model.AddBusinessKeyToHub(hub);
-
-			//if (Model.Hubs.Contains(hub))
-			//{
-			//	hub.BusinessKeys.Add(businessKey);
-			//}
-			//else
-			//{
-			//	throw new InvalidOperationException("The specified Hub does not exist in Model.Hubs. Could not add StagingColumn.");
-			//}
+			Model.AddBusinessKey(hub, businessKey);
 		}
 
 		/// <summary>

@@ -980,6 +980,26 @@ namespace Daf.Meta
 			}
 		}
 
+		public static void AddBusinessKey(Hub hub, StagingColumn businessKey)
+		{
+			if (hub == null || businessKey == null)
+				throw new InvalidOperationException("Hub or BusinessKey was null!");
+
+			hub.BusinessKeys.Add(businessKey);
+
+			// Check if the Hub belongs to any HubRelationship, and if so add a new HubMapping.
+			foreach (DataSource dataSource in Instance.DataSources)
+			{
+				foreach (HubRelationship hubRelationship in dataSource.HubRelationships)
+				{
+					if (hubRelationship.Hub == hub)
+					{
+						hubRelationship.Mappings.Add(new HubMapping(businessKey));
+					}
+				}
+			}
+		}
+
 		private static void SerializeSourceSystems(Model value, string folder)
 		{
 			var options = new JsonSerializerOptions
