@@ -205,13 +205,9 @@ namespace Daf.Meta.Editor.ViewModels
 				StagingVM.SelectedDataSource = value;
 
 				HubRelationshipVM.SelectedDataSource = value;
-				//HubRelationshipVM.HubRelationships = value?.HubRelationships;
 
 				if (value != null)
 					HubRelationshipVM.HubRelationships = new(value.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
-
-				//HubsVM.Hubs = new(Model.Hubs.Select(hub => new HubViewModel(hub)));
-
 
 				LinkRelationshipVM.SelectedDataSource = value;
 				LinkRelationshipVM.LinkRelationships = value?.LinkRelationships;

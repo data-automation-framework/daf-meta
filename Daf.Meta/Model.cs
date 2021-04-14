@@ -223,19 +223,15 @@ namespace Daf.Meta
 
 				hubMapping.PropertyChanged += (s, e) =>
 				{
-					hubRelationship.NotifyPropertyChanged("HubMapping");
+					hubRelationship.NotifyPropertyChanged("HubMapping"); // Confused. This property doesn't exist.
 				};
 
 				hubRelationship.Mappings.Add(hubMapping);
 			}
 
-			//if (dataSource == null)
-			//	throw new InvalidOperationException("SelectedDataSource was null!");
-
-
 			hubRelationship.PropertyChanged += (s, e) =>
 			{
-				dataSource.NotifyPropertyChanged("HubRelationship");
+				dataSource.NotifyPropertyChanged("HubRelationship"); // Confused.
 			};
 
 			dataSource.HubRelationships.Add(hubRelationship);

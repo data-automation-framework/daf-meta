@@ -90,12 +90,6 @@ namespace Daf.Meta.Editor.ViewModels
 		{
 			WeakReferenceMessenger.Default.Send(new AddHubRelationship(hub, dataSource));
 
-			//HubRelationships.Add(new HubRelationshipViewModel())
-			// MainViewModel should automatically regenerate the list of HubRelationships at this point?
-
-			//StagingColumn stagingColumn = inputDialog.StagingColumn;
-
-
 			//foreach (var x in selectedDataSource.HubRelationships)
 			//{
 			//	foreach (var y in x.Mappings)
@@ -115,43 +109,6 @@ namespace Daf.Meta.Editor.ViewModels
 			//	}
 			//}
 
-			//foreach (StagingColumn column in selectedDataSource.StagingTable.Columns)
-			//{
-			//	if (column == stagingColumn)
-			//	{
-
-			// keeping below for reference.
-			//HubRelationship hubRelationship = new(hub);
-
-			//foreach (StagingColumn bk in hub.BusinessKeys)
-			//{
-			//	HubMapping hubMapping = new(bk);
-
-			//	hubMapping.PropertyChanged += (s, e) =>
-			//	{
-			//		hubRelationship.NotifyPropertyChanged("HubMapping");
-			//	};
-
-			//	hubRelationship.Mappings.Add(hubMapping);
-			//}
-
-			//if (SelectedDataSource == null)
-			//	throw new InvalidOperationException("SelectedDataSource was null!");
-
-
-			//hubRelationship.PropertyChanged += (s, e) =>
-			//{
-			//	SelectedDataSource.NotifyPropertyChanged("HubRelationship");
-			//};
-
-			//SelectedDataSource.HubRelationships.Add(hubRelationship);
-
-			// TODO: businessKeyComboBox is in Satellite, we need to send it a message to run the equivalent command.
-			//businessKeyComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
-
-			//break;
-			//}
-			//}
 		}
 
 		private bool CanDeleteHubRelationship()
