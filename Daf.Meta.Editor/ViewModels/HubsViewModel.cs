@@ -225,13 +225,11 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 			else
 			{
-				StagingColumn businessKey = new("New Column");
-
 				// Send message to MainViewModel that the new BusinessKey needs to be added to its corresponding Hub in the Model.
-				WeakReferenceMessenger.Default.Send(new AddBusinessKeyColumnToHub(SelectedHub.Hub, businessKey));
+				WeakReferenceMessenger.Default.Send(new AddBusinessKeyColumnToHub(SelectedHub.Hub));
 
 				// Add new StagingColumnViewModel to HubsViewModel.Hubs and pass the new StagingColumn to its constructor.
-				SelectedHub.BusinessKeys.Add(new BusinessKeyViewModel(businessKey));
+				//SelectedHub.BusinessKeys.Add(new BusinessKeyViewModel(businessKey));
 			}
 		}
 

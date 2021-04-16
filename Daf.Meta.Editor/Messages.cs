@@ -57,17 +57,14 @@ namespace Daf.Meta.Editor
 	/// <summary>
 	/// Facilitates messages that inform MainViewModel that a StagingColumn needs to be added to a specified Hub in Model.Hubs.
 	/// <param name="hub">The Hub that the specified BusinessKey will be added to.</param>
-	/// <param name="businessKey">The StagingColumn object to be added.</param>
 	/// </summary>
 	public sealed class AddBusinessKeyColumnToHub
 	{
-		public AddBusinessKeyColumnToHub(Hub hub, StagingColumn businessKey)
+		public AddBusinessKeyColumnToHub(Hub hub)
 		{
-			BusinessKey = businessKey;
 			Hub = hub;
 		}
 
-		public StagingColumn BusinessKey { get; }
 		public Hub Hub { get; }
 	}
 

@@ -83,7 +83,7 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Hub));
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromHubs>(this, (r, m) => DeleteBusinessKeyFromHub(m.Hub, m.BusinessKey));
-			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub, m.BusinessKey));
+			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub));
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteLink>(this, (r, m) => DeleteLinkFromModel(m.Link));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddLinkToModel>(this, (r, m) => AddLinkToModel(m.Link));
@@ -632,10 +632,11 @@ namespace Daf.Meta.Editor.ViewModels
 		/// Adds a new StagingColumn to a specified Hub in the Model.
 		/// </summary>
 		/// <param name="hub">The hub that the StagingColumn will be added to.</param>
-		/// <param name="businessKey">The StagingColumn that will be added.</param>
-		private static void AddBusinessKeyToHub(Hub hub, StagingColumn businessKey)
+		private void AddBusinessKeyToHub(Hub hub)
 		{
-			Model.AddBusinessKey(hub, businessKey);
+			StagingColumn businessKey = Model.AddBusinessKeyToHub(hub);
+
+			HubsVM.SelectedHub!.BusinessKeys.Add(new BusinessKeyViewModel(businessKey));
 		}
 
 		/// <summary>

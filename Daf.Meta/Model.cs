@@ -202,12 +202,26 @@ namespace Daf.Meta
 			Hubs.Remove(hub);
 		}
 
-		public StagingColumn AddBusinessKeyToHub(Hub hub)
+		public static StagingColumn AddBusinessKeyToHub(Hub hub)
 		{
-			if (!Hubs.Contains(hub) || hub == null)
-				throw new InvalidOperationException("Tried to delete a BusinessKey from a Hub that does not exist in Model.Hubs!");
+			if (hub == null)
+				throw new InvalidOperationException("Hub was null!");
 
-			return hub.AddBusinessKeyColumn();
+			StagingColumn businessKey = hub.AddBusinessKeyColumn();
+
+			// Check if the Hub belongs to any HubRelationship, and if so add a new HubMapping.
+			foreach (DataSource dataSource in Instance.DataSources)
+			{
+				foreach (HubRelationship hubRelationship in dataSource.HubRelationships)
+				{
+					if (hubRelationship.Hub == hub)
+					{
+						hubRelationship.Mappings.Add(new HubMapping(businessKey));
+					}
+				}
+			}
+
+			return businessKey;
 		}
 
 		public static HubRelationship AddHubRelationship(Hub hub, DataSource dataSource)
@@ -984,26 +998,6 @@ namespace Daf.Meta
 				throw new InvalidOperationException("Hub or BusinessKey was null!");
 
 			hub.RemoveBusinessKeyColumn(businessKey);
-		}
-
-		public static void AddBusinessKey(Hub hub, StagingColumn businessKey)
-		{
-			if (hub == null || businessKey == null)
-				throw new InvalidOperationException("Hub or BusinessKey was null!");
-
-			hub.BusinessKeys.Add(businessKey); // Should use Hub.AddBusinessKeyColumn instead?
-
-			// Check if the Hub belongs to any HubRelationship, and if so add a new HubMapping.
-			foreach (DataSource dataSource in Instance.DataSources)
-			{
-				foreach (HubRelationship hubRelationship in dataSource.HubRelationships)
-				{
-					if (hubRelationship.Hub == hub)
-					{
-						hubRelationship.Mappings.Add(new HubMapping(businessKey));
-					}
-				}
-			}
 		}
 
 		private static void SerializeSourceSystems(Model value, string folder)

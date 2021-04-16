@@ -33,7 +33,7 @@ namespace Daf.Meta.Layers
 		/// Adds a new StagingColumn to <see cref="BusinessKeys">BusinessKeys</see>.
 		/// </summary>
 		/// <returns>The staging column object which was added to the collection.</returns>
-		public StagingColumn AddBusinessKeyColumn() // Want to remove this method or start using it.
+		public StagingColumn AddBusinessKeyColumn()
 		{
 			StagingColumn stagingColumn = new(name: "New Column");
 
