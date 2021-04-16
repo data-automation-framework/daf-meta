@@ -7,6 +7,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Daf.Meta.Layers;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -23,13 +24,13 @@ namespace Daf.Meta.Editor.ViewModels
 			_mbService = Ioc.Default.GetService<IMessageBoxService>()!;
 			_windowService = Ioc.Default.GetService<IWindowService>()!;
 
-			AddLinkRelationshipCommand = new RelayCommand<Type?>(AddLinkRelationship);
-			DeleteLinkRelationshipCommand = new RelayCommand(DeleteLinkRelationship, CanDeleteLinkRelationship);
+			AddLinkRelationshipCommand = new RelayCommand<Type?>(OpenAddLinkRelationshipDialog);
+			DeleteLinkRelationshipCommand = new RelayCommand(OpenDeleteLinkRelationshipDialog, CanDeleteLinkRelationship);
 		}
 
-		private ObservableCollection<LinkRelationship>? _linkRelationships;
+		private ObservableCollection<LinkRelationshipViewModel>? _linkRelationships;
 
-		public ObservableCollection<LinkRelationship>? LinkRelationships
+		public ObservableCollection<LinkRelationshipViewModel>? LinkRelationships
 		{
 			get
 			{
@@ -41,8 +42,8 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private LinkRelationship? _selectedLinkRelationship;
-		public LinkRelationship? SelectedLinkRelationship
+		private LinkRelationshipViewModel? _selectedLinkRelationship;
+		public LinkRelationshipViewModel? SelectedLinkRelationship
 		{
 			get
 			{
@@ -75,70 +76,27 @@ namespace Daf.Meta.Editor.ViewModels
 			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.StagingTable?.Columns!); }
 		}
 
-		private void AddLinkRelationship(Type? windowType)
+		private void OpenAddLinkRelationshipDialog(Type? windowType)
 		{
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
 
 			if (SelectedDataSource == null)
-				throw new InvalidOperationException();
+				throw new InvalidOperationException("SelectedDataSource was null!");
 
 			bool dialogResult = _windowService.ShowDialog(windowType, out object dataContext);
 
 			if (dialogResult)
 			{
-				//string stagingColumnName = inputDialog.StagingColumnName;
-				//int order = inputDialog.Order;
-				//bool isDriving = (bool)inputDialog.IsDriving;
 				Link link = ((AddLinkRelationshipViewModel)dataContext!).SelectedLink!;
 
-				//foreach (var column in selectedDataSource.StagingTable.Columns)
-				//{
-				//	if (column.Name == stagingColumnName)
-				//	{
-				//		if (selectedDataSource.LinkRelationships == null)
-				//		{
-				//			selectedDataSource.LinkRelationships = new ObservableCollection<LinkRelationship>();
-				//			selectedDataSource.LinkRelationships.Add(new LinkRelationship { });
-				//		}
-				//		else
-				//		{
-				//			string msg = $"Staging column {column.Name} already has a link assigned! Multiple links aren't supported yet. No change was made.";
-				//			MessageBoxResult result =
-				//			  MessageBox.Show(
-				//				msg,
-				//				"Column already has a link assigned",
-				//				MessageBoxButton.OK,
-				//				MessageBoxImage.Exclamation);
-				//		}
-
-				//		break;
-				//	}
-				//}
-
-				LinkRelationship linkRelationship = new(link);
-
-				foreach (StagingColumn bk in link.BusinessKeys)
-				{
-					LinkMapping linkMapping = new(bk);
-
-					linkMapping.PropertyChanged += (s, e) =>
-					{
-						linkRelationship.NotifyPropertyChanged("LinkMapping");
-					};
-
-					linkRelationship.Mappings.Add(linkMapping);
-				}
-
-				linkRelationship.PropertyChanged += (s, e) =>
-				{
-					SelectedDataSource.NotifyPropertyChanged("LinkRelationship");
-				};
-
-				SelectedDataSource.LinkRelationships.Add(linkRelationship);
-
-				//WeakReferenceMessenger.Default.Send(new ModifiedRelationships());
+				AddLinkRelationship(link, SelectedDataSource);
 			}
+		}
+
+		internal static void AddLinkRelationship(Link link, DataSource dataSource) // TODO: Fix app crashing when no link is selected in AddLink-window. Same for Hubs.
+		{
+			WeakReferenceMessenger.Default.Send(new AddLinkRelationship(link, dataSource));
 		}
 
 		private bool CanDeleteLinkRelationship()
@@ -149,22 +107,114 @@ namespace Daf.Meta.Editor.ViewModels
 				return true;
 		}
 
-		private void DeleteLinkRelationship()
+		private void OpenDeleteLinkRelationshipDialog()
 		{
-			if (SelectedDataSource != null && SelectedLinkRelationship != null)
-			{
-				foreach (LinkMapping linkMapping in SelectedLinkRelationship.Mappings)
-				{
-					linkMapping.ClearSubscribers();
-				}
+			if (SelectedLinkRelationship == null || SelectedDataSource == null)
+				throw new InvalidOperationException("SelectedLinkRelationship or SelectedDataSource was null!");
 
-				SelectedLinkRelationship.ClearSubscribers();
+			DeleteLinkRelationship(SelectedLinkRelationship, SelectedDataSource);
+		}
 
-				SelectedDataSource.LinkRelationships.Remove(SelectedLinkRelationship);
+		private void DeleteLinkRelationship(LinkRelationshipViewModel linkRelationshipViewModel, DataSource dataSource)
+		{
+			if (LinkRelationships == null)
+				throw new InvalidOperationException("LinkRelationships was null!");
 
-				// TODO: businessKeyComboBox is in Satellite, we need to send it a message to run the equivalent command.
-				//businessKeyComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
-			}
+			LinkRelationships.Remove(linkRelationshipViewModel);
+
+			WeakReferenceMessenger.Default.Send(new RemoveLinkRelationship(linkRelationshipViewModel.LinkRelationship, dataSource));
 		}
 	}
+
+	//private void AddLinkRelationship(Type? windowType)
+	//{
+	//	if (windowType == null)
+	//		throw new ArgumentNullException(nameof(windowType));
+
+	//	if (SelectedDataSource == null)
+	//		throw new InvalidOperationException();
+
+	//	bool dialogResult = _windowService.ShowDialog(windowType, out object dataContext);
+
+	//	if (dialogResult)
+	//	{
+	//		//string stagingColumnName = inputDialog.StagingColumnName;
+	//		//int order = inputDialog.Order;
+	//		//bool isDriving = (bool)inputDialog.IsDriving;
+	//		Link link = ((AddLinkRelationshipViewModel)dataContext!).SelectedLink!;
+
+	//		//foreach (var column in selectedDataSource.StagingTable.Columns)
+	//		//{
+	//		//	if (column.Name == stagingColumnName)
+	//		//	{
+	//		//		if (selectedDataSource.LinkRelationships == null)
+	//		//		{
+	//		//			selectedDataSource.LinkRelationships = new ObservableCollection<LinkRelationship>();
+	//		//			selectedDataSource.LinkRelationships.Add(new LinkRelationship { });
+	//		//		}
+	//		//		else
+	//		//		{
+	//		//			string msg = $"Staging column {column.Name} already has a link assigned! Multiple links aren't supported yet. No change was made.";
+	//		//			MessageBoxResult result =
+	//		//			  MessageBox.Show(
+	//		//				msg,
+	//		//				"Column already has a link assigned",
+	//		//				MessageBoxButton.OK,
+	//		//				MessageBoxImage.Exclamation);
+	//		//		}
+
+	//		//		break;
+	//		//	}
+	//		//}
+
+	//		LinkRelationship linkRelationship = new(link);
+
+	//		foreach (StagingColumn bk in link.BusinessKeys)
+	//		{
+	//			LinkMapping linkMapping = new(bk);
+
+	//			linkMapping.PropertyChanged += (s, e) =>
+	//			{
+	//				linkRelationship.NotifyPropertyChanged("LinkMapping");
+	//			};
+
+	//			linkRelationship.Mappings.Add(linkMapping);
+	//		}
+
+	//		linkRelationship.PropertyChanged += (s, e) =>
+	//		{
+	//			SelectedDataSource.NotifyPropertyChanged("LinkRelationship");
+	//		};
+
+	//		SelectedDataSource.LinkRelationships.Add(linkRelationship);
+
+	//		//WeakReferenceMessenger.Default.Send(new ModifiedRelationships());
+	//	}
+	//}
+
+	//private bool CanDeleteLinkRelationship()
+	//{
+	//	if (SelectedLinkRelationship == null)
+	//		return false;
+	//	else
+	//		return true;
+	//}
+
+	//private void DeleteLinkRelationship()
+	//{
+	//	if (SelectedDataSource != null && SelectedLinkRelationship != null)
+	//	{
+	//		foreach (LinkMapping linkMapping in SelectedLinkRelationship.Mappings)
+	//		{
+	//			linkMapping.ClearSubscribers();
+	//		}
+
+	//		SelectedLinkRelationship.ClearSubscribers();
+
+	//		SelectedDataSource.LinkRelationships.Remove(SelectedLinkRelationship);
+
+	//		// TODO: businessKeyComboBox is in Satellite, we need to send it a message to run the equivalent command.
+	//		//businessKeyComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
+	//	}
+	//}
 }

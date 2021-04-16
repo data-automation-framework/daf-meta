@@ -202,6 +202,80 @@ namespace Daf.Meta
 			Hubs.Remove(hub);
 		}
 
+		public static LinkRelationship AddLinkRelationship(Link link, DataSource dataSource)
+		{
+			if (link == null || dataSource == null)
+				throw new InvalidOperationException("Link or DataSource was null!");
+
+			LinkRelationship linkRelationship = new(link);
+
+			foreach (StagingColumn bk in link.BusinessKeys)
+			{
+				LinkMapping linkMapping = new(bk);
+
+				linkMapping.PropertyChanged += (s, e) =>
+				{
+					linkRelationship.NotifyPropertyChanged("LinkMapping"); // Confused. This property doesn't exist.
+				};
+
+				linkRelationship.Mappings.Add(linkMapping);
+			}
+
+			linkRelationship.PropertyChanged += (s, e) =>
+			{
+				dataSource.NotifyPropertyChanged("LinkRelationship"); // Confused.
+			};
+
+			dataSource.LinkRelationships.Add(linkRelationship);
+
+			return linkRelationship;
+		}
+
+		public static void RemoveLinkRelationship(LinkRelationship linkRelationship, DataSource dataSource)
+		{
+			if (linkRelationship == null || dataSource == null)
+				throw new InvalidOperationException("Link or DataSource was null!");
+			else
+			{
+				foreach (LinkMapping linkMapping in linkRelationship.Mappings)
+				{
+					linkMapping.ClearSubscribers();
+				}
+
+				linkRelationship.ClearSubscribers();
+
+				dataSource.LinkRelationships.Remove(linkRelationship);
+
+				linkRelationship.PropertyChanged += (s, e) =>
+				{
+					dataSource.NotifyPropertyChanged("LinkRelationship");
+				};
+
+				// TODO: businessKeyComboBox is in Satellite, we need to send it a message to run the equivalent command.
+				//businessKeyComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
+			}
+		}
+
+		public static void AddBusinessKeyToLink(Link link, StagingColumn businessKey)
+		{
+			if (link == null || businessKey == null)
+				throw new InvalidOperationException("Link or BusinessKey was null!");
+
+			link.BusinessKeys.Add(businessKey); // Should use Link.AddBusinessKeyColumn instead?
+
+			// Check if the Link belongs to any LinkRelationship, and if so add a new LinkMapping.
+			foreach (DataSource dataSource in Instance.DataSources)
+			{
+				foreach (LinkRelationship linkRelationship in dataSource.LinkRelationships)
+				{
+					if (linkRelationship.Link == link)
+					{
+						linkRelationship.Mappings.Add(new LinkMapping(businessKey));
+					}
+				}
+			}
+		}
+
 		[JsonIgnore]
 		public List<string> LinkNames
 		{

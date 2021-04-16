@@ -100,6 +100,9 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveSourceSystem>(this, (r, m) => RemoveSourceSystemFromModel(m.SourceSystem));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddSourceSystem>(this, (r, m) => AddSourceSystemToModel(m.SourceSystem));
 
+			WeakReferenceMessenger.Default.Register<MainViewModel, AddLinkRelationship>(this, (r, m) => AddLinkRelationshipToModel(m.Link, m.DataSource));
+			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveLinkRelationship>(this, (r, m) => RemoveLinkRelationshipFromModel(m.LinkRelationship, m.DataSource));
+
 			LoadMetadata();
 
 			_model = Model.Instance;
@@ -205,7 +208,9 @@ namespace Daf.Meta.Editor.ViewModels
 				HubRelationshipVM.HubRelationships = value?.HubRelationships;
 
 				LinkRelationshipVM.SelectedDataSource = value;
-				LinkRelationshipVM.LinkRelationships = value?.LinkRelationships;
+
+				if (value != null)
+					LinkRelationshipVM.LinkRelationships = new(value.LinkRelationships.Select(linkRelationship => new LinkRelationshipViewModel(linkRelationship)));
 
 				SatelliteVM.SelectedDataSource = value;
 				SatelliteVM.Satellites = value?.Satellites;
@@ -679,7 +684,7 @@ namespace Daf.Meta.Editor.ViewModels
 		/// Removes the StagingColumn that is wrapped by BusinessKeyViewModel.
 		/// </summary>
 		/// <param name="businessKey">The StagingColumn that will be deleted.</param>
-		private void DeleteBusinessKeyFromLink(Link link, StagingColumn businessKey)
+		private void DeleteBusinessKeyFromLink(Link link, StagingColumn businessKey) // TODO: Make sure relationships are removed as well.
 		{
 			if (Model.Links.Contains(link))
 			{
@@ -703,16 +708,9 @@ namespace Daf.Meta.Editor.ViewModels
 		/// </summary>
 		/// <param name="link">The link that the StagingColumn will be added to.</param>
 		/// <param name="businessKey">The StagingColumn that will be added.</param>
-		private void AddBusinessKeyToLink(Link link, StagingColumn businessKey)
+		private static void AddBusinessKeyToLink(Link link, StagingColumn businessKey)
 		{
-			if (Model.Links.Contains(link))
-			{
-				link.BusinessKeys.Add(businessKey);
-			}
-			else
-			{
-				throw new InvalidOperationException("The specified Link does not exist in Model.Links. Could not add StagingColumn.");
-			}
+			Model.AddBusinessKeyToLink(link, businessKey);
 		}
 
 		/// <summary>
@@ -767,6 +765,35 @@ namespace Daf.Meta.Editor.ViewModels
 		private void AddSourceSystemToModel(SourceSystem sourceSystem)
 		{
 			Model.AddSourceSystem(sourceSystem);
+		}
+
+		/// <summary>
+		/// Adds a new LinkRelationship to the Model.
+		/// </summary>
+		/// <param name="link">The Link object associated with the new LinkRelationship.</param>
+		/// <param name="dataSource">The DataSource to which the LinkRelationship will be added.</param>
+		private void AddLinkRelationshipToModel(Link link, DataSource dataSource)
+		{
+			LinkRelationship linkRelationship = Model.AddLinkRelationship(link, dataSource);
+
+			// Add View Model.
+			if (LinkRelationshipVM.LinkRelationships == null)
+				throw new InvalidOperationException("LinkRelationships was null!");
+
+			// It makes sense to do this here rather than adding yet another "AddLinkRelationship"-method to LinkRelationshipsViewModel.
+			// However it is not consistent with other classes where we create the object in the ViewModel class and then pass it along to be added to the Model.
+			// Might be good to figure out what the best approach is and stay consistent with it.
+			LinkRelationshipVM.LinkRelationships.Add(new LinkRelationshipViewModel(linkRelationship));
+		}
+
+		/// <summary>
+		/// Adds a new LinkRelationship to the Model.
+		/// </summary>
+		/// <param name="link">The Link object associated with the new LinkRelationship.</param>
+		/// <param name="dataSource">The DataSource to which the LinkRelationship will be added.</param>
+		private static void RemoveLinkRelationshipFromModel(LinkRelationship link, DataSource dataSource)
+		{
+			Model.RemoveLinkRelationship(link, dataSource);
 		}
 	}
 }
