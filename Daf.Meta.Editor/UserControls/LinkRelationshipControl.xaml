@@ -11,58 +11,76 @@
 			 xmlns:Daf.Meta="clr-namespace:Daf.Meta;assembly=Daf.Meta"
 			 xmlns:dd="urn:gong-wpf-dragdrop"
              d:DesignHeight="450" d:DesignWidth="800">
-	<Grid>
-		<StackPanel Margin="10">
-			<ListBox Name="linkRelationships" HorizontalAlignment="Left" ItemsSource="{Binding LinkRelationships}" SelectedItem="{Binding SelectedLinkRelationship, Mode=TwoWay}">
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<Grid Margin="0.2" Grid.IsSharedSizeScope="True">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="*" />
-							</Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="*" />
-							</Grid.RowDefinitions>
-							<StackPanel Grid.Column="0">
-								<TextBlock HorizontalAlignment="Left" Text="{Binding Path=Link.Name}" MinWidth="240" />
-								<ListBox HorizontalAlignment="Left" ItemsSource="{Binding Path=Mappings}">
-									<ListBox.ItemTemplate>
-										<DataTemplate>
-											<Grid Margin="0.2" Grid.IsSharedSizeScope="True">
-												<Grid.ColumnDefinitions>
-													<ColumnDefinition Width="*" />
-													<ColumnDefinition Width="*" />
-												</Grid.ColumnDefinitions>
-												<Grid.RowDefinitions>
-													<RowDefinition Height="*" />
-												</Grid.RowDefinitions>
-												<ComboBox Grid.Column="0" HorizontalAlignment="Left" SelectedItem="{Binding Path=StagingColumn}" ItemsSource="{Binding Path=DataContext.StagingColumns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0" />
-												<ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Path=LinkColumn}" ItemsSource="{Binding Path=DataContext.AvailableColumns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" DisplayMemberPath="Name" IsEnabled="False" MinWidth="280" Margin="8, 0, 0, 0" />
-											</Grid>
-										</DataTemplate>
-									</ListBox.ItemTemplate>
-								</ListBox>
-							</StackPanel>
-						</Grid>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-				<ListBox.ContextMenu>
-					<ContextMenu>
-						<MenuItem Command="{Binding DeleteLinkRelationshipCommand}" Header="Delete" ToolTip="Delete the link relationship.">
-							<MenuItem.Icon>
-								<Image Source="/Icons/delete.png" />
-							</MenuItem.Icon>
-						</MenuItem>
-					</ContextMenu>
-				</ListBox.ContextMenu>
-			</ListBox>
-			<Label>
-				<Button Command="{Binding AddLinkRelationshipCommand}" CommandParameter="{x:Type local:AddLinkRelationshipWindow}" ToolTip="Add a new link relationship.">
-					<StackPanel Orientation="Horizontal">
-						<Image Source="/Icons/add.png" />
-					</StackPanel>
-				</Button>
-			</Label>
-		</StackPanel>
-	</Grid>
+	<ScrollViewer>
+		<Grid>
+			<StackPanel Margin="10">
+				<Label>
+					<Button Command="{Binding AddLinkRelationshipCommand}" CommandParameter="{x:Type local:AddLinkRelationshipWindow}" ToolTip="Add a new link relationship.">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Icons/add.png" />
+						</StackPanel>
+					</Button>
+				</Label>
+				<ListBox Name="linkRelationships" HorizontalAlignment="Left" ItemsSource="{Binding LinkRelationships}" SelectedItem="{Binding SelectedLinkRelationship, Mode=TwoWay}">
+					<!--Template is required to disable scrolling within the listboxes and allow the scrollviewer that wraps the control to take precedence. -->
+					<ListBox.Template>
+						<ControlTemplate TargetType="ListBox">
+							<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+								<ItemsPresenter />
+							</Border>
+						</ControlTemplate>
+					</ListBox.Template>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Grid Margin="0.2" Grid.IsSharedSizeScope="True">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="*" />
+								</Grid.RowDefinitions>
+								<StackPanel Grid.Column="0">
+									<TextBlock HorizontalAlignment="Left" Text="{Binding Path=Link.Name}" MinWidth="240" />
+									<ListBox HorizontalAlignment="Left" ItemsSource="{Binding Path=Mappings}">
+										<!--Template is required to disable scrolling within the listboxes and allow the scrollviewer that wraps the control to take precedence. -->
+										<ListBox.Template>
+											<ControlTemplate TargetType="ListBox">
+												<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+													<ItemsPresenter />
+												</Border>
+											</ControlTemplate>
+										</ListBox.Template>
+										<ListBox.ItemTemplate>
+											<DataTemplate>
+												<Grid Margin="0.2" Grid.IsSharedSizeScope="True">
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition Width="*" />
+														<ColumnDefinition Width="*" />
+													</Grid.ColumnDefinitions>
+													<Grid.RowDefinitions>
+														<RowDefinition Height="*" />
+													</Grid.RowDefinitions>
+													<ComboBox Grid.Column="0" HorizontalAlignment="Left" SelectedItem="{Binding Path=StagingColumn}" ItemsSource="{Binding Path=DataContext.StagingColumns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0" />
+													<ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Path=LinkColumn}" ItemsSource="{Binding Path=DataContext.AvailableColumns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" DisplayMemberPath="Name" IsEnabled="False" MinWidth="280" Margin="8, 0, 0, 0" />
+												</Grid>
+											</DataTemplate>
+										</ListBox.ItemTemplate>
+									</ListBox>
+								</StackPanel>
+							</Grid>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+					<ListBox.ContextMenu>
+						<ContextMenu>
+							<MenuItem Command="{Binding DeleteLinkRelationshipCommand}" Header="Delete" ToolTip="Delete the link relationship.">
+								<MenuItem.Icon>
+									<Image Source="/Icons/delete.png" />
+								</MenuItem.Icon>
+							</MenuItem>
+						</ContextMenu>
+					</ListBox.ContextMenu>
+				</ListBox>
+			</StackPanel>
+		</Grid>
+	</ScrollViewer>
 </UserControl>
