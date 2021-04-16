@@ -28,7 +28,7 @@ namespace Daf.Meta.Editor.ViewModels
 			DeleteHubRelationshipCommand = new RelayCommand(OpenDeleteHubRelationshipDialog, CanDeleteHubRelationship);
 		}
 
-		private ObservableCollection<HubRelationshipViewModel>? _hubRelationships;
+		private ObservableCollection<HubRelationshipViewModel>? _hubRelationships = new(); // Is there a purpose to having this collection be nullable?
 
 		public ObservableCollection<HubRelationshipViewModel>? HubRelationships
 		{
@@ -74,7 +74,7 @@ namespace Daf.Meta.Editor.ViewModels
 				throw new ArgumentNullException(nameof(windowType));
 
 			if (SelectedDataSource == null)
-				throw new InvalidOperationException();
+				throw new InvalidOperationException("SelectedDataSource was null!");
 
 			bool dialogResult = _windowService.ShowDialog(windowType, out object dataContext);
 
@@ -89,26 +89,6 @@ namespace Daf.Meta.Editor.ViewModels
 		internal static void AddHubRelationship(Hub hub, DataSource dataSource) // TODO: Fix app crashing when no hub is selected in AddHub-window.
 		{
 			WeakReferenceMessenger.Default.Send(new AddHubRelationship(hub, dataSource));
-
-			//foreach (var x in selectedDataSource.HubRelationships)
-			//{
-			//	foreach (var y in x.Mappings)
-			//	{
-			//		if (y.StagingColumn == stagingColumn)
-			//		{
-			//			string msg = $"Staging column {stagingColumn.Name} already has a hub assigned! No change was made.";
-			//			MessageBoxResult result =
-			//			  MessageBox.Show(
-			//				msg,
-			//				"Column already has a hub assigned",
-			//				MessageBoxButton.OK,
-			//				MessageBoxImage.Exclamation);
-
-			//			return;
-			//		}
-			//	}
-			//}
-
 		}
 
 		private bool CanDeleteHubRelationship()
@@ -127,8 +107,13 @@ namespace Daf.Meta.Editor.ViewModels
 			DeleteHubRelationship(SelectedHubRelationship, SelectedDataSource);
 		}
 
-		private static void DeleteHubRelationship(HubRelationshipViewModel hubRelationshipViewModel, DataSource dataSource)
+		private void DeleteHubRelationship(HubRelationshipViewModel hubRelationshipViewModel, DataSource dataSource)
 		{
+			if (HubRelationships == null)
+				throw new InvalidOperationException("HubRelationships was null!");
+
+			HubRelationships.Remove(hubRelationshipViewModel);
+
 			WeakReferenceMessenger.Default.Send(new RemoveHubRelationship(hubRelationshipViewModel.HubRelationship, dataSource));
 		}
 	}

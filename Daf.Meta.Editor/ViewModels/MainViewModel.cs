@@ -760,10 +760,16 @@ namespace Daf.Meta.Editor.ViewModels
 		/// <param name="dataSource">The DataSource to which the HubRelationship will be added.</param>
 		private void AddHubRelationshipToModel(Hub hub, DataSource dataSource)
 		{
-			Model.AddHubRelationship(hub, dataSource);
+			HubRelationship hubRelationship = Model.AddHubRelationship(hub, dataSource);
 
-			// Regenerate HubRelationshipsVM
-			HubRelationshipVM.HubRelationships = new(dataSource.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
+			// Add View Model.
+			if (HubRelationshipVM.HubRelationships == null)
+				throw new InvalidOperationException("HubRelationships was null!");
+
+			// It makes sense to do this here rather than adding yet another "AddHubRelationship"-method to HubRelationshipsViewModel.
+			// However it is not consistent with other classes where we create the object in the ViewModel class and then pass it along to be added to the Model.
+			// Might be good to figure out what the best approach is and stay consistent with it.
+			HubRelationshipVM.HubRelationships.Add(new HubRelationshipViewModel(hubRelationship));
 		}
 
 		/// <summary>
@@ -771,17 +777,9 @@ namespace Daf.Meta.Editor.ViewModels
 		/// </summary>
 		/// <param name="hub">The Hub object associated with the new HubRelationship.</param>
 		/// <param name="dataSource">The DataSource to which the HubRelationship will be added.</param>
-		private void RemoveHubRelationshipFromModel(HubRelationship hub, DataSource dataSource)
+		private static void RemoveHubRelationshipFromModel(HubRelationship hub, DataSource dataSource)
 		{
 			Model.RemoveHubRelationship(hub, dataSource);
-
-			// Regenerate HubRelationshipsVM
-			HubRelationshipVM.HubRelationships = new(dataSource.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
 		}
-
-		//private void RegenerateHubRelationshipsVM()
-		//{
-		//	HubRelationshipVM.HubRelationships = new(dataSource.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
-		//}
 	}
 }

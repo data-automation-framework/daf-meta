@@ -210,7 +210,7 @@ namespace Daf.Meta
 			return hub.AddBusinessKeyColumn();
 		}
 
-		public static void AddHubRelationship(Hub hub, DataSource dataSource)
+		public static HubRelationship AddHubRelationship(Hub hub, DataSource dataSource)
 		{
 			if (hub == null || dataSource == null)
 				throw new InvalidOperationException("Hub or DataSource was null!");
@@ -235,6 +235,8 @@ namespace Daf.Meta
 			};
 
 			dataSource.HubRelationships.Add(hubRelationship);
+
+			return hubRelationship;
 		}
 
 		public static void RemoveHubRelationship(HubRelationship hubRelationship, DataSource dataSource)
