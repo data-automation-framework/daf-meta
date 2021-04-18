@@ -8,6 +8,8 @@ namespace Daf.Meta.Layers
 {
 	public abstract class BusinessKey : PropertyChangedBaseClass
 	{
+		public event EventHandler<BusinessKeyEventArgs>? ChangedBusinessKeyColumn; // Do I want this to be null?
+
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 		private string _name; // This is initialized in the constructor of each derived class. Dahomey.Json doesn't support constructors in abstract classes.
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
@@ -37,14 +39,23 @@ namespace Daf.Meta.Layers
 		{
 			StagingColumn stagingColumn = new(name: "New Column");
 
+			// I don't know what this does. There's no property named StagingColumn?? Tried searching for OnPropertyChanged(nameof(StagingColumn)) and got no hits.
 			stagingColumn.PropertyChanged += (s, e) =>
 			{
-				NotifyPropertyChanged("StagingColumn"); // I don't know what this does. There's no property named StagingColumn??
+				NotifyPropertyChanged("StagingColumn");
 			};
 
 			BusinessKeys.Add(stagingColumn);
 
+			// Publishes a message that a new StagingColumn has been added to BusinessKeys, containing the newly added BusinessKey.
+			OnChangedBusinessKeyColumn(stagingColumn, BusinessKeyEventType.Add);
+
 			return stagingColumn;
+		}
+
+		protected virtual void OnChangedBusinessKeyColumn(StagingColumn businessKey, BusinessKeyEventType businessKeyEventType)
+		{
+			ChangedBusinessKeyColumn?.Invoke(this, new BusinessKeyEventArgs() { BusinessKey = businessKey, Action = businessKeyEventType });
 		}
 
 		public void RemoveBusinessKeyColumn(StagingColumn columnToRemove)
@@ -55,6 +66,9 @@ namespace Daf.Meta.Layers
 			columnToRemove.ClearSubscribers();
 
 			BusinessKeys.Remove(columnToRemove);
+
+			// Publishes a message that a StagingColumn has been removed from BusinessKeys, containing the removed BusinessKey.
+			OnChangedBusinessKeyColumn(columnToRemove, BusinessKeyEventType.Remove);
 		}
 	}
 }

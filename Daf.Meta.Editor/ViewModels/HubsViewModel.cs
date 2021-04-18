@@ -210,39 +210,25 @@ namespace Daf.Meta.Editor.ViewModels
 				//WeakReferenceMessenger.Default.Send<AddHubColumnFailed>();
 			}
 			else
-			{
 				AddHubColumn();
-			}
 		}
 
-		// If we want to be able to create hubs from other places this method may need to be altered to take a HubViewModel as a parameter.
 		internal void AddHubColumn()
 		{
-
 			if (SelectedHub == null)
-			{
 				throw new ArgumentNullException();
-			}
 			else
-			{
-				// Send message to MainViewModel that the new BusinessKey needs to be added to its corresponding Hub in the Model.
-				WeakReferenceMessenger.Default.Send(new AddBusinessKeyColumnToHub(SelectedHub.Hub));
-
-				// Add new StagingColumnViewModel to HubsViewModel.Hubs and pass the new StagingColumn to its constructor.
-				//SelectedHub.BusinessKeys.Add(new BusinessKeyViewModel(businessKey));
-			}
+				// HubViewModel is subscribed to event in Hub that is raised when BusinessKeyColumns are added and will automatically add a new BusinessKeyViewModel when this method is called.
+				SelectedHub.Hub.AddBusinessKeyColumn();
 		}
 
 		internal void DeleteHubColumn()
 		{
 			if (SelectedHub == null || SelectedHubColumn == null)
 				throw new InvalidOperationException("Either SelectedHub or SelectedHubColumn was null.");
-
-			// Send message to MainViewModel that the BusinessKeyColumn needs to be deleted.
-			WeakReferenceMessenger.Default.Send(new RemoveBusinessKeyColumnFromHubs(SelectedHub.Hub, SelectedHubColumn.StagingColumn));
-
-			// Delete hub column from view model.
-			SelectedHub.BusinessKeys.Remove(SelectedHubColumn);
+			else
+				// HubViewModel is subscribed to event in Hub that is raised when BusinessKeyColumns are removed and will automatically remove its BusinessKeyViewModel when this method is called.
+				SelectedHub.Hub.RemoveBusinessKeyColumn(SelectedHubColumn.StagingColumn);
 		}
 
 		private bool CanDeleteHubColumn()

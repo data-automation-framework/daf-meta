@@ -82,6 +82,7 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteHub>(this, (r, m) => DeleteHubFromModel(m.Hub));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Hub));
 
+			// This will all be removed, along with associated methods as well as the classes in Messages.cs, if we decide to go with the change.
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromHubs>(this, (r, m) => DeleteBusinessKeyFromHub(m.Hub, m.BusinessKey));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub));
 

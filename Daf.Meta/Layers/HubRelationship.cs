@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Text.Json.Serialization;
 using Daf.Meta.JsonConverters;
 
@@ -12,40 +11,36 @@ namespace Daf.Meta.Layers
 {
 	public class HubRelationship : PropertyChangedBaseClass
 	{
-		public HubRelationship(Hub hub)
+		public HubRelationship(Hub hub) // TODO: Unsubscribe when HubRelationship is deleted.
 		{
 			Hub = hub;
 
-			Hub.BusinessKeys.CollectionChanged += BusinessKeys_CollectionChanged;
+			Hub.ChangedBusinessKeyColumn += BusinessKeys_CollectionChanged;
 		}
 
-		private void BusinessKeys_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+		private void BusinessKeys_CollectionChanged(object? sender, BusinessKeyEventArgs e)
 		{
-			if (e.Action == NotifyCollectionChangedAction.Add)
-			{
-				if (e.NewItems == null || e.NewItems[0] == null) // Neither should be possible.
-					throw new InvalidOperationException();
+			if (e.BusinessKey == null)
+				throw new InvalidOperationException("BusinessKey was null!");
 
-				StagingColumn stagingColumn = (StagingColumn)e.NewItems[0]!;
+			if (e.Action == BusinessKeyEventType.Add)
+			{
+				StagingColumn stagingColumn = e.BusinessKey;
 
 				Mappings.Add(new HubMapping(stagingColumn));
 			}
-			else if (e.Action == NotifyCollectionChangedAction.Remove)
+			else if (e.Action == BusinessKeyEventType.Remove)
 			{
-				if (e.OldItems == null || e.OldItems[0] == null) // Neither should be possible.
-					throw new InvalidOperationException();
-
-				StagingColumn stagingColumn = (StagingColumn)e.OldItems[0]!;
-
-				HubMapping mappingToRemove = new(new StagingColumn("placeholder")); // Need a placeholder HubMapping as the Mapping cannot be removed while collection is being iterated over.
+				StagingColumn stagingColumn = e.BusinessKey;
 
 				foreach (HubMapping mapping in Mappings)
 				{
 					if (mapping.HubColumn == stagingColumn)
-						mappingToRemove = mapping;
+					{
+						Mappings.Remove(mapping);
+						break;
+					}
 				}
-
-				Mappings.Remove(mappingToRemove);
 			}
 
 			// Need to verify Mappings contain same number of HubMapping as there are BusinessKeys, and that each of the BusinessKeys correspond exactly to one HubMapping
