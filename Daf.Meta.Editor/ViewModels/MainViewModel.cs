@@ -59,7 +59,7 @@ namespace Daf.Meta.Editor.ViewModels
 		public LoadViewModel LoadVM { get; }
 		public StagingViewModel StagingVM { get; }
 		public HubRelationshipsViewModel HubRelationshipVM { get; }
-		public LinkRelationshipViewModel LinkRelationshipVM { get; }
+		public LinkRelationshipsViewModel LinkRelationshipVM { get; }
 		public SatelliteViewModel SatelliteVM { get; }
 
 		public RelayCommand NewFileCommand { get; }
@@ -132,7 +132,7 @@ namespace Daf.Meta.Editor.ViewModels
 			LoadVM = new LoadViewModel();
 			StagingVM = new StagingViewModel();
 			HubRelationshipVM = new HubRelationshipsViewModel();
-			LinkRelationshipVM = new LinkRelationshipViewModel();
+			LinkRelationshipVM = new LinkRelationshipsViewModel();
 			SatelliteVM = new SatelliteViewModel();
 
 			NewFileCommand = new RelayCommand(NewFile);

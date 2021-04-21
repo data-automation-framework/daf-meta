@@ -307,10 +307,7 @@ namespace Daf.Meta
 
 				dataSource.LinkRelationships.Remove(linkRelationship);
 
-				linkRelationship.PropertyChanged += (s, e) =>
-				{
-					dataSource.NotifyPropertyChanged("LinkRelationship");
-				};
+				linkRelationship.Unsubscribe(); // Discuss whether this is correct. Appears to work.
 
 				// TODO: businessKeyComboBox is in Satellite, we need to send it a message to run the equivalent command.
 				//businessKeyComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
