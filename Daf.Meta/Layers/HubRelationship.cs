@@ -11,11 +11,11 @@ namespace Daf.Meta.Layers
 {
 	public class HubRelationship : PropertyChangedBaseClass
 	{
-		public HubRelationship(Hub hub) // TODO: Unsubscribe when HubRelationship is deleted.
+		public HubRelationship(Hub hub)
 		{
 			Hub = hub;
 
-			Hub.ChangedBusinessKeyColumn += BusinessKeys_CollectionChanged;
+			Hub.ChangedBusinessKeyColumn += BusinessKeys_CollectionChanged; // Need to unsubscribe when this relationship is deleted.
 		}
 
 		private void BusinessKeys_CollectionChanged(object? sender, BusinessKeyEventArgs e)
@@ -45,6 +45,11 @@ namespace Daf.Meta.Layers
 
 			// Need to verify Mappings contain same number of HubMapping as there are BusinessKeys, and that each of the BusinessKeys correspond exactly to one HubMapping
 			// Will write unit tests for this.
+		}
+
+		public void Unsubscribe()
+		{
+			Hub.ChangedBusinessKeyColumn -= BusinessKeys_CollectionChanged;
 		}
 
 		[JsonConverter(typeof(HubConverter))]

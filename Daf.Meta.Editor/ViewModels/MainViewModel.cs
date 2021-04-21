@@ -82,7 +82,6 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteHub>(this, (r, m) => DeleteHubFromModel(m.Hub));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Hub));
 
-			// This will all be removed, along with associated methods as well as the classes in Messages.cs, if we decide to go with the change.
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromHubs>(this, (r, m) => DeleteBusinessKeyFromHub(m.Hub, m.BusinessKey));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub));
 
@@ -768,9 +767,8 @@ namespace Daf.Meta.Editor.ViewModels
 			if (HubRelationshipVM.HubRelationships == null)
 				throw new InvalidOperationException("HubRelationships was null!");
 
-			// It makes sense to do this here rather than adding yet another "AddHubRelationship"-method to HubRelationshipsViewModel.
-			// However it is not consistent with other classes where we create the object in the ViewModel class and then pass it along to be added to the Model.
-			// Might be good to figure out what the best approach is and stay consistent with it.
+			// MainViewModel knows about HubRelationShipVM AND has access to the new hubRelationship.
+			// That's why it makes sense to do this here.
 			HubRelationshipVM.HubRelationships.Add(new HubRelationshipViewModel(hubRelationship));
 		}
 
