@@ -39,7 +39,8 @@ namespace Daf.Meta.Layers
 		{
 			StagingColumn stagingColumn = new(name: "New Column");
 
-			// I don't know what this does. There's no property named StagingColumn?? Tried searching for OnPropertyChanged(nameof(StagingColumn)) and got no hits.
+			// This is also done for all BusinessKeyColumns with foreach loops when program is loaded.
+			// What does this actually do? It seems like any time PropertyChanged is invoked, it will invoke PropertyChanged again?
 			stagingColumn.PropertyChanged += (s, e) =>
 			{
 				NotifyPropertyChanged("StagingColumn");
@@ -63,7 +64,7 @@ namespace Daf.Meta.Layers
 			if (columnToRemove == null)
 				throw new ArgumentNullException($"Can't remove a {nameof(StagingColumn)} that is null.");
 
-			columnToRemove.ClearSubscribers(); // Can this be removed?
+			columnToRemove.ClearSubscribers(); // This stops listening to the PropertyChanged events on the StagingColumn.
 
 			BusinessKeys.Remove(columnToRemove);
 
