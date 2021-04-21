@@ -40,8 +40,8 @@
 									<RowDefinition Height="*" />
 								</Grid.RowDefinitions>
 								<StackPanel Grid.Column="0">
-									<TextBlock HorizontalAlignment="Left" Text="{Binding Path=Hub.Name}" MinWidth="240" IsEnabled="True" />
-									<ListBox HorizontalAlignment="Left" ItemsSource="{Binding Path=Mappings}">
+									<TextBlock HorizontalAlignment="Left" Text="{Binding Path=HubRelationship.Hub.Name}" MinWidth="240" IsEnabled="True" />
+									<ListBox HorizontalAlignment="Left" ItemsSource="{Binding Path=HubRelationship.Mappings}">
 										<!--Template is required to disable scrolling within the listboxes and allow the scrollviewer that wraps the control to take precedence. -->
 										<ListBox.Template>
 											<ControlTemplate TargetType="ListBox">
@@ -67,7 +67,7 @@
 															</ComboBox.Resources>
 															<Binding Path="ItemsSource" Source="{StaticResource FilteredItems}" />-->
 													</ComboBox>
-													<ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Path=HubColumn}" ItemsSource="{Binding Path=DataContext.AvailableColumns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" DisplayMemberPath="Name" IsEnabled="False" MinWidth="280" Margin="8, 0, 0, 0" />
+													<ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Path=HubColumn}" ItemsSource="{Binding Path=DataContext.HubRelationship.AvailableColumns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" DisplayMemberPath="Name" IsEnabled="False" MinWidth="280" Margin="8, 0, 0, 0" />
 												</Grid>
 											</DataTemplate>
 										</ListBox.ItemTemplate>
