@@ -218,8 +218,11 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedHub == null)
 				throw new ArgumentNullException();
 			else
-				// HubViewModel is subscribed to event in Hub that is raised when BusinessKeyColumns are added and will automatically add a new BusinessKeyViewModel when this method is called.
-				SelectedHub.Hub.AddBusinessKeyColumn();
+			{
+				StagingColumn stagingColumn = SelectedHub.Hub.AddBusinessKeyColumn();
+				// This is a problem because if we change Model to add BusinessKeys in a different way this will have to be changed as well.
+				SelectedHub.BusinessKeys.Add(new BusinessKeyViewModel(stagingColumn));
+			}
 		}
 
 		internal void DeleteHubColumn()
@@ -227,8 +230,10 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedHub == null || SelectedHubColumn == null)
 				throw new InvalidOperationException("Either SelectedHub or SelectedHubColumn was null.");
 			else
-				// HubViewModel is subscribed to event in Hub that is raised when BusinessKeyColumns are removed and will automatically remove its BusinessKeyViewModel when this method is called.
+			{
 				SelectedHub.Hub.RemoveBusinessKeyColumn(SelectedHubColumn.StagingColumn);
+				SelectedHub.BusinessKeys.Remove(SelectedHubColumn);
+			}
 		}
 
 		private bool CanDeleteHubColumn()

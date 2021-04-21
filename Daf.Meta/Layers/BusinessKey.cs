@@ -8,7 +8,7 @@ namespace Daf.Meta.Layers
 {
 	public abstract class BusinessKey : PropertyChangedBaseClass
 	{
-		public event EventHandler<BusinessKeyEventArgs>? ChangedBusinessKeyColumn; // Do I want this to be null?
+		internal event EventHandler<BusinessKeyEventArgs>? ChangedBusinessKeyColumn;
 
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 		private string _name; // This is initialized in the constructor of each derived class. Dahomey.Json doesn't support constructors in abstract classes.
@@ -47,13 +47,13 @@ namespace Daf.Meta.Layers
 
 			BusinessKeys.Add(stagingColumn);
 
-			// Publishes a message that a new StagingColumn has been added to BusinessKeys, containing the newly added BusinessKey.
+			// Raises an event when a new StagingColumn has been added to BusinessKeys, containing the newly added BusinessKey.
 			OnChangedBusinessKeyColumn(stagingColumn, BusinessKeyEventType.Add);
 
 			return stagingColumn;
 		}
 
-		protected virtual void OnChangedBusinessKeyColumn(StagingColumn businessKey, BusinessKeyEventType businessKeyEventType)
+		protected void OnChangedBusinessKeyColumn(StagingColumn businessKey, BusinessKeyEventType businessKeyEventType) // Does this need to be virtual? I don't think it will be overriden.
 		{
 			ChangedBusinessKeyColumn?.Invoke(this, new BusinessKeyEventArgs() { BusinessKey = businessKey, Action = businessKeyEventType });
 		}
@@ -63,11 +63,11 @@ namespace Daf.Meta.Layers
 			if (columnToRemove == null)
 				throw new ArgumentNullException($"Can't remove a {nameof(StagingColumn)} that is null.");
 
-			columnToRemove.ClearSubscribers();
+			columnToRemove.ClearSubscribers(); // Can this be removed?
 
 			BusinessKeys.Remove(columnToRemove);
 
-			// Publishes a message that a StagingColumn has been removed from BusinessKeys, containing the removed BusinessKey.
+			// Raises an event when a StagingColumn has been removed from BusinessKeys, containing the removed BusinessKey.
 			OnChangedBusinessKeyColumn(columnToRemove, BusinessKeyEventType.Remove);
 		}
 	}
