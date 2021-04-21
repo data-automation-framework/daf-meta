@@ -39,10 +39,6 @@ namespace Daf.Meta.Layers
 		{
 			StagingColumn stagingColumn = new(name: "New Column");
 
-			// This is also done for all BusinessKeyColumns with foreach loops when program is loaded.
-			// What does this actually do? It seems like any time PropertyChanged is invoked, it will invoke PropertyChanged again?
-			// When this is invoked PropertyChanged is {Method = <Internal Error evaluating expression>}
-			// However when the corresponding PropertyChanged is invoked from Model (for BusinessKeys that are loaded from file and not created subsequently) it appears to work.
 			stagingColumn.PropertyChanged += (s, e) =>
 			{
 				NotifyPropertyChanged("StagingColumn");
@@ -56,7 +52,7 @@ namespace Daf.Meta.Layers
 			return stagingColumn;
 		}
 
-		protected void OnChangedBusinessKeyColumn(StagingColumn businessKey, BusinessKeyEventType businessKeyEventType) // Does this need to be virtual? I don't think it will be overriden.
+		protected void OnChangedBusinessKeyColumn(StagingColumn businessKey, BusinessKeyEventType businessKeyEventType)
 		{
 			ChangedBusinessKeyColumn?.Invoke(this, new BusinessKeyEventArgs() { BusinessKey = businessKey, Action = businessKeyEventType });
 		}

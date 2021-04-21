@@ -7,14 +7,14 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using Daf.Meta.Layers;
+using Daf.Meta.Layers.Connections;
+using Daf.Meta.Layers.DataSources;
 using Microsoft.Data.SqlClient;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Daf.Meta.Layers;
-using Daf.Meta.Layers.Connections;
-using Daf.Meta.Layers.DataSources;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -82,8 +82,9 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteHub>(this, (r, m) => DeleteHubFromModel(m.Hub));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Hub));
 
-			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromHubs>(this, (r, m) => DeleteBusinessKeyFromHub(m.Hub, m.BusinessKey));
-			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub));
+			// These two messages along with their corresponding Message and associated Methods can safely be removed.
+			//WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromHubs>(this, (r, m) => DeleteBusinessKeyFromHub(m.Hub, m.BusinessKey));
+			//WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToHub>(this, (r, m) => AddBusinessKeyToHub(m.Hub));
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteLink>(this, (r, m) => DeleteLinkFromModel(m.Link));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddLinkToModel>(this, (r, m) => AddLinkToModel(m.Link));
@@ -636,7 +637,10 @@ namespace Daf.Meta.Editor.ViewModels
 		{
 			StagingColumn businessKey = Model.AddBusinessKeyToHub(hub);
 
-			HubsVM.SelectedHub!.BusinessKeys.Add(new BusinessKeyViewModel(businessKey));
+			if (HubsVM.SelectedHub == null)
+				throw new InvalidOperationException("Selected Hub was null!");
+			else
+				HubsVM.SelectedHub.BusinessKeys.Add(new BusinessKeyViewModel(businessKey));
 		}
 
 		/// <summary>

@@ -15,7 +15,7 @@ namespace Daf.Meta.Layers
 		{
 			Hub = hub;
 
-			Hub.ChangedBusinessKeyColumn += BusinessKeys_CollectionChanged; // Need to unsubscribe when this relationship is deleted.
+			Hub.ChangedBusinessKeyColumn += BusinessKeys_CollectionChanged;
 		}
 
 		private void BusinessKeys_CollectionChanged(object? sender, BusinessKeyEventArgs e)
@@ -43,11 +43,11 @@ namespace Daf.Meta.Layers
 				}
 			}
 
-			// Need to verify Mappings contain same number of HubMapping as there are BusinessKeys, and that each of the BusinessKeys correspond exactly to one HubMapping
+			// Need to verify Mappings contain same number of HubMapping as there are BusinessKeys, and that each of the BusinessKeys correspond exactly to one HubMapping.
 			// Will write unit tests for this.
 		}
 
-		public void Unsubscribe()
+		public void Unsubscribe() // Discuss whether this can be done differently.
 		{
 			Hub.ChangedBusinessKeyColumn -= BusinessKeys_CollectionChanged;
 		}

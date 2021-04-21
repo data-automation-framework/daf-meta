@@ -28,7 +28,7 @@ namespace Daf.Meta.Editor.ViewModels
 			DeleteHubRelationshipCommand = new RelayCommand(OpenDeleteHubRelationshipDialog, CanDeleteHubRelationship);
 		}
 
-		private ObservableCollection<HubRelationshipViewModel>? _hubRelationships = new(); // Is there a purpose to having this collection be nullable?
+		private ObservableCollection<HubRelationshipViewModel>? _hubRelationships = new(); // Is there a purpose to having this collection be nullable? I can't see it ever set to null.
 
 		public ObservableCollection<HubRelationshipViewModel>? HubRelationships
 		{

@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -219,8 +219,9 @@ namespace Daf.Meta.Editor.ViewModels
 				throw new ArgumentNullException();
 			else
 			{
+				// Doing it this way we never have to involve MainViewModel, but is that good?
 				StagingColumn stagingColumn = SelectedHub.Hub.AddBusinessKeyColumn();
-				// This is a problem because if we change Model to add BusinessKeys in a different way this will have to be changed as well.
+				// This is a problem because if we change Model to add BusinessKeys in a different order this will have to be changed as well.
 				SelectedHub.BusinessKeys.Add(new BusinessKeyViewModel(stagingColumn));
 			}
 		}

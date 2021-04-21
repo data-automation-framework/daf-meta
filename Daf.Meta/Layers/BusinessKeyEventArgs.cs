@@ -13,7 +13,7 @@ namespace Daf.Meta.Layers
 
 	public class BusinessKeyEventArgs : EventArgs
 	{
-		public StagingColumn? BusinessKey { get; set; } // Do I want this to be nullable?
+		public StagingColumn? BusinessKey { get; set; }
 		public BusinessKeyEventType Action { get; set; }
 	}
 }

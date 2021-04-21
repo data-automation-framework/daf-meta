@@ -209,18 +209,6 @@ namespace Daf.Meta
 
 			StagingColumn businessKey = hub.AddBusinessKeyColumn();
 
-			// Check if the Hub belongs to any HubRelationship, and if so add a new HubMapping.
-			//foreach (DataSource dataSource in Instance.DataSources)
-			//{
-			//	foreach (HubRelationship hubRelationship in dataSource.HubRelationships)
-			//	{
-			//		if (hubRelationship.Hub == hub)
-			//		{
-			//			hubRelationship.Mappings.Add(new HubMapping(businessKey));
-			//		}
-			//	}
-			//}
-
 			return businessKey;
 		}
 
@@ -237,7 +225,7 @@ namespace Daf.Meta
 
 				hubMapping.PropertyChanged += (s, e) =>
 				{
-					hubRelationship.NotifyPropertyChanged("HubMapping"); // Confused. This property doesn't exist.
+					hubRelationship.NotifyPropertyChanged("HubMapping");
 				};
 
 				hubRelationship.Mappings.Add(hubMapping);
@@ -245,7 +233,7 @@ namespace Daf.Meta
 
 			hubRelationship.PropertyChanged += (s, e) =>
 			{
-				dataSource.NotifyPropertyChanged("HubRelationship"); // Confused.
+				dataSource.NotifyPropertyChanged("HubRelationship");
 			};
 
 			dataSource.HubRelationships.Add(hubRelationship);
