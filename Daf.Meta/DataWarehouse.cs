@@ -1,6 +1,8 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
+using System;
+using System.Globalization;
 using Daf.Meta.Layers.Connections;
 
 namespace Daf.Meta
@@ -48,6 +50,21 @@ namespace Daf.Meta
 
 					NotifyPropertyChanged("TargetPlatformVersion");
 				}
+			}
+		}
+
+		public string? TargetPlatformAssemblyVersion
+		{
+			get
+			{
+				int assemblyVersion = (int)Enum.Parse(typeof(SqlServerVersion), TargetPlatform + TargetPlatformVersion);
+
+				if (TargetPlatform == "SqlServer")
+				{
+					return assemblyVersion.ToString(CultureInfo.InvariantCulture);
+				}
+
+				return "";
 			}
 		}
 
