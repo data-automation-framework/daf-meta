@@ -62,7 +62,7 @@ namespace Daf.Meta.Layers
 			if (columnToRemove == null)
 				throw new ArgumentNullException($"Can't remove a {nameof(StagingColumn)} that is null.");
 
-			columnToRemove.ClearSubscribers(); // This stops listening to the PropertyChanged events on the StagingColumn.
+			columnToRemove.ClearSubscribers();
 
 			BusinessKeys.Remove(columnToRemove);
 
