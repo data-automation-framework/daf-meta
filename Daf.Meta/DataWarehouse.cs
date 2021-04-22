@@ -53,14 +53,14 @@ namespace Daf.Meta
 			}
 		}
 
-		public string? TargetPlatformAssemblyVersion
+		public string TargetPlatformAssemblyVersion
 		{
 			get
 			{
-				int assemblyVersion = (int)Enum.Parse(typeof(SqlServerVersion), TargetPlatform + TargetPlatformVersion);
-
 				if (TargetPlatform == "SqlServer")
 				{
+					int assemblyVersion = (int)Enum.Parse(typeof(SqlServerVersion), TargetPlatform + TargetPlatformVersion);
+
 					return assemblyVersion.ToString(CultureInfo.InvariantCulture);
 				}
 
