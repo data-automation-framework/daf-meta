@@ -202,6 +202,67 @@ namespace Daf.Meta
 			Hubs.Remove(hub);
 		}
 
+		public static StagingColumn AddBusinessKeyToHub(Hub hub)
+		{
+			if (hub == null)
+				throw new InvalidOperationException("Hub was null!");
+
+			StagingColumn businessKey = hub.AddBusinessKeyColumn();
+
+			return businessKey;
+		}
+
+		public static HubRelationship AddHubRelationship(Hub hub, DataSource dataSource)
+		{
+			if (hub == null || dataSource == null)
+				throw new InvalidOperationException("Hub or DataSource was null!");
+
+			HubRelationship hubRelationship = new(hub);
+
+			foreach (StagingColumn bk in hub.BusinessKeys)
+			{
+				HubMapping hubMapping = new(bk);
+
+				hubMapping.PropertyChanged += (s, e) =>
+				{
+					hubRelationship.NotifyPropertyChanged("HubMapping");
+				};
+
+				hubRelationship.Mappings.Add(hubMapping);
+			}
+
+			hubRelationship.PropertyChanged += (s, e) =>
+			{
+				dataSource.NotifyPropertyChanged("HubRelationship");
+			};
+
+			dataSource.HubRelationships.Add(hubRelationship);
+
+			return hubRelationship;
+		}
+
+		public static void RemoveHubRelationship(HubRelationship hubRelationship, DataSource dataSource)
+		{
+			if (hubRelationship == null || dataSource == null)
+				throw new InvalidOperationException("Hub or DataSource was null!");
+			else
+			{
+				foreach (HubMapping hubMapping in hubRelationship.Mappings)
+				{
+					hubMapping.ClearSubscribers();
+				}
+
+				hubRelationship.ClearSubscribers();
+
+				dataSource.HubRelationships.Remove(hubRelationship);
+
+				hubRelationship.Unsubscribe();
+
+				// TODO: businessKeyComboBox is in Satellite, we need to send it a message to run the equivalent command.
+				//businessKeyComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
+			}
+		}
+
 		[JsonIgnore]
 		public List<string> LinkNames
 		{
@@ -914,6 +975,14 @@ namespace Daf.Meta
 
 				_instance.DataSources.Add(dataSource);
 			}
+		}
+
+		public static void DeleteBusinessKey(Hub hub, StagingColumn businessKey)
+		{
+			if (hub == null || businessKey == null)
+				throw new InvalidOperationException("Hub or BusinessKey was null!");
+
+			hub.RemoveBusinessKeyColumn(businessKey);
 		}
 
 		private static void SerializeSourceSystems(Model value, string folder)

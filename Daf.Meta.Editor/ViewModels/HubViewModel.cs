@@ -3,8 +3,8 @@
 
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Daf.Meta.Layers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace Daf.Meta.Editor.ViewModels
 {
