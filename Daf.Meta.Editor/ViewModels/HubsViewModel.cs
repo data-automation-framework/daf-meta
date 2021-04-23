@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -210,28 +210,17 @@ namespace Daf.Meta.Editor.ViewModels
 				//WeakReferenceMessenger.Default.Send<AddHubColumnFailed>();
 			}
 			else
-			{
 				AddHubColumn();
-			}
 		}
 
-		// If we want to be able to create hubs from other places this method may need to be altered to take a HubViewModel as a parameter.
 		internal void AddHubColumn()
 		{
-
 			if (SelectedHub == null)
-			{
 				throw new ArgumentNullException();
-			}
 			else
 			{
-				StagingColumn businessKey = new("New Column");
-
-				// Send message to MainViewModel that the new BusinessKey needs to be added to its corresponding Hub in the Model.
-				WeakReferenceMessenger.Default.Send(new AddBusinessKeyColumnToHub(SelectedHub.Hub, businessKey));
-
-				// Add new StagingColumnViewModel to HubsViewModel.Hubs and pass the new StagingColumn to its constructor.
-				SelectedHub.BusinessKeys.Add(new BusinessKeyViewModel(businessKey));
+				StagingColumn stagingColumn = SelectedHub.Hub.AddBusinessKeyColumn();
+				SelectedHub.BusinessKeys.Add(new BusinessKeyViewModel(stagingColumn));
 			}
 		}
 
@@ -239,12 +228,11 @@ namespace Daf.Meta.Editor.ViewModels
 		{
 			if (SelectedHub == null || SelectedHubColumn == null)
 				throw new InvalidOperationException("Either SelectedHub or SelectedHubColumn was null.");
-
-			// Send message to MainViewModel that the BusinessKeyColumn needs to be deleted.
-			WeakReferenceMessenger.Default.Send(new RemoveBusinessKeyColumnFromHubs(SelectedHub.Hub, SelectedHubColumn.StagingColumn));
-
-			// Delete hub column from view model.
-			SelectedHub.BusinessKeys.Remove(SelectedHubColumn);
+			else
+			{
+				SelectedHub.Hub.RemoveBusinessKeyColumn(SelectedHubColumn.StagingColumn);
+				SelectedHub.BusinessKeys.Remove(SelectedHubColumn);
+			}
 		}
 
 		private bool CanDeleteHubColumn()
