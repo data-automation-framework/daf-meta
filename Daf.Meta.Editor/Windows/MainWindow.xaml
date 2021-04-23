@@ -213,13 +213,13 @@
 									<local:StagingControl DataContext="{Binding StagingVM}" />
 								</TabItem>
 								<TabItem Header="Hubs">
-									<local:HubRelationshipControl DataContext="{Binding HubRelationshipVM}" />
+									<local:HubRelationshipControl DataContext="{Binding HubRelationshipsVM}" />
 								</TabItem>
 								<TabItem Header="Links">
-									<local:LinkRelationshipControl DataContext="{Binding LinkRelationshipVM}" />
+									<local:LinkRelationshipControl DataContext="{Binding LinkRelationshipsVM}" />
 								</TabItem>
 								<TabItem Header="Satellites">
-									<local:SatelliteControl DataContext="{Binding SatelliteVM}" />
+									<local:SatelliteControl DataContext="{Binding SatellitesVM}" />
 								</TabItem>
 							</TabControl>
 						</Grid>

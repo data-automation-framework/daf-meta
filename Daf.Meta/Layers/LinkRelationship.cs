@@ -1,10 +1,11 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
-using Daf.Meta.JsonConverters;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
+using Daf.Meta.JsonConverters;
 
 namespace Daf.Meta.Layers
 {
@@ -13,6 +14,42 @@ namespace Daf.Meta.Layers
 		public LinkRelationship(Link link)
 		{
 			Link = link;
+
+			Link.ChangedBusinessKeyColumn += BusinessKeys_CollectionChanged;
+		}
+
+		private void BusinessKeys_CollectionChanged(object? sender, BusinessKeyEventArgs e)
+		{
+			if (e.BusinessKey == null)
+				throw new InvalidOperationException("BusinessKey was null!");
+
+			if (e.Action == BusinessKeyEventType.Add)
+			{
+				StagingColumn stagingColumn = e.BusinessKey;
+
+				Mappings.Add(new LinkMapping(stagingColumn));
+			}
+			else if (e.Action == BusinessKeyEventType.Remove)
+			{
+				StagingColumn stagingColumn = e.BusinessKey;
+
+				foreach (LinkMapping mapping in Mappings)
+				{
+					if (mapping.LinkColumn == stagingColumn)
+					{
+						Mappings.Remove(mapping);
+						break;
+					}
+				}
+			}
+
+			// Need to verify Mappings contain same number of HubMapping as there are BusinessKeys, and that each of the BusinessKeys correspond exactly to one HubMapping.
+			// Will write unit tests for this.
+		}
+
+		public void Unsubscribe() // Discuss whether this can be done differently.
+		{
+			Link.ChangedBusinessKeyColumn -= BusinessKeys_CollectionChanged;
 		}
 
 		[JsonConverter(typeof(LinkConverter))]
