@@ -58,8 +58,8 @@ namespace Daf.Meta.Editor.ViewModels
 		public GeneralViewModel GeneralVM { get; }
 		public LoadViewModel LoadVM { get; }
 		public StagingViewModel StagingVM { get; }
-		public HubRelationshipsViewModel HubRelationshipVM { get; }
-		public LinkRelationshipsViewModel LinkRelationshipVM { get; }
+		public HubRelationshipsViewModel HubRelationshipsVM { get; }
+		public LinkRelationshipsViewModel LinkRelationshipsVM { get; }
 		public SatelliteViewModel SatelliteVM { get; }
 
 		public RelayCommand NewFileCommand { get; }
@@ -127,8 +127,8 @@ namespace Daf.Meta.Editor.ViewModels
 			GeneralVM = new GeneralViewModel();
 			LoadVM = new LoadViewModel();
 			StagingVM = new StagingViewModel();
-			HubRelationshipVM = new HubRelationshipsViewModel();
-			LinkRelationshipVM = new LinkRelationshipsViewModel();
+			HubRelationshipsVM = new HubRelationshipsViewModel();
+			LinkRelationshipsVM = new LinkRelationshipsViewModel();
 			SatelliteVM = new SatelliteViewModel();
 
 			NewFileCommand = new RelayCommand(NewFile);
@@ -204,15 +204,15 @@ namespace Daf.Meta.Editor.ViewModels
 
 				StagingVM.SelectedDataSource = value;
 
-				HubRelationshipVM.SelectedDataSource = value;
+				HubRelationshipsVM.SelectedDataSource = value;
 
 				if (value != null)
-					HubRelationshipVM.HubRelationships = new(value.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
+					HubRelationshipsVM.HubRelationships = new(value.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
 
-				LinkRelationshipVM.SelectedDataSource = value;
+				LinkRelationshipsVM.SelectedDataSource = value;
 
 				if (value != null)
-					LinkRelationshipVM.LinkRelationships = new(value.LinkRelationships.Select(linkRelationship => new LinkRelationshipViewModel(linkRelationship)));
+					LinkRelationshipsVM.LinkRelationships = new(value.LinkRelationships.Select(linkRelationship => new LinkRelationshipViewModel(linkRelationship)));
 
 				SatelliteVM.SelectedDataSource = value;
 				SatelliteVM.Satellites = value?.Satellites;
@@ -646,7 +646,7 @@ namespace Daf.Meta.Editor.ViewModels
 		/// Removes the StagingColumn that is wrapped by BusinessKeyViewModel.
 		/// </summary>
 		/// <param name="businessKey">The StagingColumn that will be deleted.</param>
-		private void DeleteBusinessKeyFromLink(Link link, StagingColumn businessKey) // TODO: Make sure relationships are removed as well.
+		private void DeleteBusinessKeyFromLink(Link link, StagingColumn businessKey)
 		{
 			if (Model.Links.Contains(link))
 			{
@@ -739,12 +739,12 @@ namespace Daf.Meta.Editor.ViewModels
 			HubRelationship hubRelationship = Model.AddHubRelationship(hub, dataSource);
 
 			// Add View Model.
-			if (HubRelationshipVM.HubRelationships == null)
+			if (HubRelationshipsVM.HubRelationships == null)
 				throw new InvalidOperationException("HubRelationships was null!");
 
 			// MainViewModel knows about HubRelationShipVM AND has access to the new hubRelationship.
 			// That's why it makes sense to do this here.
-			HubRelationshipVM.HubRelationships.Add(new HubRelationshipViewModel(hubRelationship));
+			HubRelationshipsVM.HubRelationships.Add(new HubRelationshipViewModel(hubRelationship));
 		}
 
 		/// <summary>
