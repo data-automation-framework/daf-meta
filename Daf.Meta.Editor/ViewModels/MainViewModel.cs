@@ -60,11 +60,7 @@ namespace Daf.Meta.Editor.ViewModels
 		public StagingViewModel StagingVM { get; }
 		public HubRelationshipsViewModel HubRelationshipsVM { get; }
 		public LinkRelationshipsViewModel LinkRelationshipsVM { get; }
-		public SatelliteViewModel SatelliteVM { get; }
-		public HubRelationshipsViewModel HubRelationshipVM { get; }
-		public LinkRelationshipViewModel LinkRelationshipVM { get; }
-		public SatellitesViewModel SatelliteVM { get; }
-
+		public SatellitesViewModel SatellitesVM { get; }
 		public RelayCommand NewFileCommand { get; }
 		public RelayCommand OpenFileCommand { get; }
 		public RelayCommand SaveCommand { get; }
@@ -129,10 +125,7 @@ namespace Daf.Meta.Editor.ViewModels
 			StagingVM = new StagingViewModel();
 			HubRelationshipsVM = new HubRelationshipsViewModel();
 			LinkRelationshipsVM = new LinkRelationshipsViewModel();
-			SatelliteVM = new SatelliteViewModel();
-			HubRelationshipVM = new HubRelationshipsViewModel();
-			LinkRelationshipVM = new LinkRelationshipViewModel();
-			SatelliteVM = new SatellitesViewModel();
+			SatellitesVM = new SatellitesViewModel();
 
 			NewFileCommand = new RelayCommand(NewFile);
 			OpenFileCommand = new RelayCommand(OpenFile);
@@ -217,9 +210,9 @@ namespace Daf.Meta.Editor.ViewModels
 				if (value != null)
 					LinkRelationshipsVM.LinkRelationships = new(value.LinkRelationships.Select(linkRelationship => new LinkRelationshipViewModel(linkRelationship)));
 
-				SatelliteVM.SelectedDataSource = value;
+				SatellitesVM.SelectedDataSource = value;
 				if (value != null)
-					SatelliteVM.Satellites = new(value.Satellites.Select(satellite => new SatelliteViewModel(satellite)));
+					SatellitesVM.Satellites = new(value.Satellites.Select(satellite => new SatelliteViewModel(satellite)));
 			}
 		}
 
