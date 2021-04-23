@@ -38,37 +38,6 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a StagingColumn needs to be removed from a specified Hub in Model.Hubs.
-	/// <param name="hub">The Hub that the specified BusinessKey belongs to.</param>
-	/// <param name="businessKey">The StagingColumn object to be removed.</param>
-	/// </summary>
-	public sealed class RemoveBusinessKeyColumnFromHubs
-	{
-		public RemoveBusinessKeyColumnFromHubs(Hub hub, StagingColumn businessKey)
-		{
-			BusinessKey = businessKey;
-			Hub = hub;
-		}
-
-		public StagingColumn BusinessKey { get; }
-		public Hub Hub { get; }
-	}
-
-	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a StagingColumn needs to be added to a specified Hub in Model.Hubs.
-	/// <param name="hub">The Hub that the specified BusinessKey will be added to.</param>
-	/// </summary>
-	public sealed class AddBusinessKeyColumnToHub
-	{
-		public AddBusinessKeyColumnToHub(Hub hub)
-		{
-			Hub = hub;
-		}
-
-		public Hub Hub { get; }
-	}
-
-	/// <summary>
 	/// Facilitates messages that inform MainViewModel that a specified Link needs to be removed from Model.Links.
 	/// <param name="link">The Link object to be removed.</param>
 	/// </summary>

@@ -256,7 +256,7 @@ namespace Daf.Meta
 
 				dataSource.HubRelationships.Remove(hubRelationship);
 
-				hubRelationship.Unsubscribe(); // Discuss whether this is correct. Appears to work.
+				hubRelationship.Unsubscribe();
 
 				// TODO: businessKeyComboBox is in Satellite, we need to send it a message to run the equivalent command.
 				//businessKeyComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();

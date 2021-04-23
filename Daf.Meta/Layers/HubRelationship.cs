@@ -47,7 +47,7 @@ namespace Daf.Meta.Layers
 			// Will write unit tests for this.
 		}
 
-		public void Unsubscribe() // Discuss whether this can be done differently.
+		public void Unsubscribe()
 		{
 			Hub.ChangedBusinessKeyColumn -= BusinessKeys_CollectionChanged;
 		}
