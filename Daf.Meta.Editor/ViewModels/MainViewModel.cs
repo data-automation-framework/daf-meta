@@ -756,34 +756,5 @@ namespace Daf.Meta.Editor.ViewModels
 		{
 			Model.RemoveHubRelationship(hub, dataSource);
 		}
-
-		/// <summary>
-		/// Adds a new LinkRelationship to the Model.
-		/// </summary>
-		/// <param name="link">The Link object associated with the new LinkRelationship.</param>
-		/// <param name="dataSource">The DataSource to which the LinkRelationship will be added.</param>
-		private void AddLinkRelationshipToModel(Link link, DataSource dataSource)
-		{
-			LinkRelationship linkRelationship = Model.AddLinkRelationship(link, dataSource);
-
-			// Add View Model.
-			if (LinkRelationshipVM.LinkRelationships == null)
-				throw new InvalidOperationException("LinkRelationships was null!");
-
-			// It makes sense to do this here rather than adding yet another "AddLinkRelationship"-method to LinkRelationshipsViewModel.
-			// However it is not consistent with other classes where we create the object in the ViewModel class and then pass it along to be added to the Model.
-			// Might be good to figure out what the best approach is and stay consistent with it.
-			LinkRelationshipVM.LinkRelationships.Add(new LinkRelationshipViewModel(linkRelationship));
-		}
-
-		/// <summary>
-		/// Adds a new LinkRelationship to the Model.
-		/// </summary>
-		/// <param name="link">The Link object associated with the new LinkRelationship.</param>
-		/// <param name="dataSource">The DataSource to which the LinkRelationship will be added.</param>
-		private static void RemoveLinkRelationshipFromModel(LinkRelationship link, DataSource dataSource)
-		{
-			Model.RemoveLinkRelationship(link, dataSource);
-		}
 	}
 }
