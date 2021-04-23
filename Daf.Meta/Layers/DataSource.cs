@@ -476,17 +476,28 @@ namespace Daf.Meta.Layers
 			StagingTable.Columns.Remove(columnToRemove);
 		}
 
-		public void AddSatellite(Satellite satellite)
+		public Satellite AddSatellite(string name = "New Satellite")
 		{
+			Satellite satellite = new(name) { Type = SatelliteType.HashDiff };
+
+			satellite.PropertyChanged += (s, e) =>
+			{
+				NotifyPropertyChanged("Satellite");
+			};
+
 			Satellites.Add(satellite);
 
 			NotifyPropertyChanged("Satellites");
+
+			return satellite;
 		}
 
 		public void RemoveSatellite(Satellite satellite)
 		{
-			if (Satellites.Count == 0)
+			if (Satellites.Count == 0 || satellite == null)
 				throw new InvalidOperationException();
+
+			satellite.ClearSubscribers();
 
 			Satellites.Remove(satellite);
 
