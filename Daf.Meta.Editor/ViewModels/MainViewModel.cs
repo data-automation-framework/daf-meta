@@ -85,9 +85,6 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteLink>(this, (r, m) => DeleteLinkFromModel(m.Link));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddLinkToModel>(this, (r, m) => AddLinkToModel(m.Link));
 
-			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveBusinessKeyColumnFromLink>(this, (r, m) => DeleteBusinessKeyFromLink(m.Link, m.BusinessKey));
-			WeakReferenceMessenger.Default.Register<MainViewModel, AddBusinessKeyColumnToLink>(this, (r, m) => AddBusinessKeyToLink(m.Link, m.BusinessKey));
-
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveConnection>(this, (r, m) => RemoveConnectionFromModel(m.Connection));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddConnection>(this, (r, m) => AddConnectionToModel(m.Connection));
 
@@ -643,39 +640,6 @@ namespace Daf.Meta.Editor.ViewModels
 		}
 
 		/// <summary>
-		/// Removes the StagingColumn that is wrapped by BusinessKeyViewModel.
-		/// </summary>
-		/// <param name="businessKey">The StagingColumn that will be deleted.</param>
-		private void DeleteBusinessKeyFromLink(Link link, StagingColumn businessKey)
-		{
-			if (Model.Links.Contains(link))
-			{
-				if (link.BusinessKeys.Contains(businessKey))
-				{
-					link.BusinessKeys.Remove(businessKey);
-				}
-				else
-				{
-					throw new InvalidOperationException("The specified Link does not contain the specified BusinessKey in its list of BusinessKeys.");
-				}
-			}
-			else
-			{
-				throw new InvalidOperationException("The specified Link does not exist in Model.Links.");
-			}
-		}
-
-		/// <summary>
-		/// Adds a new StagingColumn to a specified Link in the Model.
-		/// </summary>
-		/// <param name="link">The link that the StagingColumn will be added to.</param>
-		/// <param name="businessKey">The StagingColumn that will be added.</param>
-		private static void AddBusinessKeyToLink(Link link, StagingColumn businessKey)
-		{
-			Model.AddBusinessKeyToLink(link, businessKey);
-		}
-
-		/// <summary>
 		/// Removes the Connection that is wrapped by ConnectionViewModel.
 		/// </summary>
 		/// <param name="connection">The Connection object that will be removed from the Model.</param>
@@ -755,6 +719,34 @@ namespace Daf.Meta.Editor.ViewModels
 		private static void RemoveHubRelationshipFromModel(HubRelationship hub, DataSource dataSource)
 		{
 			Model.RemoveHubRelationship(hub, dataSource);
+		}
+
+		/// <summary>
+		/// Adds a new LinkRelationship to the Model.
+		/// </summary>
+		/// <param name="link">The Link object associated with the new LinkRelationship.</param>
+		/// <param name="dataSource">The DataSource to which the LinkRelationship will be added.</param>
+		private void AddLinkRelationshipToModel(Link link, DataSource dataSource)
+		{
+			LinkRelationship linkRelationship = Model.AddLinkRelationship(link, dataSource);
+
+			// Add View Model.
+			if (LinkRelationshipsVM.LinkRelationships == null)
+				throw new InvalidOperationException("LinkRelationships was null!");
+
+			// MainViewModel knows about LinkRelationShipVM AND has access to the new linkRelationship.
+			// That's why it makes sense to do this here.
+			LinkRelationshipsVM.LinkRelationships.Add(new LinkRelationshipViewModel(linkRelationship));
+		}
+
+		/// <summary>
+		/// Adds a new LinkRelationship to the Model.
+		/// </summary>
+		/// <param name="link">The Link object associated with the new LinkRelationship.</param>
+		/// <param name="dataSource">The DataSource to which the LinkRelationship will be added.</param>
+		private static void RemoveLinkRelationshipFromModel(LinkRelationship link, DataSource dataSource)
+		{
+			Model.RemoveLinkRelationship(link, dataSource);
 		}
 	}
 }
