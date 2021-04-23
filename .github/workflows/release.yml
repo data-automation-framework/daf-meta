@@ -30,8 +30,8 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1.7.2
         with:
-          dotnet-version: 5.0.201 # SDK Version to use.
-          source-url: https://nuget.pkg.github.com/data-automation-framework/index.json
+          dotnet-version: 5.0.x # SDK Version to use.
+          source-url: https://api.nuget.org/v3/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build project
@@ -44,7 +44,7 @@ jobs:
       - name: Create the nuget package
         run: dotnet pack Daf.Meta/Daf.Meta.csproj --configuration Release --output Daf.Meta/bin/Release/Publish
       - name: Publish to GitHub
-        run: dotnet nuget push Daf.Meta/bin/Release/Publish/**/*.nupkg --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }}
+        run: dotnet nuget push Daf.Meta/bin/Release/Publish/**/*.nupkg --skip-duplicate --api-key ${{ secrets.NUGET }}
 
   release:
     needs: [build]

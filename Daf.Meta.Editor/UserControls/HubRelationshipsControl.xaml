@@ -1,0 +1,116 @@
+﻿<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors -->
+<UserControl x:Class="Daf.Meta.Editor.HubRelationshipControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Daf.Meta.Editor.Windows"
+             mc:Ignorable="d"
+			 xmlns:System="clr-namespace:System;assembly=mscorlib"
+			 xmlns:Daf.Meta="clr-namespace:Daf.Meta;assembly=Daf.Meta"
+			 xmlns:dd="urn:gong-wpf-dragdrop"
+             d:DesignHeight="450" d:DesignWidth="800">
+	<ScrollViewer>
+		<Grid>
+			<StackPanel Margin="10">
+				<Label>
+					<Button Command="{Binding AddHubRelationshipCommand}" CommandParameter="{x:Type local:AddHubRelationshipWindow}" ToolTip="Add a new hub relationship.">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Icons/add.png" />
+						</StackPanel>
+					</Button>
+				</Label>
+				<ListBox Name="hubRelationships" HorizontalAlignment="Left" ItemsSource="{Binding HubRelationships}" SelectedItem="{Binding SelectedHubRelationship, Mode=TwoWay}">
+					<!--Template is required to disable scrolling within the listboxes and allow the scrollviewer that wraps the control to take precedence. -->
+					<ListBox.Template>
+						<ControlTemplate TargetType="ListBox">
+							<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+								<ItemsPresenter />
+							</Border>
+						</ControlTemplate>
+					</ListBox.Template>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Grid Margin="0.2" Grid.IsSharedSizeScope="True">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="*" />
+								</Grid.RowDefinitions>
+								<StackPanel Grid.Column="0">
+									<TextBlock HorizontalAlignment="Left" Text="{Binding Path=HubRelationship.Hub.Name}" MinWidth="240" IsEnabled="True" />
+									<ListBox HorizontalAlignment="Left" ItemsSource="{Binding Path=HubRelationship.Mappings}">
+										<!--Template is required to disable scrolling within the listboxes and allow the scrollviewer that wraps the control to take precedence. -->
+										<ListBox.Template>
+											<ControlTemplate TargetType="ListBox">
+												<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+													<ItemsPresenter />
+												</Border>
+											</ControlTemplate>
+										</ListBox.Template>
+										<ListBox.ItemTemplate>
+											<DataTemplate>
+												<Grid Margin="0.2" Grid.IsSharedSizeScope="True">
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition Width="*" />
+														<ColumnDefinition Width="*" />
+													</Grid.ColumnDefinitions>
+													<Grid.RowDefinitions>
+														<RowDefinition Height="*" />
+													</Grid.RowDefinitions>
+													<ComboBox Grid.Column="0" HorizontalAlignment="Left" SelectedItem="{Binding Path=StagingColumn}" ItemsSource="{Binding Path=DataContext.StagingColumns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0">
+														<!--<ComboBox Grid.Column="0" HorizontalAlignment="Left" SelectedItem="{Binding Path=StagingColumn}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0">-->
+														<!--<ComboBox.Resources>
+																<CollectionViewSource x:Key="FilteredItems" Source="{Binding ElementName=dataSourceList, Path=SelectedItem.StagingTable.Columns}" Filter="FilteredItems_OnFilter" />
+															</ComboBox.Resources>
+															<Binding Path="ItemsSource" Source="{StaticResource FilteredItems}" />-->
+													</ComboBox>
+													<ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Path=HubColumn}" ItemsSource="{Binding Path=DataContext.HubRelationship.AvailableColumns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" DisplayMemberPath="Name" IsEnabled="False" MinWidth="280" Margin="8, 0, 0, 0" />
+												</Grid>
+											</DataTemplate>
+										</ListBox.ItemTemplate>
+									</ListBox>
+								</StackPanel>
+							</Grid>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+					<ListBox.ContextMenu>
+						<ContextMenu>
+							<MenuItem Command="{Binding DeleteHubRelationshipCommand}" Header="Delete" ToolTip="Delete the hub relationship.">
+								<MenuItem.Icon>
+									<Image Source="/Icons/delete.png" />
+								</MenuItem.Icon>
+							</MenuItem>
+						</ContextMenu>
+					</ListBox.ContextMenu>
+				</ListBox>
+				<!--<Label>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text=" Staging Column                                                  Hub                                                                                 Order" />
+					</StackPanel>
+				</Label>
+				<ListBox Name="hubConnectionList" HorizontalAlignment="Left" ItemsSource="{Binding ElementName=dataSourceList, Path=SelectedItem.HubList}">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Grid Margin="0.2" Grid.IsSharedSizeScope="True">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="*" />
+								</Grid.RowDefinitions>
+								<TextBox Grid.Column="0" HorizontalAlignment="Left" Text="{Binding Path=Name}" MinWidth="240" IsEnabled="False" />
+								<ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Path=Hub.Name}" ItemsSource="{Binding Path=DataContext.HubNames, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" MinWidth="280" Margin="8, 0, 0, 0" />
+								<TextBox Grid.Column="2" HorizontalAlignment="Left" Text="{Binding Path=Hub.Order}" MinWidth="40" Margin="8, 0, 0, 0" IsEnabled="False" />
+							</Grid>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>-->
+			</StackPanel>
+		</Grid>
+	</ScrollViewer>
+</UserControl>
