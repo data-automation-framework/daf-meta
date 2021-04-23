@@ -219,7 +219,7 @@
 									<local:LinkRelationshipControl DataContext="{Binding LinkRelationshipsVM}" />
 								</TabItem>
 								<TabItem Header="Satellites">
-									<local:SatelliteControl DataContext="{Binding SatelliteVM}" />
+									<local:SatelliteControl DataContext="{Binding SatellitesVM}" />
 								</TabItem>
 							</TabControl>
 						</Grid>
