@@ -219,13 +219,8 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 			else
 			{
-				StagingColumn businessKey = new("New Column");
-
-				// Send message to MainViewModel that the new BusinessKey needs to be added to its corresponding Hub in the Model.
-				WeakReferenceMessenger.Default.Send(new AddBusinessKeyColumnToLink(SelectedLink.Link, businessKey));
-
-				// Add new StagingColumnViewModel to HubsViewModel.Hubs and pass the new StagingColumn to its constructor.
-				SelectedLink.BusinessKeys.Add(new BusinessKeyViewModel(businessKey));
+				StagingColumn stagingColumn = SelectedLink.Link.AddBusinessKeyColumn();
+				SelectedLink.BusinessKeys.Add(new BusinessKeyViewModel(stagingColumn));
 			}
 		}
 
@@ -234,10 +229,7 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedLink == null || SelectedLinkColumn == null)
 				throw new InvalidOperationException("Either SelectedLink or SelectedLinkColumn was null.");
 
-			// Send message to MainViewModel that the BusinessKeyColumn needs to be deleted.
-			WeakReferenceMessenger.Default.Send(new RemoveBusinessKeyColumnFromLink(SelectedLink.Link, SelectedLinkColumn.StagingColumn));
-
-			// Delete hub column from view model.
+			SelectedLink.Link.RemoveBusinessKeyColumn(SelectedLinkColumn.StagingColumn);
 			SelectedLink.BusinessKeys.Remove(SelectedLinkColumn);
 		}
 

@@ -263,6 +263,57 @@ namespace Daf.Meta
 			}
 		}
 
+		public static LinkRelationship AddLinkRelationship(Link link, DataSource dataSource)
+		{
+			if (link == null || dataSource == null)
+				throw new InvalidOperationException("Link or DataSource was null!");
+
+			LinkRelationship linkRelationship = new(link);
+
+			foreach (StagingColumn bk in link.BusinessKeys)
+			{
+				LinkMapping linkMapping = new(bk);
+
+				linkMapping.PropertyChanged += (s, e) =>
+				{
+					linkRelationship.NotifyPropertyChanged("LinkMapping");
+				};
+
+				linkRelationship.Mappings.Add(linkMapping);
+			}
+
+			linkRelationship.PropertyChanged += (s, e) =>
+			{
+				dataSource.NotifyPropertyChanged("LinkRelationship");
+			};
+
+			dataSource.LinkRelationships.Add(linkRelationship);
+
+			return linkRelationship;
+		}
+
+		public static void RemoveLinkRelationship(LinkRelationship linkRelationship, DataSource dataSource)
+		{
+			if (linkRelationship == null || dataSource == null)
+				throw new InvalidOperationException("Link or DataSource was null!");
+			else
+			{
+				foreach (LinkMapping linkMapping in linkRelationship.Mappings)
+				{
+					linkMapping.ClearSubscribers();
+				}
+
+				linkRelationship.ClearSubscribers();
+
+				dataSource.LinkRelationships.Remove(linkRelationship);
+
+				linkRelationship.Unsubscribe();
+
+				// TODO: businessKeyComboBox is in Satellite, we need to send it a message to run the equivalent command.
+				//businessKeyComboBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
+			}
+		}
+
 		[JsonIgnore]
 		public List<string> LinkNames
 		{
@@ -975,14 +1026,6 @@ namespace Daf.Meta
 
 				_instance.DataSources.Add(dataSource);
 			}
-		}
-
-		public static void DeleteBusinessKey(Hub hub, StagingColumn businessKey)
-		{
-			if (hub == null || businessKey == null)
-				throw new InvalidOperationException("Hub or BusinessKey was null!");
-
-			hub.RemoveBusinessKeyColumn(businessKey);
 		}
 
 		private static void SerializeSourceSystems(Model value, string folder)
