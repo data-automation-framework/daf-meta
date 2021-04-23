@@ -216,38 +216,4 @@ namespace Daf.Meta.Editor
 		public HubRelationship HubRelationship { get; }
 		public DataSource DataSource { get; }
 	}
-
-	/// <summary>
-	/// For announcing to subscribers that a new LinkRelationship has been created.
-	/// <param name="link">The Link that the LinkRelationship belongs to.</param>
-	/// <param name="dataSource">The DataSource that the LinkRelationship belongs to.</param>
-	/// </summary>
-	public sealed class AddLinkRelationship
-	{
-		public AddLinkRelationship(Link link, DataSource dataSource)
-		{
-			Link = link;
-			DataSource = dataSource;
-		}
-
-		public Link Link { get; }
-		public DataSource DataSource { get; }
-	}
-
-	/// <summary>
-	/// For announcing to subscribers that a LinkRelationship needs to be removed.
-	/// <param name="link">The Link that the LinkRelationship belongs to.</param>
-	/// <param name="dataSource">The DataSource that the LinkRelationship belongs to.</param>
-	/// </summary>
-	public sealed class RemoveLinkRelationship
-	{
-		public RemoveLinkRelationship(LinkRelationship linkRelationship, DataSource dataSource)
-		{
-			LinkRelationship = linkRelationship;
-			DataSource = dataSource;
-		}
-
-		public LinkRelationship LinkRelationship { get; }
-		public DataSource DataSource { get; }
-	}
 }
