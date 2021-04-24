@@ -18,13 +18,13 @@ namespace Daf.Meta.Editor.ViewModels
 {
 	public abstract class DataSourceViewModel : ObservableValidator
 	{
-		public DataSource DataSource { get; }
 		protected DataSourceViewModel(DataSource dataSource)
 		{
 			DataSource = dataSource;
 			//HubRelationships.CollectionChanged += HubRelationshipsChanged;
 			//LinkRelationships.CollectionChanged += LinkRelationshipsChanged;
 		}
+		public virtual DataSource DataSource { get; }
 
 		[Category("General")]
 		[Description("The name of the data source")]
@@ -64,8 +64,6 @@ namespace Daf.Meta.Editor.ViewModels
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
 		public ObservableCollection<SourceSystem> SourceSystems => Model.Instance.SourceSystems;
 
-		private SourceSystem _sourceSystem; // This is initialized in the constructor of each derived class. Dahomey.Json doesn't support constructors in abstract classes.
-
 		[Category("General")]
 		[ItemsSourceProperty("SourceSystems")]
 		[DisplayMemberPath("Name")]
@@ -94,19 +92,13 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSourceType _dataSourceType;
-
 		[Browsable(false)]
 		public DataSourceType DataSourceType
 		{
-			get { return _dataSourceType; }
+			get => DataSource.DataSourceType;
 			set
 			{
-				if (_dataSourceType != value)
-				{
-					_dataSourceType = value;
-					NotifyPropertyChanged("DataSourceType");
-				}
+				SetProperty(DataSource.DataSourceType, value, DataSource, (dataSource, dataSourceType) => dataSource.DataSourceType = dataSourceType, true);
 			}
 		}
 
@@ -250,6 +242,7 @@ namespace Daf.Meta.Editor.ViewModels
 		}
 
 		[Browsable(false)]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "<Pending>")]
 		public BusinessKey? BusinessKey
 		{
 			get => DataSource.BusinessKey;
@@ -268,13 +261,13 @@ namespace Daf.Meta.Editor.ViewModels
 		}
 
 		[Browsable(false)]
-		public ObservableCollection<HubRelationship> HubRelationships { get; } = new ObservableCollection<HubRelationship>();
+		public ObservableCollection<HubRelationshipViewModel> HubRelationships { get; } = new();
 
 		[Browsable(false)]
-		public ObservableCollection<LinkRelationship> LinkRelationships { get; } = new ObservableCollection<LinkRelationship>();
+		public ObservableCollection<LinkRelationshipViewModel> LinkRelationships { get; } = new();
 
 		[Browsable(false)]
-		public ObservableCollection<Satellite> Satellites { get; } = new ObservableCollection<Satellite>();
+		public ObservableCollection<SatelliteViewModel> Satellites { get; } = new();
 
 		[Browsable(false)]
 		public LoadTable? LoadTable { get; set; } = new LoadTable();
@@ -282,7 +275,7 @@ namespace Daf.Meta.Editor.ViewModels
 		[Browsable(false)]
 		public StagingTable? StagingTable { get; set; } = new StagingTable();
 
-		public abstract DataSource Clone();
+		//public abstract DataSource Clone();
 
 		public abstract void GetMetadata();
 
@@ -358,19 +351,12 @@ namespace Daf.Meta.Editor.ViewModels
 
 		public void AddSatellite(Satellite satellite)
 		{
-			Satellites.Add(satellite);
-
-			NotifyPropertyChanged("Satellites");
+			// Not sure yet what should be done here.
 		}
 
 		public void RemoveSatellite(Satellite satellite)
 		{
-			if (Satellites.Count == 0)
-				throw new InvalidOperationException();
-
-			Satellites.Remove(satellite);
-
-			NotifyPropertyChanged("Satellites");
+			// Not sure yet what should be done here.
 		}
 
 		protected static List<Column> GetSqlList(DataTable dt)
@@ -462,27 +448,6 @@ namespace Daf.Meta.Editor.ViewModels
 				{ "Guid", "uniqueidentifier" },
 				{ "Xml", "xml" }
 			}[dataTypeName];
-		}
-
-		internal JsonDocument? TryGetJsonDoc(WebClient client, string? url)
-		{
-			if (url == null)
-			{
-				throw new ArgumentNullException($"URL was null in TryGetJsonDoc for data source {Name}");
-			}
-
-			string? rawJson;
-
-			try
-			{
-				rawJson = client.DownloadString(url);
-			}
-			catch (WebException)
-			{
-				return null;
-			}
-
-			return JsonDocument.Parse(rawJson);
 		}
 
 		protected static string FormatColumnName(string name)

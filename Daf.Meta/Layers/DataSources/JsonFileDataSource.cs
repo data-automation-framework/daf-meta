@@ -4,16 +4,16 @@
 namespace Daf.Meta.Layers.DataSources
 {
 	//[JsonDiscriminator("JsonFile")]
-	//public class JsonFileDataSource : DataSource
-	//{
-	//	public override DataSource Clone()
-	//	{
-	//		throw new System.NotImplementedException();
-	//	}
+	public class JsonFileDataSource : DataSource
+	{
+		public override DataSource Clone()
+		{
+			throw new System.NotImplementedException();
+		}
 
-	//	public override void GetMetadata()
-	//	{
-	//		throw new System.NotImplementedException();
-	//	}
-	//}
+		public override void GetMetadata()
+		{
+			throw new System.NotImplementedException();
+		}
+	}
 }

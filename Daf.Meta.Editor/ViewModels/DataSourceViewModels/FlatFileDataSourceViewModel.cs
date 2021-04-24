@@ -1,144 +1,99 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
-using Dahomey.Json.Attributes;
+using Daf.Meta.Layers;
+using Daf.Meta.Layers.DataSources;
 using PropertyTools.DataAnnotations;
 
-namespace Daf.Meta.Layers.DataSources
+namespace Daf.Meta.Editor.ViewModels
 {
-	public class FlatFileDataSource : DataSource
+	public class FlatFileDataSourceViewModel : DataSourceViewModel
 	{
-		public FlatFileDataSource(string name, SourceSystem sourceSystem, Tenant tenant) : base(name, sourceSystem, tenant)
+		public FlatFileDataSourceViewModel(DataSource dataSource) : base(dataSource)
 		{
+			_flatFileDataSource = (FlatFileDataSource)dataSource;
 		}
 
-		private uint? _codePage { get; set; }
+		private readonly FlatFileDataSource _flatFileDataSource;
+
+		public override DataSource DataSource { get => _flatFileDataSource; }
 
 		[Category("FlatFile")]
 		[SortIndex(100)]
 		public uint? CodePage
 		{
-			get { return _codePage; }
+			get => _flatFileDataSource.CodePage;
 			set
 			{
-				if (_codePage != value)
-				{
-					_codePage = value;
-
-					NotifyPropertyChanged("CodePage");
-				}
+				SetProperty(_flatFileDataSource.CodePage, value, _flatFileDataSource, (dataSource, codePage) => _flatFileDataSource.CodePage = codePage, true);
 			}
 		}
-
-		private string? _format;
 
 		[Category("FlatFile")]
 		[SortIndex(100)]
 		public string? Format
 		{
-			get { return _format; }
+			get => _flatFileDataSource.Format;
 			set
 			{
-				if (_format != value)
-				{
-					_format = value;
-
-					NotifyPropertyChanged("Format");
-				}
+				SetProperty(_flatFileDataSource.Format, value, _flatFileDataSource, (dataSource, format) => _flatFileDataSource.Format = format, true);
 			}
 		}
-
-		private string? _rowDelimiter;
 
 		[Category("FlatFile")]
 		[SortIndex(100)]
 		public string? RowDelimiter
 		{
-			get { return _rowDelimiter; }
+			get => _flatFileDataSource.RowDelimiter;
 			set
 			{
-				if (_rowDelimiter != value)
-				{
-					_rowDelimiter = value;
-
-					NotifyPropertyChanged("RowDelimiter");
-				}
+				SetProperty(_flatFileDataSource.Format, value, _flatFileDataSource, (dataSource, format) => _flatFileDataSource.Format = format, true);
 			}
 		}
-
-		private string? _columnDelimiter;
 
 		[Category("FlatFile")]
 		[SortIndex(100)]
 		public string? ColumnDelimiter
 		{
-			get { return _columnDelimiter; }
+			get => _flatFileDataSource.ColumnDelimiter;
 			set
 			{
-				if (_columnDelimiter != value)
-				{
-					_columnDelimiter = value;
-
-					NotifyPropertyChanged("ColumnDelimiter");
-				}
+				SetProperty(_flatFileDataSource.Format, value, _flatFileDataSource, (dataSource, format) => _flatFileDataSource.Format = format, true);
 			}
 		}
-
-		private bool? _textQualified;
 
 		[Category("FlatFile")]
 		[SortIndex(100)]
 		public bool? TextQualified
 		{
-			get { return _textQualified; }
+			get => _flatFileDataSource.TextQualified;
 			set
 			{
-				if (_textQualified != value)
-				{
-					_textQualified = value;
-
-					NotifyPropertyChanged("TextQualified");
-				}
+				SetProperty(_flatFileDataSource.TextQualified, value, _flatFileDataSource, (dataSource, textQualified) => _flatFileDataSource.TextQualified = textQualified, true);
 			}
 		}
-
-		private string? _textQualifier;
 
 		[Category("FlatFile")]
 		[SortIndex(100)]
 		public string? TextQualifier
 		{
-			get { return _textQualifier; }
+			get => _flatFileDataSource.TextQualifier;
 			set
 			{
-				if (_textQualifier != value)
-				{
-					_textQualifier = value;
-
-					NotifyPropertyChanged("TextQualifier");
-				}
+				SetProperty(_flatFileDataSource.TextQualifier, value, _flatFileDataSource, (dataSource, textQualifier) => _flatFileDataSource.TextQualifier = textQualifier, true);
 			}
 		}
-
-		private bool? _headersInFirstRow;
 
 		[Category("FlatFile")]
 		[SortIndex(100)]
 		public bool? HeadersInFirstRow
 		{
-			get { return _headersInFirstRow; }
+			get => _flatFileDataSource.HeadersInFirstRow;
 			set
 			{
-				if (_headersInFirstRow != value)
-				{
-					_headersInFirstRow = value;
-
-					NotifyPropertyChanged("HeadersInFirstRow");
-				}
+				SetProperty(_flatFileDataSource.HeadersInFirstRow, value, _flatFileDataSource, (dataSource, headersInFirstRow) => _flatFileDataSource.HeadersInFirstRow = headersInFirstRow, true);
 			}
 		}
-
-		private uint _businessDateOffset;
 
 		[Category("FlatFile")]
 		[SortIndex(100)]
@@ -146,33 +101,21 @@ namespace Daf.Meta.Layers.DataSources
 		[Width(60)]
 		public uint BusinessDateOffset
 		{
-			get { return _businessDateOffset; }
+			get => _flatFileDataSource.BusinessDateOffset;
 			set
 			{
-				if (_businessDateOffset != value)
-				{
-					_businessDateOffset = value;
-
-					NotifyPropertyChanged("BusinessDateOffset");
-				}
+				SetProperty(_flatFileDataSource.BusinessDateOffset, value, _flatFileDataSource, (dataSource, businessDateOffset) => _flatFileDataSource.BusinessDateOffset = businessDateOffset, true);
 			}
 		}
-
-		private string? _fileDateRegex;
 
 		[Category("FlatFile")]
 		[SortIndex(100)]
 		public string? FileDateRegex
 		{
-			get { return _fileDateRegex; }
+			get => _flatFileDataSource.FileDateRegex;
 			set
 			{
-				if (_fileDateRegex != value)
-				{
-					_fileDateRegex = value;
-
-					NotifyPropertyChanged("FileDateRegex");
-				}
+				SetProperty(_flatFileDataSource.FileDateRegex, value, _flatFileDataSource, (dataSource, fileDateRegex) => _flatFileDataSource.FileDateRegex = fileDateRegex, true);
 			}
 		}
 

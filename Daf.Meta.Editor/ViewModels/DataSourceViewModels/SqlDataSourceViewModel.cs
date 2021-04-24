@@ -15,9 +15,9 @@ using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Editor.ViewModels
 {
-	public class SqlDataSource : DataSourceViewModel, IConnection
+	public class SqlDataSourceViewModel : DataSourceViewModel, IConnection
 	{
-		public SqlDataSource(string name, Connection connection, SourceSystem sourceSystem, Tenant tenant) : base(name, sourceSystem, tenant)
+		public SqlDataSourceViewModel(string name, Connection connection, SourceSystem sourceSystem, Tenant tenant) : base(name, sourceSystem, tenant)
 		{
 			_connection = connection;
 		}

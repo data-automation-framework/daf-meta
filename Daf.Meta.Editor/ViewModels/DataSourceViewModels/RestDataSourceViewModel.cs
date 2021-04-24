@@ -10,9 +10,9 @@ using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Editor.ViewModels
 {
-	public class RestDataSource : DataSourceViewModel, IConnection
+	public class RestDataSourceViewModel : DataSourceViewModel, IConnection
 	{
-		public RestDataSource(string name, RestConnection connection, SourceSystem sourceSystem, Tenant tenant) : base(name, sourceSystem, tenant)
+		public RestDataSourceViewModel(string name, RestConnection connection, SourceSystem sourceSystem, Tenant tenant) : base(name, sourceSystem, tenant)
 		{
 			_connection = connection;
 		}

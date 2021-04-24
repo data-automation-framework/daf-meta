@@ -5,24 +5,27 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Daf.Meta.Interfaces;
+using Daf.Meta.Layers;
 using Daf.Meta.Layers.Connections;
+using Daf.Meta.Layers.DataSources;
 using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Editor.ViewModels
 {
-	public class GraphQlDataSource : DataSourceViewModel, IConnection
+	public class GraphQlDataSourceViewModel : DataSourceViewModel
 	{
-		public GraphQlDataSource(string name, GraphQlConnection connection, SourceSystem sourceSystem, Tenant tenant) : base(name, sourceSystem, tenant)
+		public GraphQlDataSourceViewModel(DataSource dataSource) : base(dataSource)
 		{
-			_connection = connection;
+			_graphQlDataSource = (GraphQlDataSource)dataSource;
 		}
+
+		private readonly GraphQlDataSource _graphQlDataSource;
+
+		public override DataSource DataSource { get => _graphQlDataSource; }
 
 		[Browsable(false)]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
 		public ObservableCollection<Connection> Connections { get { return Model.Instance.Connections; } }
-
-		private GraphQlConnection _connection;
 
 		[Category("GraphQL")]
 		[SelectorStyle(SelectorStyle.ComboBox)]
@@ -31,19 +34,12 @@ namespace Daf.Meta.Editor.ViewModels
 		[SortIndex(100)]
 		public GraphQlConnection Connection
 		{
-			get { return _connection; }
+			get => _graphQlDataSource.Connection;
 			set
 			{
-				if (_connection != value)
-				{
-					_connection = value;
-
-					NotifyPropertyChanged("Connection");
-				}
+				SetProperty(_graphQlDataSource.Connection, value, _graphQlDataSource, (dataSource, connection) => _graphQlDataSource.Connection = connection, true);
 			}
 		}
-
-		private uint _connectionRetryAttempts;
 
 		[Category("GraphQL")]
 		[SortIndex(100)]
@@ -51,19 +47,12 @@ namespace Daf.Meta.Editor.ViewModels
 		[Width(60)]
 		public uint ConnectionRetryAttempts
 		{
-			get { return _connectionRetryAttempts; }
+			get => _graphQlDataSource.ConnectionRetryAttempts;
 			set
 			{
-				if (_connectionRetryAttempts != value)
-				{
-					_connectionRetryAttempts = value;
-
-					NotifyPropertyChanged("ConnectionRetryAttempts");
-				}
+				SetProperty(_graphQlDataSource.ConnectionRetryAttempts, value, _graphQlDataSource, (dataSource, connectionRetryAttempts) => _graphQlDataSource.ConnectionRetryAttempts = connectionRetryAttempts, true);
 			}
 		}
-
-		private uint _connectionRetryMinutes;
 
 		[Category("GraphQL")]
 		[SortIndex(100)]
@@ -71,322 +60,268 @@ namespace Daf.Meta.Editor.ViewModels
 		[Width(60)]
 		public uint ConnectionRetryMinutes
 		{
-			get { return _connectionRetryMinutes; }
+			get => _graphQlDataSource.ConnectionRetryMinutes;
 			set
 			{
-				if (_connectionRetryMinutes != value)
-				{
-					_connectionRetryMinutes = value;
-
-					NotifyPropertyChanged("ConnectionRetryMinutes");
-				}
+				SetProperty(_graphQlDataSource.ConnectionRetryMinutes, value, _graphQlDataSource, (dataSource, connectionRetryMinutes) => _graphQlDataSource.ConnectionRetryMinutes = connectionRetryMinutes, true);
 			}
 		}
-
-		private string? _relativeUrl;
 
 		[Category("GraphQL")]
 		[SortIndex(100)]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1056:URI-like properties should not be strings", Justification = "<Pending>")]
 		public string? RelativeUrl
 		{
-			get { return _relativeUrl; }
+			get => _graphQlDataSource.RelativeUrl;
 			set
 			{
-				if (_relativeUrl != value)
-				{
-					_relativeUrl = value;
-
-					NotifyPropertyChanged("RelativeUrl");
-				}
+				SetProperty(_graphQlDataSource.RelativeUrl, value, _graphQlDataSource, (dataSource, relativeUrl) => _graphQlDataSource.RelativeUrl = relativeUrl, true);
 			}
 		}
-
-		private int _numberToFetch;
 
 		[Category("GraphQL")]
 		[SortIndex(100)]
 		public int NumberToFetch
 		{
-			get { return _numberToFetch; }
+			get => _graphQlDataSource.NumberToFetch;
 			set
 			{
-				if (_numberToFetch != value)
-				{
-					_numberToFetch = value;
-
-					NotifyPropertyChanged("NumberToFetch");
-				}
+				SetProperty(_graphQlDataSource.NumberToFetch, value, _graphQlDataSource, (dataSource, numberToFetch) => _graphQlDataSource.NumberToFetch = numberToFetch, true);
 			}
 		}
-
-		private string _graphQlQuery = "";
 
 		[Category("GraphQL")]
 		[DataType(DataType.MultilineText)]
 		[SortIndex(100)]
 		public string GraphQlQuery
 		{
-			get { return _graphQlQuery; }
+			get => _graphQlDataSource.GraphQlQuery;
 			set
 			{
-				if (_graphQlQuery != value)
-				{
-					_graphQlQuery = value;
-
-					NotifyPropertyChanged("GraphQlQuery");
-				}
+				SetProperty(_graphQlDataSource.GraphQlQuery, value, _graphQlDataSource, (dataSource, graphQlQuery) => _graphQlDataSource.GraphQlQuery = graphQlQuery, true);
 			}
 		}
-
-		private string? _parent;
 
 		[Category("GraphQL")]
 		[SortIndex(100)]
 		public string? Parent
 		{
-			get { return _parent; }
+			get => _graphQlDataSource.Parent;
 			set
 			{
-				if (_parent != value)
-				{
-					_parent = value;
-
-					NotifyPropertyChanged("Parent");
-				}
+				SetProperty(_graphQlDataSource.Parent, value, _graphQlDataSource, (dataSource, parent) => _graphQlDataSource.Parent = parent, true);
 			}
 		}
-
-		private string? _collectionReference;
 
 		[Category("GraphQL")]
 		[SortIndex(100)]
 		public string? CollectionReference
 		{
-			get { return _collectionReference; }
+			get => _graphQlDataSource.CollectionReference;
 			set
 			{
-				if (_collectionReference != value)
-				{
-					_collectionReference = value;
-
-					NotifyPropertyChanged("CollectionReference");
-				}
+				SetProperty(_graphQlDataSource.CollectionReference, value, _graphQlDataSource, (dataSource, collectionReference) => _graphQlDataSource.CollectionReference = collectionReference, true);
 			}
 		}
-
-		private string? _destinationEncoding;
 
 		[Category("General")]
 		[VisibleBy(nameof(DestinationType), DestinationType.Blob)]
 		public string? DestinationEncoding
 		{
-			get { return _destinationEncoding; }
-
+			get => _graphQlDataSource.DestinationEncoding;
 			set
 			{
-				if (_destinationEncoding != value)
-				{
-					_destinationEncoding = value;
-
-					NotifyPropertyChanged("DestinationEncoding");
-				}
+				SetProperty(_graphQlDataSource.DestinationEncoding, value, _graphQlDataSource, (dataSource, destinationEncoding) => _graphQlDataSource.DestinationEncoding = destinationEncoding, true);
 			}
 		}
-
-		private bool _mergeToBlob;
 
 		[Category("General")]
 		[VisibleBy(nameof(DestinationType), DestinationType.Blob)]
 		public bool MergeToBlob
 		{
-			get { return _mergeToBlob; }
+			get => _graphQlDataSource.MergeToBlob;
 			set
 			{
-				if (_mergeToBlob != value)
-				{
-					_mergeToBlob = value;
-
-					NotifyPropertyChanged("MergeToBlob");
-				}
+				SetProperty(_graphQlDataSource.MergeToBlob, value, _graphQlDataSource, (dataSource, mergeToBlob) => _graphQlDataSource.MergeToBlob = mergeToBlob, true);
 			}
 		}
 
-		public override DataSource Clone()
-		{
-			GraphQlDataSource clone = new(string.Empty, Connection, SourceSystem, Tenant)
-			{
-				LoadTable = new LoadTable()
-			};
+		//public override DataSource Clone()
+		//{
+		//	GraphQlDataSource clone = new(string.Empty, Connection, SourceSystem, Tenant)
+		//	{
+		//		LoadTable = new LoadTable()
+		//	};
 
-			if (LoadTable != null)
-			{
-				foreach (Column column in LoadTable.Columns)
-				{
-					Column cloneColumn = new(column.Name)
-					{
-						AddedOnBusinessDate = column.AddedOnBusinessDate,
-						DataType = column.DataType,
-						Length = column.Length,
-						Precision = column.Precision,
-						Scale = column.Scale,
-						Nullable = column.Nullable
-					};
+		//	if (LoadTable != null)
+		//	{
+		//		foreach (Column column in LoadTable.Columns)
+		//		{
+		//			Column cloneColumn = new(column.Name)
+		//			{
+		//				AddedOnBusinessDate = column.AddedOnBusinessDate,
+		//				DataType = column.DataType,
+		//				Length = column.Length,
+		//				Precision = column.Precision,
+		//				Scale = column.Scale,
+		//				Nullable = column.Nullable
+		//			};
 
-					cloneColumn.PropertyChanged += (s, e) =>
-					{
-						NotifyPropertyChanged("Column");
-					};
+		//			cloneColumn.PropertyChanged += (s, e) =>
+		//			{
+		//				NotifyPropertyChanged("Column");
+		//			};
 
-					clone.LoadTable.Columns.Add(cloneColumn);
-				}
-			}
+		//			clone.LoadTable.Columns.Add(cloneColumn);
+		//		}
+		//	}
 
-			foreach (Satellite sat in Satellites)
-			{
-				Satellite cloneSat = new(sat.Name)
-				{
-					Type = sat.Type
-				};
+		//	foreach (Satellite sat in Satellites)
+		//	{
+		//		Satellite cloneSat = new(sat.Name)
+		//		{
+		//			Type = sat.Type
+		//		};
 
-				clone.Satellites.Add(cloneSat);
-			}
+		//		clone.Satellites.Add(cloneSat);
+		//	}
 
-			clone.StagingTable = new StagingTable();
+		//	clone.StagingTable = new StagingTable();
 
-			if (StagingTable != null)
-			{
-				foreach (StagingColumn stagingColumn in StagingTable.Columns)
-				{
-					StagingColumn cloneColumn = stagingColumn.Clone(clone.LoadTable, clone.Satellites);
+		//	if (StagingTable != null)
+		//	{
+		//		foreach (StagingColumn stagingColumn in StagingTable.Columns)
+		//		{
+		//			StagingColumn cloneColumn = stagingColumn.Clone(clone.LoadTable, clone.Satellites);
 
-					stagingColumn.PropertyChanged += (s, e) =>
-					{
-						NotifyPropertyChanged("StagingColumn");
-					};
+		//			stagingColumn.PropertyChanged += (s, e) =>
+		//			{
+		//				NotifyPropertyChanged("StagingColumn");
+		//			};
 
-					clone.StagingTable.Columns.Add(cloneColumn);
-				}
-			}
+		//			clone.StagingTable.Columns.Add(cloneColumn);
+		//		}
+		//	}
 
-			if (BusinessKey != null)
-			{
-				if (BusinessKey is Link linkBusinessKey)
-				{
-					Link cloneBusinessKey = new(linkBusinessKey.Name);
+		//	if (BusinessKey != null)
+		//	{
+		//		if (BusinessKey is Link linkBusinessKey)
+		//		{
+		//			Link cloneBusinessKey = new(linkBusinessKey.Name);
 
-					foreach (StagingColumn stagingColumn in linkBusinessKey.BusinessKeys)
-					{
-						StagingColumn cloneColumn = stagingColumn.Clone(clone.LoadTable, clone.Satellites);
+		//			foreach (StagingColumn stagingColumn in linkBusinessKey.BusinessKeys)
+		//			{
+		//				StagingColumn cloneColumn = stagingColumn.Clone(clone.LoadTable, clone.Satellites);
 
-						cloneBusinessKey.BusinessKeys.Add(cloneColumn);
-					}
+		//				cloneBusinessKey.BusinessKeys.Add(cloneColumn);
+		//			}
 
-					clone.BusinessKey = cloneBusinessKey;
-				}
-				else if (BusinessKey is Hub hubBusinessKey)
-				{
-					Hub cloneBusinessKey = new(hubBusinessKey.Name);
+		//			clone.BusinessKey = cloneBusinessKey;
+		//		}
+		//		else if (BusinessKey is Hub hubBusinessKey)
+		//		{
+		//			Hub cloneBusinessKey = new(hubBusinessKey.Name);
 
-					foreach (StagingColumn stagingColumn in hubBusinessKey.BusinessKeys)
-					{
-						StagingColumn cloneColumn = stagingColumn.Clone(clone.LoadTable, clone.Satellites);
+		//			foreach (StagingColumn stagingColumn in hubBusinessKey.BusinessKeys)
+		//			{
+		//				StagingColumn cloneColumn = stagingColumn.Clone(clone.LoadTable, clone.Satellites);
 
-						cloneBusinessKey.BusinessKeys.Add(cloneColumn);
-					}
+		//				cloneBusinessKey.BusinessKeys.Add(cloneColumn);
+		//			}
 
-					clone.BusinessKey = cloneBusinessKey;
-				}
-			}
+		//			clone.BusinessKey = cloneBusinessKey;
+		//		}
+		//	}
 
-			foreach (HubRelationship hubRelationship in HubRelationships)
-			{
-				Hub cloneHub = new(hubRelationship.Hub.Name);
+		//	foreach (HubRelationship hubRelationship in HubRelationships)
+		//	{
+		//		Hub cloneHub = new(hubRelationship.Hub.Name);
 
-				foreach (StagingColumn stagingColumn in hubRelationship.Hub.BusinessKeys)
-				{
-					StagingColumn cloneColumn = stagingColumn.Clone(clone.LoadTable, clone.Satellites);
+		//		foreach (StagingColumn stagingColumn in hubRelationship.Hub.BusinessKeys)
+		//		{
+		//			StagingColumn cloneColumn = stagingColumn.Clone(clone.LoadTable, clone.Satellites);
 
-					cloneHub.BusinessKeys.Add(cloneColumn);
-				}
+		//			cloneHub.BusinessKeys.Add(cloneColumn);
+		//		}
 
-				HubRelationship cloneRelationship = new(cloneHub);
+		//		HubRelationship cloneRelationship = new(cloneHub);
 
-				foreach (HubMapping hubMapping in hubRelationship.Mappings)
-				{
-					StagingColumn cloneBusinessKeyColumn = clone.BusinessKey!.BusinessKeys.Single(cloneBk => cloneBk.Name == hubMapping.HubColumn.Name);
-					StagingColumn cloneStagingColumn = clone.StagingTable.Columns.Single(cloneStgCol => cloneStgCol.Name == hubMapping.StagingColumn!.Name);
+		//		foreach (HubMapping hubMapping in hubRelationship.Mappings)
+		//		{
+		//			StagingColumn cloneBusinessKeyColumn = clone.BusinessKey!.BusinessKeys.Single(cloneBk => cloneBk.Name == hubMapping.HubColumn.Name);
+		//			StagingColumn cloneStagingColumn = clone.StagingTable.Columns.Single(cloneStgCol => cloneStgCol.Name == hubMapping.StagingColumn!.Name);
 
-					HubMapping cloneMapping = new(cloneBusinessKeyColumn)
-					{
-						StagingColumn = cloneStagingColumn
-					};
+		//			HubMapping cloneMapping = new(cloneBusinessKeyColumn)
+		//			{
+		//				StagingColumn = cloneStagingColumn
+		//			};
 
-					cloneRelationship.Mappings.Add(cloneMapping);
-				}
+		//			cloneRelationship.Mappings.Add(cloneMapping);
+		//		}
 
-				clone.HubRelationships.Add(cloneRelationship);
-			}
+		//		clone.HubRelationships.Add(cloneRelationship);
+		//	}
 
-			foreach (LinkRelationship linkRelationship in LinkRelationships)
-			{
-				Link cloneLink = new(linkRelationship.Link.Name);
+		//	foreach (LinkRelationship linkRelationship in LinkRelationships)
+		//	{
+		//		Link cloneLink = new(linkRelationship.Link.Name);
 
-				foreach (StagingColumn stagingColumn in linkRelationship.Link.BusinessKeys)
-				{
-					StagingColumn cloneColumn = stagingColumn.Clone(clone.LoadTable, clone.Satellites);
+		//		foreach (StagingColumn stagingColumn in linkRelationship.Link.BusinessKeys)
+		//		{
+		//			StagingColumn cloneColumn = stagingColumn.Clone(clone.LoadTable, clone.Satellites);
 
-					cloneLink.BusinessKeys.Add(cloneColumn);
-				}
+		//			cloneLink.BusinessKeys.Add(cloneColumn);
+		//		}
 
-				LinkRelationship cloneRelationship = new(cloneLink);
+		//		LinkRelationship cloneRelationship = new(cloneLink);
 
-				foreach (LinkMapping linkMapping in linkRelationship.Mappings)
-				{
-					StagingColumn cloneBusinessKeyColumn = clone.BusinessKey!.BusinessKeys.Single(cloneBk => cloneBk.Name == linkMapping.LinkColumn.Name);
-					StagingColumn cloneStagingColumn = clone.StagingTable.Columns.Single(cloneStgCol => cloneStgCol.Name == linkMapping.StagingColumn!.Name);
+		//		foreach (LinkMapping linkMapping in linkRelationship.Mappings)
+		//		{
+		//			StagingColumn cloneBusinessKeyColumn = clone.BusinessKey!.BusinessKeys.Single(cloneBk => cloneBk.Name == linkMapping.LinkColumn.Name);
+		//			StagingColumn cloneStagingColumn = clone.StagingTable.Columns.Single(cloneStgCol => cloneStgCol.Name == linkMapping.StagingColumn!.Name);
 
-					LinkMapping cloneMapping = new(cloneBusinessKeyColumn)
-					{
-						StagingColumn = cloneStagingColumn
-					};
+		//			LinkMapping cloneMapping = new(cloneBusinessKeyColumn)
+		//			{
+		//				StagingColumn = cloneStagingColumn
+		//			};
 
-					cloneRelationship.Mappings.Add(cloneMapping);
-				}
+		//			cloneRelationship.Mappings.Add(cloneMapping);
+		//		}
 
-				clone.LinkRelationships.Add(cloneRelationship);
-			}
+		//		clone.LinkRelationships.Add(cloneRelationship);
+		//	}
 
-			clone.AzureLinkedServiceReference = AzureLinkedServiceReference;
-			clone.Build = Build;
-			clone.BusinessDateColumn = BusinessDateColumn;
-			clone.CollectionReference = CollectionReference;
-			clone.ContainsMultiStructuredJson = ContainsMultiStructuredJson;
-			clone.DataSourceType = DataSourceType;
-			clone.DefaultLoadWidth = DefaultLoadWidth;
-			clone.ErrorHandling = ErrorHandling;
-			clone.FileName = FileName;
-			clone.IncrementalStagingColumn = IncrementalStagingColumn;
-			clone.IncrementalQuery = IncrementalQuery;
-			clone.MergeToBlob = MergeToBlob;
-			clone.DestinationEncoding = DestinationEncoding;
-			clone.QualifiedName = QualifiedName;
-			clone.GraphQlQuery = GraphQlQuery;
-			clone.NumberToFetch = NumberToFetch;
-			clone.Parent = Parent;
-			clone.RelativeUrl = RelativeUrl;
-			clone.SqlSelectQuery = SqlSelectQuery;
-			clone.GenerateLatestViews = GenerateLatestViews;
+		//	clone.AzureLinkedServiceReference = AzureLinkedServiceReference;
+		//	clone.Build = Build;
+		//	clone.BusinessDateColumn = BusinessDateColumn;
+		//	clone.CollectionReference = CollectionReference;
+		//	clone.ContainsMultiStructuredJson = ContainsMultiStructuredJson;
+		//	clone.DataSourceType = DataSourceType;
+		//	clone.DefaultLoadWidth = DefaultLoadWidth;
+		//	clone.ErrorHandling = ErrorHandling;
+		//	clone.FileName = FileName;
+		//	clone.IncrementalStagingColumn = IncrementalStagingColumn;
+		//	clone.IncrementalQuery = IncrementalQuery;
+		//	clone.MergeToBlob = MergeToBlob;
+		//	clone.DestinationEncoding = DestinationEncoding;
+		//	clone.QualifiedName = QualifiedName;
+		//	clone.GraphQlQuery = GraphQlQuery;
+		//	clone.NumberToFetch = NumberToFetch;
+		//	clone.Parent = Parent;
+		//	clone.RelativeUrl = RelativeUrl;
+		//	clone.SqlSelectQuery = SqlSelectQuery;
+		//	clone.GenerateLatestViews = GenerateLatestViews;
 
-			return clone;
-		}
+		//	return clone;
+		//}
 
-		public override void GetMetadata()
-		{
-			DataTypeAnalyzer analyzer = new(this);
-			Dictionary<string, Column> dict = analyzer.AnalyzeDataTypes();
-			UpdateTables(dict);
-			analyzer.ColumnTypeDecided.Clear();
-			dict.Clear();
-		}
+		//public override void GetMetadata()
+		//{
+		//	DataTypeAnalyzer analyzer = new(this);
+		//	Dictionary<string, Column> dict = analyzer.AnalyzeDataTypes();
+		//	UpdateTables(dict);
+		//	analyzer.ColumnTypeDecided.Clear();
+		//	dict.Clear();
+		//}
 	}
 }

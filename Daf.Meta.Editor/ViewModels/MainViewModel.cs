@@ -108,7 +108,7 @@ namespace Daf.Meta.Editor.ViewModels
 				IsDirty = true;
 			};
 
-			_dataSources = Model.DataSources;
+			_dataSources = new(Model.DataSources.Select(datasource => new DataSourceViewModel(datasource));
 
 			HubsVM = new HubsViewModel
 			{
@@ -141,17 +141,17 @@ namespace Daf.Meta.Editor.ViewModels
 		}
 
 
-		private ObservableCollection<DataSource> _dataSources;
+		private ObservableCollection<DataSourceViewModel> _dataSources;
 
-		public ObservableCollection<DataSource> DataSources
+		public ObservableCollection<DataSourceViewModel> DataSources
 		{
 			get { return _dataSources; }
 			set { SetProperty(ref _dataSources, value); }
 		}
 
-		private List<DataSource>? _selectedDataSources;
+		private List<DataSourceViewModel>? _selectedDataSources;
 
-		public List<DataSource>? SelectedDataSources
+		public List<DataSourceViewModel>? SelectedDataSources
 		{
 			get { return _selectedDataSources; }
 			set
@@ -294,6 +294,40 @@ namespace Daf.Meta.Editor.ViewModels
 						break;
 					case GraphQlConnection:
 						viewModels.Add(new GraphQlConnectionViewModel(connection));
+						break;
+					default:
+						throw new InvalidOperationException("Invalid connection type");
+				}
+			}
+
+			return viewModels;
+		}
+
+		internal static ObservableCollection<DataSourceViewModel> GetDataSources(ObservableCollection<DataSource> dataSources)
+		{
+			ObservableCollection<DataSourceViewModel> viewModels = new();
+
+			foreach (DataSource dataSource in dataSources)
+			{
+				switch (dataSource)
+				{
+					case FlatFileDataSource:
+						viewModels.Add(new FlatFileDataSourceViewModel(dataSource));
+						break;
+					case GraphQlConnection:
+						viewModels.Add(new OleDBConnectionViewModel(dataSource));
+						break;
+					case JsonFileDataSource:
+						viewModels.Add(new JsonFileDataSourceViewModel(dataSource));
+						break;
+					case RestDataSource:
+						viewModels.Add(new RestDataSourceViewModel(dataSource));
+						break;
+					case ScriptDataSource:
+						viewModels.Add(new ScriptDataSourceViewModel(dataSource));
+						break;
+					case SqlDataSource:
+						viewModels.Add(new SqlDataSourceViewModel(dataSource));
 						break;
 					default:
 						throw new InvalidOperationException("Invalid connection type");

@@ -4,10 +4,9 @@
 
 namespace Daf.Meta.Editor.ViewModels
 {
-	[JsonDiscriminator("Script")]
-	public class ScriptDataSource : DataSourceViewModel
+	public class ScriptDataSourceViewModel : DataSourceViewModel
 	{
-		public ScriptDataSource(string name, SourceSystem sourceSystem, Tenant tenant) : base(name, sourceSystem, tenant)
+		public ScriptDataSourceViewModel(string name, SourceSystem sourceSystem, Tenant tenant) : base(name, sourceSystem, tenant)
 		{
 		}
 
