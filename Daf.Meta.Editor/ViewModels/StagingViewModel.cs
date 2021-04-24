@@ -39,9 +39,9 @@ namespace Daf.Meta.Editor.ViewModels
 
 		public ObservableCollection<StagingColumnViewModel> StagingColumns { get; } = new();
 
-		private List<DataSource>? _selectedDataSources;
+		private List<DataSourceViewModel>? _selectedDataSources;
 
-		public List<DataSource>? SelectedDataSources
+		public List<DataSourceViewModel>? SelectedDataSources
 		{
 			get { return _selectedDataSources; }
 			set
@@ -50,9 +50,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSource? _selectedDataSource;
+		private DataSourceViewModel? _selectedDataSource;
 
-		public DataSource? SelectedDataSource
+		public DataSourceViewModel? SelectedDataSource
 		{
 			get
 			{
@@ -104,7 +104,7 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedDataSource == null)
 				throw new InvalidOperationException();
 
-			StagingColumn stagingColumn = SelectedDataSource.AddStagingColumn();
+			StagingColumn stagingColumn = SelectedDataSource.DataSource.AddStagingColumn();
 
 			// Add new StagingColumnViewModel passing the new StagingColumn as an argument.
 			StagingColumns.Add(new StagingColumnViewModel(stagingColumn));
@@ -123,7 +123,7 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedDataSource == null || SelectedColumn == null)
 				throw new InvalidOperationException();
 
-			SelectedDataSource.RemoveStagingColumn(SelectedColumn.StagingColumn);
+			SelectedDataSource.DataSource.RemoveStagingColumn(SelectedColumn.StagingColumn);
 
 			// Remove the view model column from the list.
 			StagingColumns.Remove(SelectedColumn);

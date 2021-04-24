@@ -2,26 +2,23 @@
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using Daf.Meta.Interfaces;
+using Daf.Meta.Layers;
 using Daf.Meta.Layers.Connections;
+using Daf.Meta.Layers.DataSources;
 using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Editor.ViewModels
 {
-	public class RestDataSourceViewModel : DataSourceViewModel, IConnection
+	public class RestDataSourceViewModel : DataSourceViewModel
 	{
-		public RestDataSourceViewModel(string name, RestConnection connection, SourceSystem sourceSystem, Tenant tenant) : base(name, sourceSystem, tenant)
+		private readonly RestDataSource _restDataSource;
+
+		public RestDataSourceViewModel(DataSource dataSource) : base(dataSource)
 		{
-			_connection = connection;
+			_restDataSource = (RestDataSource)dataSource;
 		}
 
-		[Browsable(false)]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
-		public ObservableCollection<Connection> Connections { get { return Model.Instance.Connections; } }
-
-		private RestConnection _connection;
+		public override DataSource DataSource => _restDataSource;
 
 		[Category("REST")]
 		[SelectorStyle(SelectorStyle.ComboBox)]
@@ -30,19 +27,12 @@ namespace Daf.Meta.Editor.ViewModels
 		[SortIndex(100)]
 		public RestConnection Connection
 		{
-			get { return _connection; }
+			get => _restDataSource.Connection;
 			set
 			{
-				if (_connection != value)
-				{
-					_connection = value;
-
-					NotifyPropertyChanged("Connection");
-				}
+				SetProperty(_restDataSource.Connection, value, _restDataSource, (dataSource, connection) => dataSource.Connection = connection, true);
 			}
 		}
-
-		private uint _connectionRetryAttempts;
 
 		[Category("REST")]
 		[SortIndex(100)]
@@ -50,19 +40,12 @@ namespace Daf.Meta.Editor.ViewModels
 		[Width(60)]
 		public uint ConnectionRetryAttempts
 		{
-			get { return _connectionRetryAttempts; }
+			get => _restDataSource.ConnectionRetryAttempts;
 			set
 			{
-				if (_connectionRetryAttempts != value)
-				{
-					_connectionRetryAttempts = value;
-
-					NotifyPropertyChanged("ConnectionRetryAttempts");
-				}
+				SetProperty(_restDataSource.ConnectionRetryAttempts, value, _restDataSource, (dataSource, connectionRetryAttempts) => dataSource.ConnectionRetryAttempts = connectionRetryAttempts, true);
 			}
 		}
-
-		private uint _connectionRetryMinutes;
 
 		[Category("REST")]
 		[SortIndex(100)]
@@ -70,115 +53,80 @@ namespace Daf.Meta.Editor.ViewModels
 		[Width(60)]
 		public uint ConnectionRetryMinutes
 		{
-			get { return _connectionRetryMinutes; }
+			get => _restDataSource.ConnectionRetryMinutes;
 			set
 			{
-				if (_connectionRetryMinutes != value)
-				{
-					_connectionRetryMinutes = value;
-
-					NotifyPropertyChanged("ConnectionRetryMinutes");
-				}
+				SetProperty(_restDataSource.ConnectionRetryMinutes, value, _restDataSource, (dataSource, connectionRetryMinutes) => dataSource.ConnectionRetryMinutes = connectionRetryMinutes, true);
 			}
 		}
-
-		private string? _relativeUrl;
 
 		[Category("REST")]
 		[SortIndex(100)]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1056:URI-like properties should not be strings", Justification = "<Pending>")]
 		public string? RelativeUrl
 		{
-			get { return _relativeUrl; }
+			get => _restDataSource.RelativeUrl;
 			set
 			{
-				if (_relativeUrl != value)
-				{
-					_relativeUrl = value;
-
-					NotifyPropertyChanged("RelativeUrl");
-				}
+				SetProperty(_restDataSource.RelativeUrl, value, _restDataSource, (dataSource, relativeUrl) => dataSource.RelativeUrl = relativeUrl, true);
 			}
 		}
-
-		private bool _saveCookie;
 
 		[Category("REST")]
 		[SortIndex(100)]
 		public bool SaveCookie
 		{
-			get { return _saveCookie; }
+			get => _restDataSource.SaveCookie;
 			set
 			{
-				if (_saveCookie != value)
-				{
-					_saveCookie = value;
-
-					NotifyPropertyChanged("SaveCookie");
-				}
+				SetProperty(_restDataSource.SaveCookie, value, _restDataSource, (dataSource, saveCookie) => dataSource.SaveCookie = saveCookie, true);
 			}
 		}
-
-		private string? _customScriptPath;
 
 		[Category("REST")]
 		[SortIndex(100)]
 		public string? CustomScriptPath
 		{
-			get { return _customScriptPath; }
+			get => _restDataSource.CustomScriptPath;
 			set
 			{
-				if (_customScriptPath != value)
-				{
-					_customScriptPath = value;
-
-					NotifyPropertyChanged("CustomScriptPath");
-				}
+				SetProperty(_restDataSource.CustomScriptPath, value, _restDataSource, (dataSource, customScriptPath) => dataSource.CustomScriptPath = customScriptPath, true);
 			}
 		}
 
 		[Category("REST")]
 		[VisibleBy("Authorization", HttpAuthorization.Token)]
 		[SortIndex(100)]
-		public List<KeyValue> Parameters { get; } = new();
-
-		private string? _destinationEncoding;
+		public List<KeyValue> Parameters
+		{
+			get => _restDataSource.Parameters;
+			//set
+			//{
+			//	SetProperty(_restDataSource.Parameters, value, _restDataSource, (dataSource, parameters) => dataSource.Parameters = parameters, true);
+			//}
+		}
 
 		[Category("General")]
 		[VisibleBy(nameof(DestinationType), DestinationType.Blob)]
 		public string? DestinationEncoding
 		{
-			get { return _destinationEncoding; }
-
+			get => _restDataSource.DestinationEncoding;
 			set
 			{
-				if (_destinationEncoding != value)
-				{
-					_destinationEncoding = value;
-
-					NotifyPropertyChanged("DestinationEncoding");
-				}
+				SetProperty(_restDataSource.DestinationEncoding, value, _restDataSource, (dataSource, destinationEncoding) => dataSource.DestinationEncoding = destinationEncoding, true);
 			}
 		}
-
-		private bool _mergeToBlob;
 
 		[Category("General")]
 		[VisibleBy(nameof(DestinationType), DestinationType.Blob)]
 		public bool MergeToBlob
 		{
-			get { return _mergeToBlob; }
+			get => _restDataSource.MergeToBlob;
 			set
 			{
-				if (_mergeToBlob != value)
-				{
-					_mergeToBlob = value;
-
-					NotifyPropertyChanged("MergeToBlob");
-				}
+				SetProperty(_restDataSource.MergeToBlob, value, _restDataSource, (dataSource, mergeToBlob) => dataSource.MergeToBlob = mergeToBlob, true);
 			}
 		}
-
-		private string? _incrementalExpression;
 
 		[Category("REST")]
 		[Description(
@@ -187,230 +135,44 @@ namespace Daf.Meta.Editor.ViewModels
 			"The text '{load}' will be replaced with the load column corresponding to IncrementalStagingColumn.")]
 		public string? IncrementalExpression
 		{
-			get { return _incrementalExpression; }
+			get => _restDataSource.IncrementalExpression;
 			set
 			{
-				if (_incrementalExpression != value)
-				{
-					_incrementalExpression = value;
-
-					NotifyPropertyChanged("IncrementalExpression");
-				}
+				SetProperty(_restDataSource.IncrementalExpression, value, _restDataSource, (dataSource, incrementalExpression) => dataSource.IncrementalExpression = incrementalExpression, true);
 			}
 		}
-
-		private string? _collectionReference;
 
 		[Category("REST")]
 		[SortIndex(100)]
 		public string? CollectionReference
 		{
-			get { return _collectionReference; }
+			get => _restDataSource.CollectionReference;
 			set
 			{
-				if (_collectionReference != value)
-				{
-					_collectionReference = value;
-
-					NotifyPropertyChanged("CollectionReference");
-				}
+				SetProperty(_restDataSource.CollectionReference, value, _restDataSource, (dataSource, collectionReference) => dataSource.CollectionReference = collectionReference, true);
 			}
 		}
-
-		private string? _paginationNextLink;
 
 		[Category("REST")]
 		[SortIndex(100)]
 		public string? PaginationNextLink
 		{
-			get { return _paginationNextLink; }
+			get => _restDataSource.PaginationNextLink;
 			set
 			{
-				if (_paginationNextLink != value)
-				{
-					_paginationNextLink = value;
-
-					NotifyPropertyChanged("PaginationNextLink");
-				}
+				SetProperty(_restDataSource.PaginationNextLink, value, _restDataSource, (dataSource, paginationNextLink) => dataSource.PaginationNextLink = paginationNextLink, true);
 			}
 		}
-
-		private bool _paginationLinkIsRelative;
 
 		[Category("REST")]
 		[SortIndex(100)]
 		public bool PaginationLinkIsRelative
 		{
-			get { return _paginationLinkIsRelative; }
+			get => _restDataSource.PaginationLinkIsRelative;
 			set
 			{
-				if (_paginationLinkIsRelative != value)
-				{
-					_paginationLinkIsRelative = value;
-
-					NotifyPropertyChanged("PaginationLinkIsRelative");
-				}
+				SetProperty(_restDataSource.PaginationLinkIsRelative, value, _restDataSource, (dataSource, paginationLinkIsRelative) => dataSource.PaginationLinkIsRelative = paginationLinkIsRelative, true);
 			}
-		}
-
-		public override DataSource Clone()
-		{
-			RestDataSource clone = new(string.Empty, Connection, SourceSystem, Tenant)
-			{
-				LoadTable = new LoadTable()
-			};
-
-			if (LoadTable != null)
-			{
-				foreach (Column column in LoadTable.Columns)
-				{
-					Column cloneColumn = new(column.Name)
-					{
-						AddedOnBusinessDate = column.AddedOnBusinessDate,
-						DataType = column.DataType,
-						Length = column.Length,
-						Precision = column.Precision,
-						Scale = column.Scale,
-						Nullable = column.Nullable
-					};
-
-					cloneColumn.PropertyChanged += (s, e) =>
-					{
-						NotifyPropertyChanged("Column");
-					};
-
-					clone.LoadTable.Columns.Add(cloneColumn);
-				}
-			}
-
-			foreach (Satellite sat in Satellites)
-			{
-				Satellite cloneSat = new(sat.Name)
-				{
-					Type = sat.Type
-				};
-
-				clone.Satellites.Add(cloneSat);
-			}
-
-			clone.StagingTable = new StagingTable();
-
-			if (StagingTable != null)
-			{
-				foreach (StagingColumn stagingColumn in StagingTable.Columns)
-				{
-					StagingColumn cloneColumn = stagingColumn.Clone(clone.LoadTable, clone.Satellites);
-
-					stagingColumn.PropertyChanged += (s, e) =>
-					{
-						NotifyPropertyChanged("StagingColumn");
-					};
-
-					clone.StagingTable.Columns.Add(cloneColumn);
-				}
-			}
-
-			if (BusinessKey != null)
-			{
-				if (BusinessKey is Link link)
-				{
-					clone.BusinessKey = link;
-				}
-				else if (BusinessKey is Hub hub)
-				{
-					clone.BusinessKey = hub;
-				}
-			}
-
-			if (Parameters != null)
-			{
-				foreach (KeyValue keyVal in Parameters)
-				{
-					KeyValue cloneKeyVal = new()
-					{
-						Key = keyVal.Key,
-						Value = keyVal.Value
-					};
-
-					clone.Parameters.Add(cloneKeyVal);
-				}
-			}
-
-			foreach (HubRelationship hubRelationship in HubRelationships)
-			{
-				Hub hub = hubRelationship.Hub;
-
-				HubRelationship cloneRelationship = new(hub);
-
-				foreach (HubMapping hubMapping in hubRelationship.Mappings)
-				{
-					StagingColumn cloneStagingColumn = clone.StagingTable.Columns.Single(cloneStgCol => cloneStgCol.Name == hubMapping.StagingColumn!.Name);
-
-					HubMapping cloneMapping = new(hubMapping.HubColumn)
-					{
-						StagingColumn = cloneStagingColumn
-					};
-
-					cloneRelationship.Mappings.Add(cloneMapping);
-				}
-
-				clone.HubRelationships.Add(cloneRelationship);
-			}
-
-			foreach (LinkRelationship linkRelationship in LinkRelationships)
-			{
-				Link cloneLink = linkRelationship.Link;
-
-				LinkRelationship cloneRelationship = new(cloneLink);
-
-				foreach (LinkMapping linkMapping in linkRelationship.Mappings)
-				{
-					StagingColumn cloneStagingColumn = clone.StagingTable.Columns.Single(cloneStgCol => cloneStgCol.Name == linkMapping.StagingColumn!.Name);
-
-					LinkMapping cloneMapping = new(linkMapping.LinkColumn)
-					{
-						StagingColumn = cloneStagingColumn
-					};
-
-					cloneRelationship.Mappings.Add(cloneMapping);
-				}
-
-				clone.LinkRelationships.Add(cloneRelationship);
-			}
-
-			clone.AzureLinkedServiceReference = AzureLinkedServiceReference;
-			clone.Build = Build;
-			clone.BusinessDateColumn = BusinessDateColumn;
-			clone.CollectionReference = CollectionReference;
-			clone.ContainsMultiStructuredJson = ContainsMultiStructuredJson;
-			clone.CustomScriptPath = CustomScriptPath;
-			clone.DataSourceType = DataSourceType;
-			clone.DefaultLoadWidth = DefaultLoadWidth;
-			clone.ErrorHandling = ErrorHandling;
-			clone.FileName = FileName;
-			clone.IncrementalStagingColumn = IncrementalStagingColumn;
-			clone.IncrementalQuery = IncrementalQuery;
-			clone.IncrementalExpression = IncrementalExpression;
-			clone.MergeToBlob = MergeToBlob;
-			clone.DestinationEncoding = DestinationEncoding;
-			clone.PaginationLinkIsRelative = PaginationLinkIsRelative;
-			clone.PaginationNextLink = PaginationNextLink;
-			clone.QualifiedName = QualifiedName;
-			clone.RelativeUrl = RelativeUrl;
-			clone.SaveCookie = SaveCookie;
-			clone.SqlSelectQuery = SqlSelectQuery;
-			clone.GenerateLatestViews = GenerateLatestViews;
-
-			return clone;
-		}
-
-		public override void GetMetadata()
-		{
-			DataTypeAnalyzer analyzer = new(this);
-			Dictionary<string, Column> dict = analyzer.AnalyzeDataTypes();
-			UpdateTables(dict);
-			analyzer.ColumnTypeDecided.Clear();
-			dict.Clear();
 		}
 	}
 }

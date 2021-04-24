@@ -1,10 +1,8 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Daf.Meta.Layers;
 using Daf.Meta.Layers.Connections;
 using Daf.Meta.Layers.DataSources;

@@ -52,9 +52,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSource? _selectedDataSource;
+		private DataSourceViewModel? _selectedDataSource;
 
-		public DataSource? SelectedDataSource
+		public DataSourceViewModel? SelectedDataSource
 		{
 			get => _selectedDataSource;
 			set
@@ -70,7 +70,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 			if (SelectedDataSource != null)
 			{
-				foreach (StagingColumn stagingColumn in SelectedDataSource.ColumnsNotInHubsOrLinks)
+				foreach (StagingColumn stagingColumn in SelectedDataSource.DataSource.ColumnsNotInHubsOrLinks)
 				{
 					stagingColumn.Satellite = satelliteViewModel.Satellite;
 				}
@@ -89,7 +89,7 @@ namespace Daf.Meta.Editor.ViewModels
 			{
 				AddSatelliteViewModel vm = (AddSatelliteViewModel)dataContext;
 
-				AddSatellite(vm.Name, SelectedDataSource);
+				AddSatellite(vm.Name, SelectedDataSource.DataSource);
 			}
 		}
 
@@ -120,7 +120,7 @@ namespace Daf.Meta.Editor.ViewModels
 				throw new InvalidOperationException();
 
 			// Call on SelectedDataSource to remove the Satellite.
-			SelectedDataSource.RemoveSatellite(SelectedSatellite.Satellite);
+			SelectedDataSource.DataSource.RemoveSatellite(SelectedSatellite.Satellite);
 
 			// Remove the SatelliteViewModel in Satellites.
 			Satellites.Remove(SelectedSatellite);

@@ -51,9 +51,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSource? _selectedDataSource;
+		private DataSourceViewModel? _selectedDataSource;
 
-		public DataSource? SelectedDataSource
+		public DataSourceViewModel? SelectedDataSource
 		{
 			get => _selectedDataSource;
 			set
@@ -65,7 +65,7 @@ namespace Daf.Meta.Editor.ViewModels
 		public ObservableCollection<StagingColumn>? StagingColumns
 		{
 			// This needs to be fixed so it refers to ColumnViewModels instead, but have to make View Model for DataSource first.
-			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.StagingTable?.Columns!); }
+			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.DataSource.StagingTable?.Columns!); }
 		}
 
 		private void OpenAddHubRelationshipDialog(Type? windowType)
@@ -82,7 +82,7 @@ namespace Daf.Meta.Editor.ViewModels
 			{
 				Hub hub = ((AddHubRelationshipViewModel)dataContext!).SelectedHub!;
 
-				AddHubRelationship(hub, SelectedDataSource);
+				AddHubRelationship(hub, SelectedDataSource.DataSource);
 			}
 		}
 
@@ -104,7 +104,7 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedHubRelationship == null || SelectedDataSource == null)
 				throw new InvalidOperationException("SelectedHubRelationship or SelectedDataSource was null!");
 
-			DeleteHubRelationship(SelectedHubRelationship, SelectedDataSource);
+			DeleteHubRelationship(SelectedHubRelationship, SelectedDataSource.DataSource);
 		}
 
 		private void DeleteHubRelationship(HubRelationshipViewModel hubRelationshipViewModel, DataSource dataSource)

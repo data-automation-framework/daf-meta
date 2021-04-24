@@ -108,7 +108,7 @@ namespace Daf.Meta.Editor.ViewModels
 				IsDirty = true;
 			};
 
-			_dataSources = new(Model.DataSources.Select(datasource => new DataSourceViewModel(datasource));
+			DataSources = GetDataSources(Model.DataSources);
 
 			HubsVM = new HubsViewModel
 			{
@@ -181,9 +181,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSource? _selectedDataSourceSingle;
+		private DataSourceViewModel? _selectedDataSourceSingle;
 
-		public DataSource? SelectedDataSourceSingle
+		public DataSourceViewModel? SelectedDataSourceSingle
 		{
 			get
 			{
@@ -202,17 +202,18 @@ namespace Daf.Meta.Editor.ViewModels
 
 				HubRelationshipsVM.SelectedDataSource = value;
 
+				// TODO: I think this ought to be set from inside HubRelationshipsVM instead.
 				if (value != null)
-					HubRelationshipsVM.HubRelationships = new(value.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
+					HubRelationshipsVM.HubRelationships = new(value.DataSource.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
 
 				LinkRelationshipsVM.SelectedDataSource = value;
 
 				if (value != null)
-					LinkRelationshipsVM.LinkRelationships = new(value.LinkRelationships.Select(linkRelationship => new LinkRelationshipViewModel(linkRelationship)));
+					LinkRelationshipsVM.LinkRelationships = new(value.DataSource.LinkRelationships.Select(linkRelationship => new LinkRelationshipViewModel(linkRelationship)));
 
 				SatellitesVM.SelectedDataSource = value;
 				if (value != null)
-					SatellitesVM.Satellites = new(value.Satellites.Select(satellite => new SatelliteViewModel(satellite)));
+					SatellitesVM.Satellites = new(value.DataSource.Satellites.Select(satellite => new SatelliteViewModel(satellite)));
 			}
 		}
 
@@ -314,8 +315,8 @@ namespace Daf.Meta.Editor.ViewModels
 					case FlatFileDataSource:
 						viewModels.Add(new FlatFileDataSourceViewModel(dataSource));
 						break;
-					case GraphQlConnection:
-						viewModels.Add(new OleDBConnectionViewModel(dataSource));
+					case GraphQlDataSource:
+						viewModels.Add(new GraphQlDataSourceViewModel(dataSource));
 						break;
 					case JsonFileDataSource:
 						viewModels.Add(new JsonFileDataSourceViewModel(dataSource));

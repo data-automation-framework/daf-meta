@@ -57,9 +57,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSource? _selectedDataSource;
+		private DataSourceViewModel? _selectedDataSource;
 
-		public DataSource? SelectedDataSource
+		public DataSourceViewModel? SelectedDataSource
 		{
 			get
 			{
@@ -73,7 +73,8 @@ namespace Daf.Meta.Editor.ViewModels
 
 		public ObservableCollection<StagingColumn>? StagingColumns
 		{
-			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.StagingTable?.Columns!); }
+			// TODO: Do I need these to be ViewModels? Leaning towards yes.
+			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.DataSource.StagingTable?.Columns!); }
 		}
 
 		private void OpenAddLinkRelationshipDialog(Type? windowType)
@@ -90,7 +91,7 @@ namespace Daf.Meta.Editor.ViewModels
 			{
 				Link link = ((AddLinkRelationshipViewModel)dataContext!).SelectedLink!;
 
-				AddLinkRelationship(link, SelectedDataSource);
+				AddLinkRelationship(link, SelectedDataSource.DataSource);
 			}
 		}
 
@@ -112,7 +113,7 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedLinkRelationship == null || SelectedDataSource == null)
 				throw new InvalidOperationException("SelectedLinkRelationship or SelectedDataSource was null!");
 
-			DeleteLinkRelationship(SelectedLinkRelationship, SelectedDataSource);
+			DeleteLinkRelationship(SelectedLinkRelationship, SelectedDataSource.DataSource);
 		}
 
 		private void DeleteLinkRelationship(LinkRelationshipViewModel linkRelationshipViewModel, DataSource dataSource)

@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -104,7 +103,7 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedDataSource == null)
 				throw new InvalidOperationException();
 
-			Column column = SelectedDataSource.AddLoadColumn();
+			Column column = SelectedDataSource.DataSource.AddLoadColumn();
 
 			// Create a new view model column and add it to the list.
 			ColumnViewModel columnViewModel = new(column);
@@ -124,7 +123,7 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedDataSource == null || SelectedColumn == null)
 				throw new InvalidOperationException();
 
-			SelectedDataSource.RemoveLoadColumn(SelectedColumn.Column);
+			SelectedDataSource.DataSource.RemoveLoadColumn(SelectedColumn.Column);
 
 			// Remove the view model column from the list.
 			Columns.Remove(SelectedColumn);
