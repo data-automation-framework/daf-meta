@@ -1,6 +1,7 @@
 ﻿// SPDX-License-Identifier: MIT
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -16,6 +17,8 @@ namespace Daf.Meta.Editor.ViewModels
 			//HubRelationships.CollectionChanged += HubRelationshipsChanged;
 			//LinkRelationships.CollectionChanged += LinkRelationshipsChanged;
 		}
+
+		[Browsable(false)]
 		public virtual DataSource DataSource { get; }
 
 		[Category("General")]
@@ -29,6 +32,24 @@ namespace Daf.Meta.Editor.ViewModels
 
 				//QualifiedName = string.Empty; // Update QualifiedName's bindings without changing its value.
 				//TenantName = string.Empty; // Update TenantName's bindings without changing its value.
+			}
+		}
+
+		public string QualifiedName
+		{
+			get => DataSource.QualifiedName;
+			set
+			{
+				SetProperty(DataSource.QualifiedName, value, DataSource, (dataSource, qualifiedName) => dataSource.QualifiedName = qualifiedName, true);
+			}
+		}
+
+		public string TenantName
+		{
+			get => DataSource.TenantName;
+			set
+			{
+				SetProperty(DataSource.TenantName, value, DataSource, (dataSource, tenantName) => dataSource.TenantName = tenantName, true);
 			}
 		}
 
@@ -110,7 +131,7 @@ namespace Daf.Meta.Editor.ViewModels
 		[Category("General")]
 		public string? IncrementalStagingColumn
 		{
-			get => IncrementalStagingColumn;
+			get => DataSource.IncrementalStagingColumn;
 			set
 			{
 				SetProperty(DataSource.IncrementalStagingColumn, value, DataSource, (dataSource, incrementalStagingColumn) => dataSource.IncrementalStagingColumn = incrementalStagingColumn, true);
@@ -182,7 +203,6 @@ namespace Daf.Meta.Editor.ViewModels
 
 		// TODO: This is necessary but should be a property on SatellitesViewModel instead.
 		[Browsable(false)]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "<Pending>")]
 		public BusinessKey? BusinessKey
 		{
 			get => DataSource.BusinessKey;
@@ -191,5 +211,21 @@ namespace Daf.Meta.Editor.ViewModels
 				SetProperty(DataSource.BusinessKey, value, DataSource, (dataSource, businessKey) => dataSource.BusinessKey = businessKey, true);
 			}
 		}
+
+		[Browsable(false)]
+		public ObservableCollection<BusinessKey> AssociatedBusinessKeys
+		{
+			get => DataSource.AssociatedBusinessKeys;
+		}
+
+		[Browsable(false)]
+		public ObservableCollection<StagingColumn> ColumnsNotInHubsOrLinks
+		{
+			get => DataSource.ColumnsNotInHubsOrLinks;
+		}
+
+		// Preventing the inherited HasErrors property from showing up in the PropertyGrid.
+		[Browsable(false)]
+		public new bool HasErrors => base.HasErrors;
 	}
 }

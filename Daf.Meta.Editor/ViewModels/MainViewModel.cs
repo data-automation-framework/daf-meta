@@ -108,7 +108,7 @@ namespace Daf.Meta.Editor.ViewModels
 				IsDirty = true;
 			};
 
-			DataSources = GetDataSources(Model.DataSources);
+			_dataSources = GetDataSources(Model.DataSources);
 
 			HubsVM = new HubsViewModel
 			{
@@ -244,7 +244,7 @@ namespace Daf.Meta.Editor.ViewModels
 				IsDirty = true;
 			};
 
-			DataSources = Model.DataSources;
+			DataSources = GetDataSources(Model.DataSources);
 
 			HubsVM.Hubs = new(Model.Hubs.Select(hub => new HubViewModel(hub)));
 			LinksVM.Links = new(Model.Links.Select(link => new LinkViewModel(link)));
@@ -410,7 +410,7 @@ namespace Daf.Meta.Editor.ViewModels
 		{
 			if (SelectedDataSources!.FirstOrDefault() != null)
 			{
-				DataSource selectedDataSource = SelectedDataSources!.FirstOrDefault()!;
+				DataSourceViewModel selectedDataSource = SelectedDataSources!.FirstOrDefault()!;
 
 				if (MetadataPath == null)
 					throw new ArgumentException("MetadataPath is null in RemoveDataSource_Click");
@@ -424,7 +424,7 @@ namespace Daf.Meta.Editor.ViewModels
 				{
 					string dataSourcePath = Path.Combine(MetadataPath, "DataSources", $"{selectedDataSource.Name}.json");
 
-					Model.RemoveDataSource(selectedDataSource);
+					Model.RemoveDataSource(selectedDataSource.DataSource);
 
 					File.Delete(dataSourcePath);
 				}
@@ -450,12 +450,12 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedDataSourceSingle == null)
 				throw new InvalidOperationException();
 
-			if (SelectedDataSourceSingle.StagingTable?.Columns.Count > 0 || SelectedDataSourceSingle.LoadTable?.Columns.Count > 0)
+			if (SelectedDataSourceSingle.DataSource.StagingTable?.Columns.Count > 0 || SelectedDataSourceSingle.DataSource.LoadTable?.Columns.Count > 0)
 			{
 				if (_windowService.ShowDialog(windowType, out _))
 				{
-					SelectedDataSourceSingle.LoadTable?.Columns.Clear();
-					SelectedDataSourceSingle.StagingTable?.Columns.Clear();
+					SelectedDataSourceSingle.DataSource.LoadTable?.Columns.Clear();
+					SelectedDataSourceSingle.DataSource.StagingTable?.Columns.Clear();
 				}
 				else
 					return; // If the user didn't click OK, return early.
@@ -463,7 +463,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 			try
 			{
-				SelectedDataSourceSingle.GetMetadata();
+				SelectedDataSourceSingle.DataSource.GetMetadata();
 
 				WeakReferenceMessenger.Default.Send(new RefreshedMetadata());
 			}
@@ -483,15 +483,16 @@ namespace Daf.Meta.Editor.ViewModels
 
 			Connection? connection = null;
 
-			if (SelectedDataSourceSingle is RestDataSource rest)
+			// TODO: Change to switch but see if it works first.
+			if (SelectedDataSourceSingle.DataSource is RestDataSource rest)
 			{
 				connection = rest.Connection;
 			}
-			else if (SelectedDataSourceSingle is GraphQlDataSource graphQl)
+			else if (SelectedDataSourceSingle.DataSource is GraphQlDataSource graphQl)
 			{
 				connection = graphQl.Connection;
 			}
-			else if (SelectedDataSourceSingle is SqlDataSource sql)
+			else if (SelectedDataSourceSingle.DataSource is SqlDataSource sql)
 			{
 				connection = sql.Connection;
 			}
@@ -506,7 +507,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 			if (_windowService.ShowDialog(windowType, vm))
 			{
-				DataSource clonedDataSource = SelectedDataSourceSingle.Clone();
+				DataSource clonedDataSource = SelectedDataSourceSingle.DataSource.Clone();
 
 				clonedDataSource.Name = vm.Name;
 				clonedDataSource.SourceSystem = vm.SourceSystem;

@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -29,7 +28,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 			if (_selectedDataSource != null)
 			{
-				foreach (StagingColumn column in SelectedDataSource!.StagingTable!.Columns)
+				foreach (StagingColumn column in SelectedDataSource!.DataSource.StagingTable!.Columns)
 				{
 					StagingColumnViewModel columnViewModel = new(column);
 					StagingColumns.Add(columnViewModel);
@@ -66,7 +65,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 				if (_selectedDataSource != null)
 				{
-					foreach (StagingColumn column in SelectedDataSource!.StagingTable!.Columns)
+					foreach (StagingColumn column in SelectedDataSource!.DataSource.StagingTable!.Columns)
 					{
 						StagingColumnViewModel columnViewModel = new(column);
 						StagingColumns.Add(columnViewModel);

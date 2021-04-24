@@ -118,15 +118,5 @@ namespace Daf.Meta.Editor.ViewModels
 				SetProperty(_flatFileDataSource.FileDateRegex, value, _flatFileDataSource, (dataSource, fileDateRegex) => _flatFileDataSource.FileDateRegex = fileDateRegex, true);
 			}
 		}
-
-		public override DataSource Clone()
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public override void GetMetadata()
-		{
-			throw new System.NotImplementedException();
-		}
 	}
 }

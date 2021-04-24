@@ -28,7 +28,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 			if (_selectedDataSource != null)
 			{
-				foreach (Column column in SelectedDataSource!.LoadTable!.Columns)
+				foreach (Column column in SelectedDataSource!.DataSource.LoadTable!.Columns)
 				{
 					ColumnViewModel columnViewModel = new(column);
 					Columns.Add(columnViewModel);
