@@ -39,9 +39,9 @@ namespace Daf.Meta.Editor.ViewModels
 
 		public ObservableCollection<ColumnViewModel> Columns { get; } = new();
 
-		private List<DataSource>? _selectedDataSources;
+		private List<DataSourceViewModel>? _selectedDataSources;
 
-		public List<DataSource>? SelectedDataSources
+		public List<DataSourceViewModel>? SelectedDataSources
 		{
 			get { return _selectedDataSources; }
 			set
@@ -50,9 +50,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSource? _selectedDataSource;
+		private DataSourceViewModel? _selectedDataSource;
 
-		public DataSource? SelectedDataSource
+		public DataSourceViewModel? SelectedDataSource
 		{
 			get
 			{
@@ -66,7 +66,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 				if (_selectedDataSource != null)
 				{
-					foreach (Column column in SelectedDataSource!.LoadTable!.Columns)
+					foreach (Column column in SelectedDataSource!.DataSource.LoadTable!.Columns)
 					{
 						ColumnViewModel columnViewModel = new(column);
 						Columns.Add(columnViewModel);

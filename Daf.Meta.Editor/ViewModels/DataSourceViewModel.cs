@@ -9,7 +9,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using PropertyTools.DataAnnotations;

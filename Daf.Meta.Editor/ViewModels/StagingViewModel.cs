@@ -106,9 +106,8 @@ namespace Daf.Meta.Editor.ViewModels
 
 			StagingColumn stagingColumn = SelectedDataSource.AddStagingColumn();
 
-			// Create a new view model column and add it to the list.
-			StagingColumnViewModel stagingColumnViewModel = new(stagingColumn);
-			StagingColumns.Add(stagingColumnViewModel);
+			// Add new StagingColumnViewModel passing the new StagingColumn as an argument.
+			StagingColumns.Add(new StagingColumnViewModel(stagingColumn));
 		}
 
 		private bool CanDeleteStagingColumn()

@@ -357,15 +357,15 @@ namespace Daf.Meta.Layers
 			return Model.Instance.GetBusinessKey(BusinessKey.Name);
 		}
 
-		public ObservableCollection<HubRelationship> HubRelationships { get; } = new ObservableCollection<HubRelationship>();
+		public ObservableCollection<HubRelationship> HubRelationships { get; } = new();
 
-		public ObservableCollection<LinkRelationship> LinkRelationships { get; } = new ObservableCollection<LinkRelationship>();
+		public ObservableCollection<LinkRelationship> LinkRelationships { get; } = new();
 
-		public ObservableCollection<Satellite> Satellites { get; } = new ObservableCollection<Satellite>();
+		public ObservableCollection<Satellite> Satellites { get; } = new();
 
-		public LoadTable? LoadTable { get; set; } = new LoadTable();
+		public LoadTable? LoadTable { get; set; } = new();
 
-		public StagingTable? StagingTable { get; set; } = new StagingTable();
+		public StagingTable? StagingTable { get; set; } = new();
 
 		public abstract DataSource Clone();
 
