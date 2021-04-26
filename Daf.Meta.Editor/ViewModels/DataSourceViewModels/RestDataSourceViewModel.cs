@@ -2,6 +2,7 @@
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Daf.Meta.Layers;
 using Daf.Meta.Layers.Connections;
 using Daf.Meta.Layers.DataSources;
@@ -19,6 +20,10 @@ namespace Daf.Meta.Editor.ViewModels
 		}
 
 		public override DataSource DataSource => _restDataSource;
+
+		// ItemsSource for Connection.
+		[Browsable(false)]
+		public ObservableCollection<Connection> Connections => _restDataSource.Connections;
 
 		[Category("REST")]
 		[SelectorStyle(SelectorStyle.ComboBox)]

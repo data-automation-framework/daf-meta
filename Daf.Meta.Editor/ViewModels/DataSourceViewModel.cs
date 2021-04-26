@@ -35,6 +35,8 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
+		// Can't find any references to this.
+		[Browsable(false)]
 		public string QualifiedName
 		{
 			get => DataSource.QualifiedName;
@@ -44,6 +46,8 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
+		// Needed for ListView in MainWindow
+		[Browsable(false)]
 		public string TenantName
 		{
 			get => DataSource.TenantName;
@@ -52,6 +56,11 @@ namespace Daf.Meta.Editor.ViewModels
 				SetProperty(DataSource.TenantName, value, DataSource, (dataSource, tenantName) => dataSource.TenantName = tenantName, true);
 			}
 		}
+
+		[Browsable(false)]
+		// ItemsSource for SourceSystems.
+		public ObservableCollection<SourceSystem> SourceSystems => DataSource.SourceSystems;
+
 
 		[Category("General")]
 		[ItemsSourceProperty("SourceSystems")]
@@ -64,6 +73,10 @@ namespace Daf.Meta.Editor.ViewModels
 				SetProperty(DataSource.SourceSystem, value, DataSource, (dataSource, sourceSystem) => dataSource.SourceSystem = sourceSystem, true);
 			}
 		}
+
+		[Browsable(false)]
+		// ItemsSource for Tenant.
+		public ObservableCollection<Tenant> Tenants => DataSource.Tenants;
 
 		[Category("General")]
 		[ItemsSourceProperty("Tenants")]
