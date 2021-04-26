@@ -145,6 +145,44 @@ namespace Daf.Meta
 			DataSources.AddSorted(dataSource);
 		}
 
+		public static DataSource CopyDataSource(DataSource dataSource, string name, SourceSystem sourceSystem, Tenant tenant, Connection connection)
+		{
+			if (dataSource == null)
+				throw new InvalidOperationException();
+
+			DataSource clonedDataSource = dataSource.Clone();
+
+			clonedDataSource.Name = name;
+			clonedDataSource.SourceSystem = sourceSystem;
+			clonedDataSource.Tenant = tenant;
+
+			// Replace names with new ones
+			clonedDataSource.FileName = $"{clonedDataSource.Tenant.ShortName}_{clonedDataSource.Name}";
+			clonedDataSource.QualifiedName = $"{clonedDataSource.SourceSystem.ShortName}_{clonedDataSource.FileName}";
+
+			foreach (Satellite cloneSatellite in clonedDataSource.Satellites)
+			{
+				cloneSatellite.Name = cloneSatellite.Name.Replace(dataSource.SourceSystem.ShortName, clonedDataSource.SourceSystem.ShortName);
+				cloneSatellite.Name = cloneSatellite.Name.Replace(dataSource.FileName!, clonedDataSource.FileName);
+			}
+
+			// Can this be made into a switch? Seems not. Not all DataSources have Connections?
+			if (clonedDataSource is RestDataSource restSource)
+			{
+				restSource.Connection = (RestConnection)connection!;
+			}
+			else if (clonedDataSource is GraphQlDataSource graphQlSource)
+			{
+				graphQlSource.Connection = (GraphQlConnection)connection!;
+			}
+			else if (clonedDataSource is SqlDataSource sqlSource)
+			{
+				sqlSource.Connection = (OleDBConnection)connection!;
+			}
+
+			return clonedDataSource;
+		}
+
 		public void RemoveDataSource(DataSource dataSource)
 		{
 			if (dataSource == null)

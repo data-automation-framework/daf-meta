@@ -395,6 +395,8 @@ namespace Daf.Meta.Editor.ViewModels
 				}
 
 				Model.AddDataSource(source);
+
+				AddDataSourceViewModel(source);
 			}
 		}
 
@@ -422,9 +424,12 @@ namespace Daf.Meta.Editor.ViewModels
 
 				if (result == MessageBoxResult.Yes)
 				{
+					// TODO: This points to the wrong path. Can not currently delete DataSources.
 					string dataSourcePath = Path.Combine(MetadataPath, "DataSources", $"{selectedDataSource.Name}.json");
 
 					Model.RemoveDataSource(selectedDataSource.DataSource);
+
+					DataSources.Remove(selectedDataSource);
 
 					File.Delete(dataSourcePath);
 				}
@@ -483,7 +488,8 @@ namespace Daf.Meta.Editor.ViewModels
 
 			Connection? connection = null;
 
-			// TODO: Change to switch but see if it works first.
+			// TODO: This could be changed to a switch, but only if there's a Connection property on DataSource/DataSourceViewModel.
+			// Does every DataSource type need a connection?
 			if (SelectedDataSourceSingle.DataSource is RestDataSource rest)
 			{
 				connection = rest.Connection;
@@ -507,36 +513,44 @@ namespace Daf.Meta.Editor.ViewModels
 
 			if (_windowService.ShowDialog(windowType, vm))
 			{
-				DataSource clonedDataSource = SelectedDataSourceSingle.DataSource.Clone();
-
-				clonedDataSource.Name = vm.Name;
-				clonedDataSource.SourceSystem = vm.SourceSystem;
-				clonedDataSource.Tenant = vm.Tenant;
-
-				// Replace names with new ones
-				clonedDataSource.FileName = $"{clonedDataSource.Tenant.ShortName}_{clonedDataSource.Name}";
-				clonedDataSource.QualifiedName = $"{clonedDataSource.SourceSystem.ShortName}_{clonedDataSource.FileName}";
-
-				foreach (Satellite cloneSatellite in clonedDataSource.Satellites)
+				// Temporary solution so as to not have to crash the program.
+				try
 				{
-					cloneSatellite.Name = cloneSatellite.Name.Replace(SelectedDataSourceSingle.SourceSystem.ShortName, clonedDataSource.SourceSystem.ShortName);
-					cloneSatellite.Name = cloneSatellite.Name.Replace(SelectedDataSourceSingle.FileName!, clonedDataSource.FileName);
-				}
+					DataSource clonedDataSource = Model.CopyDataSource(SelectedDataSourceSingle.DataSource, vm.Name, vm.SourceSystem, vm.Tenant, vm.Connection!);
 
-				if (clonedDataSource is RestDataSource restSource)
-				{
-					restSource.Connection = (RestConnection)vm.Connection!;
+					AddDataSourceViewModel(clonedDataSource);
 				}
-				else if (clonedDataSource is GraphQlDataSource graphQlSource)
+				catch (NotImplementedException)
 				{
-					graphQlSource.Connection = (GraphQlConnection)vm.Connection!;
+					MessageBox.Show($"Clone method not implemented for Data Source Type: {SelectedDataSourceSingle.DataSource.DataSourceType}", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
-				else if (clonedDataSource is SqlDataSource sqlSource)
-				{
-					sqlSource.Connection = (OleDBConnection)vm.Connection!;
-				}
+			}
+		}
 
-				Model.AddDataSource(clonedDataSource);
+		private void AddDataSourceViewModel(DataSource dataSource)
+		{
+			switch (dataSource)
+			{
+				case FlatFileDataSource:
+					DataSources.Add(new FlatFileDataSourceViewModel(dataSource));
+					break;
+				case GraphQlDataSource:
+					DataSources.Add(new GraphQlDataSourceViewModel(dataSource));
+					break;
+				case JsonFileDataSource:
+					DataSources.Add(new JsonFileDataSourceViewModel(dataSource));
+					break;
+				case RestDataSource:
+					DataSources.Add(new RestDataSourceViewModel(dataSource));
+					break;
+				case ScriptDataSource:
+					DataSources.Add(new ScriptDataSourceViewModel(dataSource));
+					break;
+				case SqlDataSource:
+					DataSources.Add(new SqlDataSourceViewModel(dataSource));
+					break;
+				default:
+					throw new InvalidOperationException("Invalid connection type");
 			}
 		}
 
