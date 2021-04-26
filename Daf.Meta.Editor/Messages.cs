@@ -10,7 +10,7 @@ namespace Daf.Meta.Editor
 	public sealed class RefreshedMetadata { }
 
 	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a specified Hub needs to be removed from Model.Hubs.
+	/// For announcing to subscribers that a Hub needs to be removed.
 	/// <param name="hub">The Hub object to be removed.</param>
 	/// </summary>
 	public sealed class DeleteHub
@@ -24,21 +24,21 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a new Hub needs to be created in Model.Hubs.
-	/// <param name="hub">The Hub object to be added.</param>
+	/// For announcing to subscribers that a new Hub will be created.
+	/// <param name="name">The name of the new Hub.</param>
 	/// </summary>
 	public sealed class AddHubToModel
 	{
-		public AddHubToModel(Hub hub)
+		public AddHubToModel(string name)
 		{
-			Hub = hub;
+			Name = name;
 		}
 
-		public Hub Hub { get; }
+		public string Name { get; }
 	}
 
 	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a specified Link needs to be removed from Model.Links.
+	/// For announcing to subscribers that a Link needs to be removed.
 	/// <param name="link">The Link object to be removed.</param>
 	/// </summary>
 	public sealed class DeleteLink
@@ -52,55 +52,21 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a new Link needs to be created in Model.Links.
-	/// <param name="link">The Link object to be added.</param>
+	/// For announcing to subscribers that a new Link will be created.
+	/// <param name="name">The name of the new Link.</param>
 	/// </summary>
 	public sealed class AddLinkToModel
 	{
-		public AddLinkToModel(Link link)
+		public AddLinkToModel(string name)
 		{
-			Link = link;
+			Name = name;
 		}
 
-		public Link Link { get; }
+		public string Name { get; }
 	}
 
 	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a StagingColumn needs to be added to a specified Link in Model.Links.
-	/// <param name="link">The Link that the specified BusinessKey will be added to.</param>
-	/// <param name="businessKey">The StagingColumn object to be added.</param>
-	/// </summary>
-	public sealed class AddBusinessKeyColumnToLink
-	{
-		public AddBusinessKeyColumnToLink(Link link, StagingColumn businessKey)
-		{
-			BusinessKey = businessKey;
-			Link = link;
-		}
-
-		public StagingColumn BusinessKey { get; }
-		public Link Link { get; }
-	}
-
-	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a StagingColumn needs to be removed from a specified Link in Model.Links.
-	/// <param name="link">The Link that the specified BusinessKey belongs to.</param>
-	/// <param name="businessKey">The StagingColumn object to be removed.</param>
-	/// </summary>
-	public sealed class RemoveBusinessKeyColumnFromLink
-	{
-		public RemoveBusinessKeyColumnFromLink(Link link, StagingColumn businessKey)
-		{
-			BusinessKey = businessKey;
-			Link = link;
-		}
-
-		public StagingColumn BusinessKey { get; }
-		public Link Link { get; }
-	}
-
-	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a specified Connection needs to be removed from Model.Connections.
+	/// For announcing to subscribers that a specified Tenant will be removed.
 	/// <param name="connection">The Connection object to be removed.</param>
 	/// </summary>
 	public sealed class RemoveConnection
@@ -114,7 +80,7 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// Facilitates messages that inform MainViewModel that a new Connection needs to be created in Model.Connections.
+	/// For announcing to subscribers that a new Tenant will be created.
 	/// <param name="connection">The Connection object to be added.</param>
 	/// </summary>
 	public sealed class AddConnection
@@ -142,7 +108,7 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// For announcing to subscribers that a new Tenant has been created.
+	/// For announcing to subscribers that a new Tenant will be created.
 	/// <param name="tenant">The Tenant object that was created.</param>
 	/// </summary>
 	public sealed class AddTenant
@@ -170,7 +136,7 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// For announcing to subscribers that a new SourceSystem has been created.
+	/// For announcing to subscribers that a new SourceSystem will be created.
 	/// <param name="sourceSystem">The SourceSystem object to be added.</param>
 	/// </summary>
 	public sealed class AddSourceSystem
@@ -184,7 +150,7 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// For announcing to subscribers that a new HubRelationship has been created.
+	/// For announcing to subscribers that a new HubRelationship will be created.
 	/// <param name="hub">The Hub that the HubRelationship belongs to.</param>
 	/// <param name="dataSource">The DataSource that the HubRelationship belongs to.</param>
 	/// </summary>
@@ -218,7 +184,7 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// For announcing to subscribers that a new LinkRelationship has been created.
+	/// For announcing to subscribers that a new LinkRelationship will be created.
 	/// <param name="link">The Link that the LinkRelationship belongs to.</param>
 	/// <param name="dataSource">The DataSource that the LinkRelationship belongs to.</param>
 	/// </summary>

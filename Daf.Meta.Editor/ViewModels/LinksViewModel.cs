@@ -10,7 +10,6 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -129,13 +128,8 @@ namespace Daf.Meta.Editor.ViewModels
 
 		internal void AddLink(string name)
 		{
-			Link link = new(name);
-
-			// Add to view model
-			Links.Insert(0, new LinkViewModel(link));
-
 			// Tell MainViewModel to add a new Link to the collection.
-			WeakReferenceMessenger.Default.Send(new AddLinkToModel(link));
+			WeakReferenceMessenger.Default.Send(new AddLinkToModel(name));
 
 			SelectedLink = Links[0];
 		}
