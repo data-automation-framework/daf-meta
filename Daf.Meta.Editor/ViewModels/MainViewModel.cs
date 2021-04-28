@@ -79,10 +79,10 @@ namespace Daf.Meta.Editor.ViewModels
 			_windowService = Ioc.Default.GetService<IWindowService>()!;
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteHub>(this, (r, m) => DeleteHubFromModel(m.Hub));
-			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Hub));
+			WeakReferenceMessenger.Default.Register<MainViewModel, AddHubToModel>(this, (r, m) => AddHubToModel(m.Name));
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, DeleteLink>(this, (r, m) => DeleteLinkFromModel(m.Link));
-			WeakReferenceMessenger.Default.Register<MainViewModel, AddLinkToModel>(this, (r, m) => AddLinkToModel(m.Link));
+			WeakReferenceMessenger.Default.Register<MainViewModel, AddLinkToModel>(this, (r, m) => AddLinkToModel(m.Name));
 
 			WeakReferenceMessenger.Default.Register<MainViewModel, RemoveConnection>(this, (r, m) => RemoveConnectionFromModel(m.Connection));
 			WeakReferenceMessenger.Default.Register<MainViewModel, AddConnection>(this, (r, m) => AddConnectionToModel(m.Connection));
@@ -648,45 +648,53 @@ namespace Daf.Meta.Editor.ViewModels
 		}
 
 		/// <summary>
-		/// Removes the Hub that is wrapped by HubViewModel.
+		/// Removes a specified Hub from the Model.
 		/// </summary>
 		/// <param name="hub">The Hub object that will be removed from the Model.</param>
 		private void DeleteHubFromModel(Hub hub)
 		{
-			if (Model.Hubs.Contains(hub))
-				Model.Hubs.Remove(hub);
-			else
-				throw new InvalidOperationException("Attempted to delete hub which does not exist in Model.Hubs!");
+			Model.RemoveHub(hub);
 		}
 
 		/// <summary>
-		/// Removes the Hub that is wrapped by HubViewModel.
+		/// Adds a new Hub to the Model.
 		/// </summary>
-		/// <param name="hub">The Hub object that will be added to the Model.</param>
-		private void AddHubToModel(Hub hub)
+		/// <param name="name">The name of the Hub object that will be added to the Model.</param>
+		private void AddHubToModel(string name)
 		{
-			Model.Hubs.Insert(0, hub);
+			Hub hub;
+
+			if (string.IsNullOrEmpty(name))
+				hub = Model.AddHub();
+			else
+				hub = Model.AddHub(name);
+
+			HubsVM.Hubs.Insert(0, new HubViewModel(hub));
 		}
 
 		/// <summary>
-		/// Removes the Link that is wrapped by LinkViewModel.
+		/// Removes a specified Link from the Model.
 		/// </summary>
 		/// <param name="link">The Link object that will be removed from the Model.</param>
 		private void DeleteLinkFromModel(Link link)
 		{
-			if (Model.Links.Contains(link))
-				Model.Links.Remove(link);
-			else
-				throw new InvalidOperationException("Attempted to delete hub which does not exist in Model.Hubs!");
+			Model.RemoveLink(link);
 		}
 
 		/// <summary>
-		/// Removes the Link that is wrapped by LinkViewModel.
+		/// Adds a new Link to the Model.
 		/// </summary>
-		/// <param name="link">The Link object that will be added to the Model.</param>
-		private void AddLinkToModel(Link link)
+		/// <param name="name">The name of the Link object that will be added to the Model.</param>
+		private void AddLinkToModel(string name)
 		{
-			Model.Links.Insert(0, link);
+			Link link;
+
+			if (string.IsNullOrEmpty(name))
+				link = Model.AddLink();
+			else
+				link = Model.AddLink(name);
+
+			LinksVM.Links.Insert(0, new LinkViewModel(link));
 		}
 
 		/// <summary>

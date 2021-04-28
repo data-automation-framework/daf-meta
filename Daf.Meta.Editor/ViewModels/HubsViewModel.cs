@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -129,14 +128,8 @@ namespace Daf.Meta.Editor.ViewModels
 
 		internal void AddHub(string name)
 		{
-			Hub hub = new(name);
-
-			// Inserting alphabetically is much more convoluted but there may be reasons to do it, uncertain.
-			// Create new ViewModel.
-			Hubs.Insert(0, new HubViewModel(hub));
-
 			// Tell MainViewModel to add a new Hub to the collection.
-			WeakReferenceMessenger.Default.Send(new AddHubToModel(hub));
+			WeakReferenceMessenger.Default.Send(new AddHubToModel(name));
 
 			SelectedHub = Hubs[0];
 		}
