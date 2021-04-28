@@ -33,7 +33,7 @@ namespace Daf.Meta.Layers
 
 			// This cannot go in constructor because the StagingTable has not been initialized when the constructor is called.
 			// What if I put an event in StagingTable that gets triggered every time StagingTable.Columns is re-assigned or has StagingColumns added or removed?
-			ColumnsChanged += (s, e) => { ColumnsNotInHubsOrLinks = GetColumnsNotInHubsOrLinks(); };
+			ColumnsChanged += (s, e) => { GetColumnsNotInHubsOrLinks(); };
 		}
 
 		private string _name; // This is initialized in the constructor of each derived class.
@@ -390,7 +390,7 @@ namespace Daf.Meta.Layers
 					_stagingTable = value;
 
 					// Update ColumnsNotInHubsOrLinks when the StagingTable is updated after deserialization.
-					ColumnsNotInHubsOrLinks = GetColumnsNotInHubsOrLinks();
+					GetColumnsNotInHubsOrLinks();
 				}
 			}
 		}
@@ -903,9 +903,7 @@ namespace Daf.Meta.Layers
 
 			// Neither of these should ever be null.
 			if (StagingTable == null || StagingTable.Columns == null)
-			{
-				return columns;
-			}
+				throw new InvalidOperationException();
 
 			foreach (StagingColumn stgColumn in StagingTable.Columns)
 			{
@@ -949,6 +947,7 @@ namespace Daf.Meta.Layers
 			}
 
 			ColumnsNotInHubsOrLinks = columns;
+			NotifyPropertyChanged(nameof(ColumnsNotInHubsOrLinks));
 			//return columns;
 		}
 
@@ -1040,7 +1039,7 @@ namespace Daf.Meta.Layers
 					AssociatedBusinessKeys.Add(relationship.Hub);
 			}
 
-			ColumnsNotInHubsOrLinks = GetColumnsNotInHubsOrLinks();
+			GetColumnsNotInHubsOrLinks();
 		}
 
 		private void LinkRelationshipsChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -1067,7 +1066,7 @@ namespace Daf.Meta.Layers
 					AssociatedBusinessKeys.Add(relationship.Link);
 			}
 
-			ColumnsNotInHubsOrLinks = GetColumnsNotInHubsOrLinks();
+			GetColumnsNotInHubsOrLinks();
 		}
 
 		/// <summary>
