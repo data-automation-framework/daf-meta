@@ -21,6 +21,16 @@ namespace Daf.Meta.Editor.ViewModels
 		[Browsable(false)]
 		public virtual DataSource DataSource { get; }
 
+		//public ObservableCollection<HubRelationship> HubRelationships { get; } = new();
+
+		//public ObservableCollection<LinkRelationship> LinkRelationships { get; } = new();
+
+		public ObservableCollection<Satellite> Satellites => DataSource.Satellites;
+
+		//public LoadTable? LoadTable { get; set; } = new();
+
+		public StagingTable? StagingTable => DataSource.StagingTable;
+
 		[Category("General")]
 		[Description("The name of the data source")]
 		public string Name
@@ -226,16 +236,10 @@ namespace Daf.Meta.Editor.ViewModels
 		}
 
 		[Browsable(false)]
-		public ObservableCollection<BusinessKey> AssociatedBusinessKeys
-		{
-			get => DataSource.AssociatedBusinessKeys;
-		}
+		public ObservableCollection<BusinessKey> AssociatedBusinessKeys => DataSource.AssociatedBusinessKeys;
 
 		[Browsable(false)]
-		public ObservableCollection<StagingColumn> ColumnsNotInHubsOrLinks
-		{
-			get => DataSource.ColumnsNotInHubsOrLinks;
-		}
+		public ObservableCollection<StagingColumn> ColumnsNotInHubsOrLinks => DataSource.ColumnsNotInHubsOrLinks;
 
 		// Preventing the inherited HasErrors property from showing up in the PropertyGrid.
 		[Browsable(false)]

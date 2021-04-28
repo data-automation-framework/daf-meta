@@ -70,7 +70,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 			if (SelectedDataSource != null)
 			{
-				foreach (StagingColumn stagingColumn in SelectedDataSource.DataSource.ColumnsNotInHubsOrLinks)
+				foreach (StagingColumn stagingColumn in SelectedDataSource.ColumnsNotInHubsOrLinks)
 				{
 					stagingColumn.Satellite = satelliteViewModel.Satellite;
 				}

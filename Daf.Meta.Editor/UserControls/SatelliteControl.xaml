@@ -88,7 +88,7 @@
 									<RowDefinition Height="*" />
 								</Grid.RowDefinitions>
 								<TextBlock Grid.Column="0" HorizontalAlignment="Left" Text="{Binding Path=Name}" MinWidth="240" />
-								<ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Path=Satellite}" ItemsSource="{Binding Path=DataContext.SelectedDataSource.DataSource.Satellites, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0" />
+								<ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Path=Satellite}" ItemsSource="{Binding Path=DataContext.SelectedDataSource.Satellites, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0" />
 							</Grid>
 						</DataTemplate>
 					</ListBox.ItemTemplate>

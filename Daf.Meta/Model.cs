@@ -896,7 +896,7 @@ namespace Daf.Meta
 					}
 				}
 
-				dataSource.StagingTable = new StagingTable();
+				StagingTable stagingTable = new();
 
 				if (jsonDataSource.StagingTable != null)
 				{
@@ -943,9 +943,12 @@ namespace Daf.Meta
 							dataSource.NotifyPropertyChanged("StagingColumn");
 						};
 
-						dataSource.StagingTable.Columns.Add(stagingColumn);
+						stagingTable.Columns.Add(stagingColumn);
 					}
 				}
+
+				// Need this to trigger the setter and event AFTER the StagingTable has been populated.
+				dataSource.StagingTable = stagingTable;
 
 				foreach (Json.HubRelationship jsonHubRelationship in jsonDataSource.HubRelationships)
 				{

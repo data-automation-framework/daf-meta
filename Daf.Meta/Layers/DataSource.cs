@@ -18,14 +18,22 @@ namespace Daf.Meta.Layers
 {
 	public abstract class DataSource : PropertyChangedBaseClass, IComparable<DataSource>
 	{
+		internal event EventHandler? ColumnsChanged;
+
 		protected DataSource(string name, SourceSystem sourceSystem, Tenant tenant)
 		{
 			_name = name;
 			_sourceSystem = sourceSystem;
 			_tenant = tenant;
 
+			// May want to create specific EventHandlers for these but not doing so until we're
+			// starting the upcoming re-design of Hub-/LinkRelationship so as to not have to duplicate code.
 			HubRelationships.CollectionChanged += HubRelationshipsChanged;
 			LinkRelationships.CollectionChanged += LinkRelationshipsChanged;
+
+			// This cannot go in constructor because the StagingTable has not been initialized when the constructor is called.
+			// What if I put an event in StagingTable that gets triggered every time StagingTable.Columns is re-assigned or has StagingColumns added or removed?
+			ColumnsChanged += (s, e) => { ColumnsNotInHubsOrLinks = GetColumnsNotInHubsOrLinks(); };
 		}
 
 		private string _name; // This is initialized in the constructor of each derived class.
@@ -349,6 +357,11 @@ namespace Daf.Meta.Layers
 			}
 		}
 
+		protected void OnColumnsChanged()
+		{
+			ColumnsChanged?.Invoke(this, new EventArgs());
+		}
+
 		public StagingColumn? GetBusinessKey()
 		{
 			if (BusinessKey == null)
@@ -365,7 +378,22 @@ namespace Daf.Meta.Layers
 
 		public LoadTable? LoadTable { get; set; } = new();
 
-		public StagingTable? StagingTable { get; set; } = new();
+		private StagingTable? _stagingTable = new();
+
+		public StagingTable? StagingTable
+		{
+			get => _stagingTable;
+			set
+			{
+				if (_stagingTable != value)
+				{
+					_stagingTable = value;
+
+					// Update ColumnsNotInHubsOrLinks when the StagingTable is updated after deserialization.
+					ColumnsNotInHubsOrLinks = GetColumnsNotInHubsOrLinks();
+				}
+			}
+		}
 
 		public abstract DataSource Clone();
 
@@ -425,6 +453,8 @@ namespace Daf.Meta.Layers
 
 			StagingTable.Columns.Add(stagingColumn);
 
+			OnColumnsChanged();
+
 			return stagingColumn;
 		}
 
@@ -437,6 +467,8 @@ namespace Daf.Meta.Layers
 				throw new InvalidOperationException(nameof(StagingTable));
 
 			columnToRemove.ClearSubscribers();
+
+			OnColumnsChanged();
 
 			StagingTable.Columns.Remove(columnToRemove);
 		}
@@ -846,25 +878,59 @@ namespace Daf.Meta.Layers
 			return sortedLinkList;
 		}
 
+		private ObservableCollection<StagingColumn> _columnsNotInHubsOrLinks = new();
+
 		[JsonIgnore]
+		// Why does it insist on it being read only??
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "<Pending>")]
 		public ObservableCollection<StagingColumn> ColumnsNotInHubsOrLinks
 		{
-			get
+			get => _columnsNotInHubsOrLinks;
+			set
 			{
-				ObservableCollection<StagingColumn> columns = new();
-
-				if (StagingTable == null || StagingTable.Columns == null)
+				if (_columnsNotInHubsOrLinks != value)
 				{
-					return columns;
+					_columnsNotInHubsOrLinks = value;
+
+					NotifyPropertyChanged(nameof(ColumnsNotInHubsOrLinks));
+				}
+			}
+		}
+
+		private void GetColumnsNotInHubsOrLinks()
+		{
+			ObservableCollection<StagingColumn> columns = new();
+
+			// Neither of these should ever be null.
+			if (StagingTable == null || StagingTable.Columns == null)
+			{
+				return columns;
+			}
+
+			foreach (StagingColumn stgColumn in StagingTable.Columns)
+			{
+				bool foundInHubOrLink = false;
+
+				foreach (HubRelationship relationship in HubRelationships)
+				{
+					foreach (HubMapping mapping in relationship.Mappings)
+					{
+						if (stgColumn == mapping.StagingColumn)
+						{
+							foundInHubOrLink = true;
+							break;
+						}
+					}
+
+					if (foundInHubOrLink)
+						break;
 				}
 
-				foreach (StagingColumn stgColumn in StagingTable.Columns)
+				if (!foundInHubOrLink)
 				{
-					bool foundInHubOrLink = false;
-
-					foreach (HubRelationship relationship in HubRelationships)
+					foreach (LinkRelationship relationship in LinkRelationships)
 					{
-						foreach (HubMapping mapping in relationship.Mappings)
+						foreach (LinkMapping mapping in relationship.Mappings)
 						{
 							if (stgColumn == mapping.StagingColumn)
 							{
@@ -876,31 +942,14 @@ namespace Daf.Meta.Layers
 						if (foundInHubOrLink)
 							break;
 					}
-
-					if (!foundInHubOrLink)
-					{
-						foreach (LinkRelationship relationship in LinkRelationships)
-						{
-							foreach (LinkMapping mapping in relationship.Mappings)
-							{
-								if (stgColumn == mapping.StagingColumn)
-								{
-									foundInHubOrLink = true;
-									break;
-								}
-							}
-
-							if (foundInHubOrLink)
-								break;
-						}
-					}
-
-					if (!foundInHubOrLink)
-						columns.Add(stgColumn);
 				}
 
-				return columns;
+				if (!foundInHubOrLink)
+					columns.Add(stgColumn);
 			}
+
+			ColumnsNotInHubsOrLinks = columns;
+			//return columns;
 		}
 
 		[JsonIgnore]
@@ -973,27 +1022,25 @@ namespace Daf.Meta.Layers
 
 		private void HubRelationshipsChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
-			//_associatedBusinessKeys.Clear();
-
-			//List<BusinessKey> addedItems = new();
-			//foreach (BusinessKey newItem in e.NewItems!)
-			//{
-			//	addedItems.Add(newItem);
-			//}
-
+			// OldItems contains the HubRelationship(s) that were removed. OldItems is null if no HubRelationship(s) were removed.
 			if (e.OldItems != null)
 			{
 				foreach (HubRelationship oldItem in e.OldItems)
 				{
+					// Removes each Hub from the list of AssociatedBusinessKeys that no longer participates in a HubRelationship.
 					AssociatedBusinessKeys.Remove(oldItem.Hub);
 				}
 			}
 
+			// For each HubRelationship in HubRelationships, checks if AssociatedBusinessKeys contains the Hub associated with that HubRelationship.
+			// If AssociatedBusinessKeys does not already contain that Hub, it adds that Hub to AssociatedBusinessKeys.
 			foreach (HubRelationship relationship in HubRelationships)
 			{
 				if (!AssociatedBusinessKeys.Contains(relationship.Hub))
 					AssociatedBusinessKeys.Add(relationship.Hub);
 			}
+
+			ColumnsNotInHubsOrLinks = GetColumnsNotInHubsOrLinks();
 		}
 
 		private void LinkRelationshipsChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -1019,8 +1066,13 @@ namespace Daf.Meta.Layers
 				if (!AssociatedBusinessKeys.Contains(relationship.Link))
 					AssociatedBusinessKeys.Add(relationship.Link);
 			}
+
+			ColumnsNotInHubsOrLinks = GetColumnsNotInHubsOrLinks();
 		}
 
+		/// <summary>
+		/// A collection of all Hubs and/or Links which participate in a Hub- or LinkRelationship.
+		/// </summary>
 		[JsonIgnore]
 		public ObservableCollection<BusinessKey> AssociatedBusinessKeys { get; } = new ObservableCollection<BusinessKey>();
 
