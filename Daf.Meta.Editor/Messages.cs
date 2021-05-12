@@ -216,4 +216,6 @@ namespace Daf.Meta.Editor
 		public LinkRelationship LinkRelationship { get; }
 		public DataSource DataSource { get; }
 	}
+
+	public sealed class StagingColumnsChanged { }
 }

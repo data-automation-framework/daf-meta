@@ -390,6 +390,7 @@ namespace Daf.Meta.Layers
 					_stagingTable = value;
 
 					// Update ColumnsNotInHubsOrLinks when the StagingTable is updated after deserialization.
+					// This method is run repeatedly.. Figure out if that's unnecessary.
 					GetColumnsNotInHubsOrLinks();
 				}
 			}
@@ -1019,6 +1020,7 @@ namespace Daf.Meta.Layers
 			return stagingList;
 		}
 
+		// This one runs several times, probably once for every hub/link-relationship that exists.
 		private void HubRelationshipsChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
 			// OldItems contains the HubRelationship(s) that were removed. OldItems is null if no HubRelationship(s) were removed.
@@ -1073,7 +1075,7 @@ namespace Daf.Meta.Layers
 		/// A collection of all Hubs and/or Links which participate in a Hub- or LinkRelationship.
 		/// </summary>
 		[JsonIgnore]
-		public ObservableCollection<BusinessKey> AssociatedBusinessKeys { get; } = new ObservableCollection<BusinessKey>();
+		public ObservableCollection<BusinessKey> AssociatedBusinessKeys { get; } = new();
 
 		public HashSet<string> GetLinkNames()
 		{

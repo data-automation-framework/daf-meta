@@ -3,10 +3,10 @@
 
 using System;
 using System.Collections.ObjectModel;
+using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
-using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {

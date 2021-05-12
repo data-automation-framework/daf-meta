@@ -107,6 +107,8 @@ namespace Daf.Meta.Editor.ViewModels
 
 			// Add new StagingColumnViewModel passing the new StagingColumn as an argument.
 			StagingColumns.Add(new StagingColumnViewModel(stagingColumn));
+
+			WeakReferenceMessenger.Default.Send(new StagingColumnsChanged());
 		}
 
 		private bool CanDeleteStagingColumn()

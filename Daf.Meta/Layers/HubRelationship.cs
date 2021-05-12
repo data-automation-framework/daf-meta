@@ -56,7 +56,7 @@ namespace Daf.Meta.Layers
 		public Hub Hub { get; }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "We need at least an init setter in order to support deserialization.")]
-		public ObservableCollection<HubMapping> Mappings { get; init; } = new ObservableCollection<HubMapping>();
+		public ObservableCollection<HubMapping> Mappings { get; init; } = new();
 
 		[JsonIgnore]
 		public List<StagingColumn> AvailableColumns
@@ -77,6 +77,8 @@ namespace Daf.Meta.Layers
 
 	public class HubMapping : PropertyChangedBaseClass
 	{
+		internal event EventHandler? ChangedStagingColumn;
+
 		public HubMapping(StagingColumn hubColumn)
 		{
 			_hubColumn = hubColumn;
@@ -98,6 +100,7 @@ namespace Daf.Meta.Layers
 						_stagingColumn.Satellite = null;
 
 					NotifyPropertyChanged("StagingColumn");
+					OnChangedStagingColumn();
 				}
 			}
 		}
@@ -117,6 +120,10 @@ namespace Daf.Meta.Layers
 					NotifyPropertyChanged("HubColumn");
 				}
 			}
+		}
+		protected void OnChangedStagingColumn()
+		{
+			ChangedStagingColumn?.Invoke(this, new EventArgs());
 		}
 	}
 }

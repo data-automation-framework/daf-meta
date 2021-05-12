@@ -76,7 +76,7 @@
 						<TextBlock Text=" Non-Hub/Link Staging Column                          Satellite" />
 					</StackPanel>
 				</Label>
-				<ListBox Name="SatelliteConnectionList" HorizontalAlignment="Left" ItemsSource="{Binding Path=SelectedDataSource.ColumnsNotInHubsOrLinks, Mode=TwoWay}">
+				<ListBox Name="SatelliteConnectionList" HorizontalAlignment="Left" ItemsSource="{Binding Path=SelectedDataSource.ColumnsNotInHubsOrLinks}">
 					<ListBox.ItemTemplate>
 						<DataTemplate>
 							<Grid Margin="0.2" Grid.IsSharedSizeScope="True">
@@ -87,7 +87,7 @@
 								<Grid.RowDefinitions>
 									<RowDefinition Height="*" />
 								</Grid.RowDefinitions>
-								<TextBlock Grid.Column="0" HorizontalAlignment="Left" Text="{Binding Path=Name, FallbackValue='hello'}" MinWidth="240" />
+								<TextBlock Grid.Column="0" HorizontalAlignment="Left" Text="{Binding Path=Name}" MinWidth="240" />
 								<ComboBox Grid.Column="1" HorizontalAlignment="Left" SelectedItem="{Binding Path=Satellite}" ItemsSource="{Binding Path=DataContext.SelectedDataSource.Satellites, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0" />
 							</Grid>
 						</DataTemplate>
