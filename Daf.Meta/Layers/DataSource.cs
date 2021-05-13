@@ -946,7 +946,7 @@ namespace Daf.Meta.Layers
 				if (!foundInHubOrLink)
 					columns.Add(stgColumn);
 			}
-
+			// this does not need to run when adding a new relationship, because the default stagingcolumn is null.
 			ColumnsNotInHubsOrLinks = columns;
 			NotifyPropertyChanged(nameof(ColumnsNotInHubsOrLinks));
 			//return columns;
