@@ -241,6 +241,11 @@ namespace Daf.Meta.Editor.ViewModels
 		[Browsable(false)]
 		public ObservableCollection<StagingColumn> ColumnsNotInHubsOrLinks => DataSource.ColumnsNotInHubsOrLinks;
 
+		public void RefreshColumnsNotInHubsOrLinks()
+		{
+			OnPropertyChanged(nameof(ColumnsNotInHubsOrLinks));
+		}
+
 		// Preventing the inherited HasErrors property from showing up in the PropertyGrid.
 		[Browsable(false)]
 		public new bool HasErrors => base.HasErrors;
