@@ -367,39 +367,37 @@ namespace Daf.Meta.Editor.ViewModels
 			if (windowType == null)
 				throw new ArgumentNullException(nameof(windowType));
 
-			//if (_windowService.ShowDialog(windowType, out object viewModel))
-			//{
-			//	AddDataSourceViewModel dataSourceVM = (AddDataSourceViewModel)viewModel!;
+			if (_windowService.ShowDialog(windowType, out object viewModel))
+			{
+				AddDataSourceViewModel dataSourceVM = (AddDataSourceViewModel)viewModel!;
 
-			//	DataSource source;
+				DataSource source;
 
-			//	switch (dataSourceVM.SelectedDataSourceType)
-			//	{
-			//		case DataSourceType.Rest:
-			//			source = new RestDataSource(dataSourceVM.Name, (RestConnection)dataSourceVM.SelectedConnection!, dataSourceVM.SelectedSourceSystem!, dataSourceVM.SelectedTenant!) { DataSourceType = dataSourceVM.SelectedDataSourceType };
-			//			break;
-			//		case DataSourceType.FlatFile:
-			//			source = new FlatFileDataSource(dataSourceVM.Name, dataSourceVM.SelectedSourceSystem!, dataSourceVM.SelectedTenant!) { DataSourceType = dataSourceVM.SelectedDataSourceType };
-			//			break;
-			//		case DataSourceType.Script:
-			//			source = new ScriptDataSource(dataSourceVM.Name, dataSourceVM.SelectedSourceSystem!, dataSourceVM.SelectedTenant!) { DataSourceType = dataSourceVM.SelectedDataSourceType };
-			//			break;
-			//		case DataSourceType.Sql:
-			//			source = new SqlDataSource(dataSourceVM.Name, dataSourceVM.SelectedConnection!, dataSourceVM.SelectedSourceSystem!, dataSourceVM.SelectedTenant!) { DataSourceType = dataSourceVM.SelectedDataSourceType };
-			//			break;
-			//		case DataSourceType.GraphQl:
-			//			source = new GraphQlDataSource(dataSourceVM.Name, (GraphQlConnection)dataSourceVM.SelectedConnection!, dataSourceVM.SelectedSourceSystem!, dataSourceVM.SelectedTenant!) { DataSourceType = dataSourceVM.SelectedDataSourceType };
-			//			break;
-			//		default:
-			//			throw new NotImplementedException($"Data source type invalid for {dataSourceVM.Name}.");
-			//	}
+				switch (dataSourceVM.SelectedDataSourceType)
+				{
+					case DataSourceType.Rest:
+						source = new RestDataSource(dataSourceVM.Name, (RestConnection)dataSourceVM.SelectedConnection!, dataSourceVM.SelectedSourceSystem!, dataSourceVM.SelectedTenant!) { DataSourceType = dataSourceVM.SelectedDataSourceType };
+						break;
+					case DataSourceType.FlatFile:
+						source = new FlatFileDataSource(dataSourceVM.Name, dataSourceVM.SelectedSourceSystem!, dataSourceVM.SelectedTenant!) { DataSourceType = dataSourceVM.SelectedDataSourceType };
+						break;
+					case DataSourceType.Script:
+						source = new ScriptDataSource(dataSourceVM.Name, dataSourceVM.SelectedSourceSystem!, dataSourceVM.SelectedTenant!) { DataSourceType = dataSourceVM.SelectedDataSourceType };
+						break;
+					case DataSourceType.Sql:
+						source = new SqlDataSource(dataSourceVM.Name, dataSourceVM.SelectedConnection!, dataSourceVM.SelectedSourceSystem!, dataSourceVM.SelectedTenant!) { DataSourceType = dataSourceVM.SelectedDataSourceType };
+						break;
+					case DataSourceType.GraphQl:
+						source = new GraphQlDataSource(dataSourceVM.Name, (GraphQlConnection)dataSourceVM.SelectedConnection!, dataSourceVM.SelectedSourceSystem!, dataSourceVM.SelectedTenant!) { DataSourceType = dataSourceVM.SelectedDataSourceType };
+						break;
+					default:
+						throw new NotImplementedException($"Data source type invalid for {dataSourceVM.Name}.");
+				}
 
-			//	Model.AddDataSource(source);
+				Model.AddDataSource(source);
 
-			//	AddDataSourceViewModel(source);
-			//}
-
-			WeakReferenceMessenger.Default.Send(new StagingColumnsChanged());
+				AddDataSourceViewModel(source);
+			}
 		}
 
 		private bool CanDeleteDataSource()

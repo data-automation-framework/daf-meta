@@ -26,6 +26,8 @@ namespace Daf.Meta.Editor.ViewModels
 
 			AddHubRelationshipCommand = new RelayCommand<Type?>(OpenAddHubRelationshipDialog);
 			DeleteHubRelationshipCommand = new RelayCommand(OpenDeleteHubRelationshipDialog, CanDeleteHubRelationship);
+
+			WeakReferenceMessenger.Default.Register<HubRelationshipsViewModel, StagingColumnsChanged>(this, (r, m) => OnPropertyChanged(nameof(StagingColumns)));
 		}
 
 		private ObservableCollection<HubRelationshipViewModel> _hubRelationships = new();

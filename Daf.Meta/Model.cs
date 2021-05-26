@@ -272,11 +272,11 @@ namespace Daf.Meta
 					hubRelationship.NotifyPropertyChanged("HubMapping");
 				};
 
-				hubMapping.ChangedStagingColumn += (s, e) =>
-				{
-					// I dislike having this method be internal instead of private. Need advice on how to do it better.
-					dataSource.GetColumnsNotInHubsOrLinks();
-				};
+				//hubMapping.ChangedStagingColumn += (s, e) =>
+				//{
+				//	// I dislike having this method be internal instead of private. Need advice on how to do it better.
+				//	dataSource.GetColumnsNotInHubsOrLinks();
+				//};
 
 				hubRelationship.Mappings.Add(hubMapping);
 			}
