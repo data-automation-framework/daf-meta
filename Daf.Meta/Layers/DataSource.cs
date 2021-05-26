@@ -34,6 +34,17 @@ namespace Daf.Meta.Layers
 			// This cannot go in constructor because the StagingTable has not been initialized when the constructor is called.
 			// What if I put an event in StagingTable that gets triggered every time StagingTable.Columns is re-assigned or has StagingColumns added or removed?
 			ColumnsChanged += (s, e) => { GetColumnsNotInHubsOrLinks(); };
+
+			// Need to make sure that when the list of Hub-/LinkRelationships is originally loaded, DataSource will subscribe to the
+			// ChangedStagingColumn event of each Hub-/LinkMapping.
+
+			//foreach (HubRelationship hubRelationship in HubRelationships)
+			//{
+			//	foreach (HubMapping hubMapping in hubRelationship.Mappings)
+			//	{
+			//		hubMapping.ChangedStagingColumn += ColumnsChanged;
+			//	}
+			//}
 		}
 
 		private string _name; // This is initialized in the constructor of each derived class.
@@ -898,7 +909,7 @@ namespace Daf.Meta.Layers
 			}
 		}
 
-		private void GetColumnsNotInHubsOrLinks()
+		internal void GetColumnsNotInHubsOrLinks()
 		{
 			ObservableCollection<StagingColumn> columns = new();
 
@@ -1046,14 +1057,6 @@ namespace Daf.Meta.Layers
 
 		private void LinkRelationshipsChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
-			//_associatedBusinessKeys.Clear();
-
-			//List<BusinessKey> addedItems = new();
-			//foreach (BusinessKey newItem in e.NewItems!)
-			//{
-			//	addedItems.Add(newItem);
-			//}
-
 			if (e.OldItems != null)
 			{
 				foreach (LinkRelationship oldItem in e.OldItems)

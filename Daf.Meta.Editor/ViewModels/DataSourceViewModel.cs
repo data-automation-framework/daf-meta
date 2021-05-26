@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Editor.ViewModels
@@ -14,20 +15,15 @@ namespace Daf.Meta.Editor.ViewModels
 		protected DataSourceViewModel(DataSource dataSource)
 		{
 			DataSource = dataSource;
-			//HubRelationships.CollectionChanged += HubRelationshipsChanged;
-			//LinkRelationships.CollectionChanged += LinkRelationshipsChanged;
+
+			// Forces the binding for ColumnsNotInHubsOrLinks property to update.
+			WeakReferenceMessenger.Default.Register<DataSourceViewModel, StagingColumnsChanged>(this, (r, m) => OnPropertyChanged(nameof(ColumnsNotInHubsOrLinks)));
 		}
 
 		[Browsable(false)]
 		public virtual DataSource DataSource { get; }
 
-		//public ObservableCollection<HubRelationship> HubRelationships { get; } = new();
-
-		//public ObservableCollection<LinkRelationship> LinkRelationships { get; } = new();
-
 		public ObservableCollection<Satellite> Satellites => DataSource.Satellites;
-
-		//public LoadTable? LoadTable { get; set; } = new();
 
 		public StagingTable? StagingTable => DataSource.StagingTable;
 
@@ -39,9 +35,6 @@ namespace Daf.Meta.Editor.ViewModels
 			set
 			{
 				SetProperty(DataSource.Name, value, DataSource, (dataSource, name) => dataSource.Name = name, true);
-
-				//QualifiedName = string.Empty; // Update QualifiedName's bindings without changing its value.
-				//TenantName = string.Empty; // Update TenantName's bindings without changing its value.
 			}
 		}
 
@@ -240,11 +233,6 @@ namespace Daf.Meta.Editor.ViewModels
 
 		[Browsable(false)]
 		public ObservableCollection<StagingColumn> ColumnsNotInHubsOrLinks => DataSource.ColumnsNotInHubsOrLinks;
-
-		public void RefreshColumnsNotInHubsOrLinks()
-		{
-			OnPropertyChanged(nameof(ColumnsNotInHubsOrLinks));
-		}
 
 		// Preventing the inherited HasErrors property from showing up in the PropertyGrid.
 		[Browsable(false)]

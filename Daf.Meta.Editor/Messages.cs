@@ -217,5 +217,8 @@ namespace Daf.Meta.Editor
 		public DataSource DataSource { get; }
 	}
 
+	/// <summary>
+	/// For announcing to subscribers that the list of Staging Colummns not in Hubs or Links has changed.
+	/// </summary>
 	public sealed class StagingColumnsChanged { }
 }

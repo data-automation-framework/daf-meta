@@ -101,6 +101,7 @@ namespace Daf.Meta.Layers
 
 					NotifyPropertyChanged("StagingColumn");
 					OnChangedStagingColumn();
+					// I need to make sure DataSource is subscribed to this event and updates the list of ColumnsNotInHubsOrLinks when this event is invoked.
 				}
 			}
 		}
