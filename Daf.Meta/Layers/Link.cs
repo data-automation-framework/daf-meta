@@ -17,7 +17,7 @@ namespace Daf.Meta.Layers
 
 		public int GetNumDrivingColumns()
 		{
-			return BusinessKeys.Where(x => x.Driving == true).Count();
+			return BusinessKeys.Count(x => x.Driving == true);
 		}
 
 		public List<string> GetRelevantKeys()
