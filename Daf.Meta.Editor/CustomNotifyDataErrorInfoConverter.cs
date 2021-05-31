@@ -50,9 +50,9 @@ namespace Daf.Meta.Editor
 		{
 			switch (targetType)
 			{
-				case object _ when targetType == typeof(bool):
+				case object when targetType == typeof(bool):
 					return instance.HasErrors;
-				case object _ when targetType == typeof(Visibility):
+				case object when targetType == typeof(Visibility):
 					IEnumerable<ValidationResult> errors = (IEnumerable<ValidationResult>)instance.GetErrors(columnName);
 
 					if (errors.Any())
