@@ -128,6 +128,10 @@ namespace Daf.Meta.Editor.ViewModels
 
 			// Remove the view model column from the list.
 			StagingColumns.Remove(SelectedColumn);
+
+			// Inform subscribers that the StagingColumn is being removed.
+			// This doesn't get called until I make the corresponding change in Model.
+			WeakReferenceMessenger.Default.Send(new StagingColumnsChanged());
 		}
 	}
 }

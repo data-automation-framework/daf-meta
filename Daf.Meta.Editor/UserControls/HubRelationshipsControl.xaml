@@ -60,7 +60,7 @@
 													<Grid.RowDefinitions>
 														<RowDefinition Height="*" />
 													</Grid.RowDefinitions>
-													<ComboBox SelectionChanged="ComboBox_SelectionChanged" Grid.Column="0" HorizontalAlignment="Left" SelectedItem="{Binding Path=StagingColumn}" ItemsSource="{Binding Path=DataContext.StagingColumns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0">
+													<ComboBox SelectionChanged="ComboBox_SelectionChanged" DataContextChanged="ComboBox_DataContextChanged" Grid.Column="0" HorizontalAlignment="Left" ItemsSource="{Binding Path=DataContext.StagingColumns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" SelectedValue="{Binding StagingColumn, Mode=TwoWay, TargetNullValue=null}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0">
 														<!--<ComboBox Grid.Column="0" HorizontalAlignment="Left" SelectedItem="{Binding Path=StagingColumn}" DisplayMemberPath="Name" MinWidth="280" Margin="8, 0, 0, 0">-->
 														<!--<ComboBox.Resources>
 																<CollectionViewSource x:Key="FilteredItems" Source="{Binding ElementName=dataSourceList, Path=SelectedItem.StagingTable.Columns}" Filter="FilteredItems_OnFilter" />

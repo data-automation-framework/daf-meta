@@ -31,20 +31,7 @@ namespace Daf.Meta.Layers
 			HubRelationships.CollectionChanged += HubRelationshipsChanged;
 			LinkRelationships.CollectionChanged += LinkRelationshipsChanged;
 
-			// This cannot go in constructor because the StagingTable has not been initialized when the constructor is called.
-			// What if I put an event in StagingTable that gets triggered every time StagingTable.Columns is re-assigned or has StagingColumns added or removed?
 			ColumnsChanged += (s, e) => { GetColumnsNotInHubsOrLinks(); };
-
-			// Need to make sure that when the list of Hub-/LinkRelationships is originally loaded, DataSource will subscribe to the
-			// ChangedStagingColumn event of each Hub-/LinkMapping.
-
-			//foreach (HubRelationship hubRelationship in HubRelationships)
-			//{
-			//	foreach (HubMapping hubMapping in hubRelationship.Mappings)
-			//	{
-			//		hubMapping.ChangedStagingColumn += ColumnsChanged;
-			//	}
-			//}
 		}
 
 		private string _name; // This is initialized in the constructor of each derived class.
@@ -480,9 +467,9 @@ namespace Daf.Meta.Layers
 
 			columnToRemove.ClearSubscribers();
 
-			OnColumnsChanged();
-
 			StagingTable.Columns.Remove(columnToRemove);
+
+			OnColumnsChanged();
 		}
 
 		public Satellite AddSatellite(string name = "New Satellite")
