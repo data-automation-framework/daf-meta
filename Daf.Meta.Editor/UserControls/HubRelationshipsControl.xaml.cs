@@ -15,7 +15,15 @@ namespace Daf.Meta.Editor
 
 		private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			WeakReferenceMessenger.Default.Send(new StagingColumnsChanged());
+			// This event is called both when a StagingColumn is added/removed from StagingControl AND
+			// when the user changes the selection in the HubRelationshipsControl. It causes binding errors
+			// when StagingColumns are removed, but works as intended when the user manually changes
+			// the ComboBox.SelectedItem.
+
+			if (e.AddedItems.Count == 0) // Case when the SelectedItem switches to null, as the previously bound object is removed from the collection.
+				return;
+			else
+				WeakReferenceMessenger.Default.Send(new StagingColumnsChanged());
 		}
 	}
 }
