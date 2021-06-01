@@ -117,6 +117,9 @@ namespace Daf.Meta.Editor.ViewModels
 			HubRelationships.Remove(hubRelationshipViewModel);
 
 			WeakReferenceMessenger.Default.Send(new RemoveHubRelationship(hubRelationshipViewModel.HubRelationship, dataSource));
+
+			// To repopulate the list of StagingColumnsNotInHubsOrLinks whenever a HubRelationship is removed.
+			WeakReferenceMessenger.Default.Send(new StagingColumnsChanged());
 		}
 	}
 }
