@@ -5,8 +5,6 @@ using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor
 {
-	public sealed class ModifiedRelationships { }
-
 	public sealed class RefreshedMetadata { }
 
 	/// <summary>

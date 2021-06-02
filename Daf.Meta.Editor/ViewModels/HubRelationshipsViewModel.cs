@@ -67,8 +67,8 @@ namespace Daf.Meta.Editor.ViewModels
 
 		public ObservableCollection<StagingColumn>? StagingColumns
 		{
-			// This needs to be fixed so it refers to ColumnViewModels instead, but have to make View Model for DataSource first.
-			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.DataSource.StagingTable?.Columns!); }
+			// Makes available only the StagingColumns that are not already bound to a HubMapping.
+			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.ColumnsNotInHubs!); }
 		}
 
 		private void OpenAddHubRelationshipDialog(Type? windowType)

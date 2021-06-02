@@ -31,6 +31,8 @@ namespace Daf.Meta.Layers
 			HubRelationships.CollectionChanged += HubRelationshipsChanged;
 			LinkRelationships.CollectionChanged += LinkRelationshipsChanged;
 
+			// Both lists need to be updated when columns are changed. May need to split into separate events or add EventArgs.
+			ColumnsChanged += (s, e) => { GetColumnsNotInHubs(); };
 			ColumnsChanged += (s, e) => { GetColumnsNotInHubsOrLinks(); };
 		}
 
@@ -877,6 +879,25 @@ namespace Daf.Meta.Layers
 			return sortedLinkList;
 		}
 
+		private ObservableCollection<StagingColumn> _columnsNotInHubs = new();
+
+		[JsonIgnore]
+		// Why does it insist on it being read only??
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "<Pending>")]
+		public ObservableCollection<StagingColumn> ColumnsNotInHubs
+		{
+			get => _columnsNotInHubs;
+			set
+			{
+				if (_columnsNotInHubs != value)
+				{
+					_columnsNotInHubs = value;
+
+					NotifyPropertyChanged(nameof(ColumnsNotInHubs));
+				}
+			}
+		}
+
 		private ObservableCollection<StagingColumn> _columnsNotInHubsOrLinks = new();
 
 		[JsonIgnore]
@@ -894,6 +915,41 @@ namespace Daf.Meta.Layers
 					NotifyPropertyChanged(nameof(ColumnsNotInHubsOrLinks));
 				}
 			}
+		}
+
+		internal void GetColumnsNotInHubs()
+		{
+			ObservableCollection<StagingColumn> columns = new();
+
+			// Neither of these should ever be null.
+			if (StagingTable == null || StagingTable.Columns == null)
+				throw new InvalidOperationException();
+
+			foreach (StagingColumn stgColumn in StagingTable.Columns)
+			{
+				bool foundInHub = false;
+
+				foreach (HubRelationship relationship in HubRelationships)
+				{
+					foreach (HubMapping mapping in relationship.Mappings)
+					{
+						if (stgColumn == mapping.StagingColumn)
+						{
+							foundInHub = true;
+							break;
+						}
+					}
+
+					if (foundInHub)
+						break;
+				}
+
+				if (!foundInHub)
+					columns.Add(stgColumn);
+			}
+
+			ColumnsNotInHubs = columns;
+			NotifyPropertyChanged(nameof(ColumnsNotInHubs));
 		}
 
 		internal void GetColumnsNotInHubsOrLinks()

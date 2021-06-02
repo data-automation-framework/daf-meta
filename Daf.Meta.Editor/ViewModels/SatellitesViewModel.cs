@@ -26,7 +26,7 @@ namespace Daf.Meta.Editor.ViewModels
 			AddSatelliteCommand = new RelayCommand<Type?>(OpenAddSatelliteDialog);
 			DeleteSatelliteCommand = new RelayCommand(DeleteSatellite, CanDeleteSatellite);
 
-			//WeakReferenceMessenger.Default.Register<SatelliteViewModel, ModifiedRelationships>(this, (r, m) => { ModifiedRelationships(); });
+			//WeakReferenceMessenger.Default.Register<SatelliteViewModel, StagingColumnAddedRemoved>(this, (r, m) => { ModifiedRelationships(); });
 		}
 
 		private ObservableCollection<SatelliteViewModel> _satellites = new();
