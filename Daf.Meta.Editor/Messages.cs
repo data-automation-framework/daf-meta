@@ -218,7 +218,12 @@ namespace Daf.Meta.Editor
 	}
 
 	/// <summary>
-	/// For announcing to subscribers that the list of Staging Colummns not in Hubs or Links has changed.
+	/// For announcing to subscribers that a StagingColumn has been added or removed.
 	/// </summary>
-	public sealed class StagingColumnsChanged { }
+	public sealed class StagingColumnAddedRemoved { }
+
+	/// <summary>
+	/// For announcing to subscribers that a HubMapping on a HubRelationship has changed.
+	/// </summary>
+	public sealed class HubRelationshipChanged { }
 }

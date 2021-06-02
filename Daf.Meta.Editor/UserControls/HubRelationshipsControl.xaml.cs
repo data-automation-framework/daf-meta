@@ -23,7 +23,9 @@ namespace Daf.Meta.Editor
 			if (e.AddedItems.Count == 0) // Case when the SelectedItem switches to null, as the previously bound object is removed from the collection.
 				return;
 			else
-				WeakReferenceMessenger.Default.Send(new StagingColumnsChanged());
+				// This should update the list of AvailableColumns in SatelliteControl only.
+				// The list of all StagingColumns does not need to be updated.
+				WeakReferenceMessenger.Default.Send(new HubRelationshipChanged());
 		}
 	}
 }

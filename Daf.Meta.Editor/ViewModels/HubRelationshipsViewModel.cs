@@ -27,7 +27,8 @@ namespace Daf.Meta.Editor.ViewModels
 			AddHubRelationshipCommand = new RelayCommand<Type?>(OpenAddHubRelationshipDialog);
 			DeleteHubRelationshipCommand = new RelayCommand(OpenDeleteHubRelationshipDialog, CanDeleteHubRelationship);
 
-			WeakReferenceMessenger.Default.Register<HubRelationshipsViewModel, StagingColumnsChanged>(this, (r, m) => OnPropertyChanged(nameof(StagingColumns)));
+			// For updating the combobox dropdown-list of available staging columns. This does NOT need to update when a HubMapping is changed.
+			WeakReferenceMessenger.Default.Register<HubRelationshipsViewModel, StagingColumnAddedRemoved>(this, (r, m) => OnPropertyChanged(nameof(StagingColumns)));
 		}
 
 		private ObservableCollection<HubRelationshipViewModel> _hubRelationships = new();
@@ -119,7 +120,7 @@ namespace Daf.Meta.Editor.ViewModels
 			WeakReferenceMessenger.Default.Send(new RemoveHubRelationship(hubRelationshipViewModel.HubRelationship, dataSource));
 
 			// To repopulate the list of StagingColumnsNotInHubsOrLinks whenever a HubRelationship is removed.
-			WeakReferenceMessenger.Default.Send(new StagingColumnsChanged());
+			WeakReferenceMessenger.Default.Send(new HubRelationshipChanged());
 		}
 	}
 }
