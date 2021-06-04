@@ -275,6 +275,7 @@ namespace Daf.Meta
 				hubMapping.ChangedStagingColumn += (s, e) =>
 				{
 					// I dislike having this method be internal instead of private. Need advice on how to do it better.
+					// TODO: Look closer into this and whether these should be separate events.
 					dataSource.GetColumnsNotInHubsOrLinks();
 				};
 

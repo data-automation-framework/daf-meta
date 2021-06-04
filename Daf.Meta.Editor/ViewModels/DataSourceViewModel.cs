@@ -19,7 +19,6 @@ namespace Daf.Meta.Editor.ViewModels
 			// Forces the binding for ColumnsNotInHubsOrLinks property to update. This needs to happen both when a StagingColumn is added/removed and when a HubMapping is changed.
 			WeakReferenceMessenger.Default.Register<DataSourceViewModel, HubRelationshipChanged>(this, (r, m) =>
 			{
-				OnPropertyChanged(nameof(ColumnsNotInHubs));
 				OnPropertyChanged(nameof(ColumnsNotInHubsOrLinks));
 			});
 
@@ -240,10 +239,6 @@ namespace Daf.Meta.Editor.ViewModels
 		// Used by SatelliteControl to display all StagingColumns not bound to a Hub- or LinkMapping.
 		[Browsable(false)]
 		public ObservableCollection<StagingColumn> ColumnsNotInHubsOrLinks => DataSource.ColumnsNotInHubsOrLinks;
-
-		// Used only by HubRelationshipsControl to ensure that each StagingColumn can only be bound to a single HubRelationship.
-		[Browsable(false)]
-		public ObservableCollection<StagingColumn> ColumnsNotInHubs => DataSource.ColumnsNotInHubs;
 
 		// Preventing the inherited HasErrors property from showing up in the PropertyGrid.
 		[Browsable(false)]
