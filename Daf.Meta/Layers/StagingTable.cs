@@ -8,10 +8,8 @@ namespace Daf.Meta.Layers
 {
 	public class StagingTable
 	{
-		// Deserializing doesn't actually set this, it only adds new columns.
-		// Without a setter the application crashes when loading new data due to the way metadata is refreshed.
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "<Pending>")]
-		public List<StagingColumn> Columns { get; set; } = new();
+		public List<StagingColumn> Columns { get; init; } = new();
 
 		[JsonIgnore]
 		public List<string> ColumnNames

@@ -121,6 +121,7 @@ namespace Daf.Meta.Layers
 				}
 			}
 		}
+
 		protected void OnChangedStagingColumn()
 		{
 			ChangedStagingColumn?.Invoke(this, new EventArgs());
