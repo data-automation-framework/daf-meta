@@ -318,9 +318,9 @@ namespace Daf.Meta.Editor.ViewModels
 					case GraphQlDataSource:
 						viewModels.Add(new GraphQlDataSourceViewModel(dataSource));
 						break;
-					case JsonFileDataSource:
-						viewModels.Add(new JsonFileDataSourceViewModel(dataSource));
-						break;
+					//case JsonFileDataSource:
+					//	viewModels.Add(new JsonFileDataSourceViewModel(dataSource));
+					//	break;
 					case RestDataSource:
 						viewModels.Add(new RestDataSourceViewModel(dataSource));
 						break;
@@ -537,9 +537,9 @@ namespace Daf.Meta.Editor.ViewModels
 				case GraphQlDataSource:
 					DataSources.Add(new GraphQlDataSourceViewModel(dataSource));
 					break;
-				case JsonFileDataSource:
-					DataSources.Add(new JsonFileDataSourceViewModel(dataSource));
-					break;
+				//case JsonFileDataSource:
+				//	DataSources.Add(new JsonFileDataSourceViewModel(dataSource));
+				//	break;
 				case RestDataSource:
 					DataSources.Add(new RestDataSourceViewModel(dataSource));
 					break;

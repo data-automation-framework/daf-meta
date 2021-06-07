@@ -1,20 +1,20 @@
-﻿// SPDX-License-Identifier: MIT
-// Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
+﻿//// SPDX-License-Identifier: MIT
+//// Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
-using Daf.Meta.Layers;
-using Daf.Meta.Layers.DataSources;
+//using Daf.Meta.Layers;
+//using Daf.Meta.Layers.DataSources;
 
-namespace Daf.Meta.Editor.ViewModels
-{
-	public class JsonFileDataSourceViewModel : DataSourceViewModel
-	{
-		private readonly JsonFileDataSource _jsonFileDataSource;
+//namespace Daf.Meta.Editor.ViewModels
+//{
+//	public class JsonFileDataSourceViewModel : DataSourceViewModel
+//	{
+//		private readonly JsonFileDataSource _jsonFileDataSource;
 
-		public JsonFileDataSourceViewModel(DataSource dataSource) : base(dataSource)
-		{
-			_jsonFileDataSource = (JsonFileDataSource)dataSource;
-		}
+//		public JsonFileDataSourceViewModel(DataSource dataSource) : base(dataSource)
+//		{
+//			_jsonFileDataSource = (JsonFileDataSource)dataSource;
+//		}
 
-		public override DataSource DataSource => _jsonFileDataSource;
-	}
-}
+//		public override DataSource DataSource => _jsonFileDataSource;
+//	}
+//}

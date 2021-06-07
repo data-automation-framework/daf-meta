@@ -29,7 +29,6 @@ namespace Daf.Meta.Editor.ViewModels
 
 			// For updating the combobox dropdown-list of available staging columns. This does NOT need to update when a HubMapping is changed.
 			WeakReferenceMessenger.Default.Register<HubRelationshipsViewModel, StagingColumnAddedRemoved>(this, (r, m) => OnPropertyChanged(nameof(StagingColumns)));
-			WeakReferenceMessenger.Default.Register<HubRelationshipsViewModel, HubRelationshipChanged>(this, (r, m) => OnPropertyChanged(nameof(StagingColumns)));
 		}
 
 		private ObservableCollection<HubRelationshipViewModel> _hubRelationships = new();
@@ -63,20 +62,11 @@ namespace Daf.Meta.Editor.ViewModels
 			set
 			{
 				SetProperty(ref _selectedDataSource, value);
-
-				//if (value != null)
-				//{
-				//	HubRelationships = new(value.DataSource.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
-				//}
-
-				//OnPropertyChanged(nameof(StagingColumns));
 			}
 		}
 
 		public ObservableCollection<StagingColumn>? StagingColumns
 		{
-			// This is called 10+ times when ComboBox.SelectionChanged is triggered.. why so many?
-			// Makes available only the StagingColumns that are not already bound to a HubMapping.
 			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.StagingTable?.Columns!); }
 		}
 
