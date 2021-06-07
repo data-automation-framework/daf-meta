@@ -108,7 +108,6 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string _graphQlQuery = "";
 
-		[DataType(DataType.MultilineText)]
 		public string GraphQlQuery
 		{
 			get { return _graphQlQuery; }

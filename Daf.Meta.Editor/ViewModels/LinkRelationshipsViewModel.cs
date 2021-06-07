@@ -73,7 +73,6 @@ namespace Daf.Meta.Editor.ViewModels
 
 		public ObservableCollection<StagingColumn>? StagingColumns
 		{
-			// TODO: Do I need these to be ViewModels? Leaning towards yes.
 			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.StagingTable?.Columns!); }
 		}
 

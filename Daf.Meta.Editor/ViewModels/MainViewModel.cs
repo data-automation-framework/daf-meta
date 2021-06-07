@@ -331,7 +331,7 @@ namespace Daf.Meta.Editor.ViewModels
 						viewModels.Add(new SqlDataSourceViewModel(dataSource));
 						break;
 					default:
-						throw new InvalidOperationException("Invalid connection type");
+						throw new InvalidOperationException("Invalid Data Source type");
 				}
 			}
 
@@ -488,8 +488,6 @@ namespace Daf.Meta.Editor.ViewModels
 
 			Connection? connection = null;
 
-			// TODO: This could be changed to a switch, but only if there's a Connection property on DataSource/DataSourceViewModel.
-			// Does every DataSource type need a connection?
 			if (SelectedDataSourceSingle.DataSource is RestDataSource rest)
 			{
 				connection = rest.Connection;
@@ -513,7 +511,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 			if (_windowService.ShowDialog(windowType, vm))
 			{
-				// Temporary solution so as to not have to crash the program.
+				// Attempt to clone the Data Source. Catch the error and inform the user if they attempt to clone a Data Source type which does not have the Clone-method implemented.
 				try
 				{
 					DataSource clonedDataSource = Model.CopyDataSource(SelectedDataSourceSingle.DataSource, vm.Name, vm.SourceSystem, vm.Tenant, vm.Connection!);

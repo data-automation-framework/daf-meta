@@ -370,11 +370,8 @@ namespace Daf.Meta.Layers
 		}
 
 		public ObservableCollection<HubRelationship> HubRelationships { get; } = new();
-
 		public ObservableCollection<LinkRelationship> LinkRelationships { get; } = new();
-
 		public ObservableCollection<Satellite> Satellites { get; } = new();
-
 		public LoadTable? LoadTable { get; set; } = new();
 
 		private StagingTable? _stagingTable = new();
@@ -881,7 +878,6 @@ namespace Daf.Meta.Layers
 		private ObservableCollection<StagingColumn> _columnsNotInHubsOrLinks = new();
 
 		[JsonIgnore]
-		// Why does it insist on it being read only??
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "<Pending>")]
 		public ObservableCollection<StagingColumn> ColumnsNotInHubsOrLinks
 		{
@@ -945,10 +941,9 @@ namespace Daf.Meta.Layers
 				if (!foundInHubOrLink)
 					columns.Add(stgColumn);
 			}
-			// this does not need to run when adding a new relationship, because the default stagingcolumn is null.
+
 			ColumnsNotInHubsOrLinks = columns;
 			NotifyPropertyChanged(nameof(ColumnsNotInHubsOrLinks));
-			//return columns;
 		}
 
 		[JsonIgnore]

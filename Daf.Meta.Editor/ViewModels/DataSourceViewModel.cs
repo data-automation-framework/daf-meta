@@ -66,7 +66,6 @@ namespace Daf.Meta.Editor.ViewModels
 		// ItemsSource for SourceSystems.
 		public ObservableCollection<SourceSystem> SourceSystems => DataSource.SourceSystems;
 
-
 		[Category("General")]
 		[ItemsSourceProperty("SourceSystems")]
 		[DisplayMemberPath("Name")]
@@ -219,7 +218,7 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		// TODO: This is necessary but should be a property on SatellitesViewModel instead.
+		// Used by SatelliteControl to display the selected BusinessKey.
 		[Browsable(false)]
 		public BusinessKey? BusinessKey
 		{
