@@ -387,11 +387,18 @@ namespace Daf.Meta.Editor.ViewModels
 
 				if (result == MessageBoxResult.Yes)
 				{
-					string dataSourcePath = Path.Combine(MetadataPath, "DataSources", $"{selectedDataSource.Name}.json");
+					string dataSourcePath = Path.Combine(MetadataPath, "DataSources", selectedDataSource.SourceSystem.ShortName, selectedDataSource.Tenant.ShortName, $"{selectedDataSource.Name}.json");
 
-					Model.RemoveDataSource(selectedDataSource);
+					if (File.Exists(dataSourcePath))
+					{
+						Model.RemoveDataSource(selectedDataSource);
 
-					File.Delete(dataSourcePath);
+						File.Delete(dataSourcePath);
+					}
+					else
+					{
+						MessageBox.Show($"The specified file path does not exist. Data Source could not be deleted.\n\nFile path: {dataSourcePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					}
 				}
 			}
 		}
