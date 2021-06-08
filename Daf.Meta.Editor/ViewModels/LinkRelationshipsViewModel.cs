@@ -26,6 +26,8 @@ namespace Daf.Meta.Editor.ViewModels
 
 			AddLinkRelationshipCommand = new RelayCommand<Type?>(OpenAddLinkRelationshipDialog);
 			DeleteLinkRelationshipCommand = new RelayCommand(OpenDeleteLinkRelationshipDialog, CanDeleteLinkRelationship);
+
+			WeakReferenceMessenger.Default.Register<LinkRelationshipsViewModel, StagingColumnAddedRemoved>(this, (r, m) => OnPropertyChanged(nameof(StagingColumns)));
 		}
 
 		private ObservableCollection<LinkRelationshipViewModel>? _linkRelationships;

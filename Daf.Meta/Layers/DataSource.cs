@@ -18,7 +18,7 @@ namespace Daf.Meta.Layers
 {
 	public abstract class DataSource : PropertyChangedBaseClass, IComparable<DataSource>
 	{
-		internal event EventHandler? ColumnsChanged;
+		internal event EventHandler? StagingColumnAddedRemoved;
 
 		protected DataSource(string name, SourceSystem sourceSystem, Tenant tenant)
 		{
@@ -32,7 +32,7 @@ namespace Daf.Meta.Layers
 			LinkRelationships.CollectionChanged += LinkRelationshipsChanged;
 
 			// Both lists need to be updated when columns are changed. May need to split into separate events or add EventArgs.
-			ColumnsChanged += (s, e) => { GetColumnsNotInHubsOrLinks(); };
+			StagingColumnAddedRemoved += (s, e) => { GetColumnsNotInHubsOrLinks(); };
 		}
 
 		private string _name; // This is initialized in the constructor of each derived class.
@@ -358,7 +358,7 @@ namespace Daf.Meta.Layers
 
 		protected void OnColumnsChanged()
 		{
-			ColumnsChanged?.Invoke(this, new EventArgs());
+			StagingColumnAddedRemoved?.Invoke(this, new EventArgs());
 		}
 
 		public StagingColumn? GetBusinessKey()

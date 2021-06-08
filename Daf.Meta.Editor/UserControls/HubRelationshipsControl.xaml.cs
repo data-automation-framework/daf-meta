@@ -25,7 +25,7 @@ namespace Daf.Meta.Editor
 			else
 				// This should update the list of AvailableColumns in SatelliteControl only.
 				// The list of all StagingColumns does not need to be updated.
-				WeakReferenceMessenger.Default.Send(new HubRelationshipChanged());
+				WeakReferenceMessenger.Default.Send(new HubLinkRelationshipChanged());
 		}
 	}
 }

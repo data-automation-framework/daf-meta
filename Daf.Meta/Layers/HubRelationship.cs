@@ -77,6 +77,9 @@ namespace Daf.Meta.Layers
 
 	public class HubMapping : PropertyChangedBaseClass
 	{
+		// Event used for when the StagingColumn associated with a HubMapping is changed.
+		// Currently only used to update the list of ColumnsNotInLinksOrHubs in DataSource.cs.
+		// Subscribed to in Model.cs when a new HubMapping is created.
 		internal event EventHandler? ChangedStagingColumn;
 
 		public HubMapping(StagingColumn hubColumn)

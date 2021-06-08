@@ -223,5 +223,5 @@ namespace Daf.Meta.Editor
 	/// <summary>
 	/// For announcing to subscribers that a HubMapping on a HubRelationship has changed.
 	/// </summary>
-	public sealed class HubRelationshipChanged { }
+	public sealed class HubLinkRelationshipChanged { }
 }

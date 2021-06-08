@@ -330,6 +330,12 @@ namespace Daf.Meta
 					linkRelationship.NotifyPropertyChanged("LinkMapping");
 				};
 
+				linkMapping.ChangedStagingColumn += (s, e) =>
+				{
+					// I dislike having this method be internal instead of private. Need advice on how to do it better.
+					dataSource.GetColumnsNotInHubsOrLinks();
+				};
+
 				linkRelationship.Mappings.Add(linkMapping);
 			}
 
@@ -1059,6 +1065,12 @@ namespace Daf.Meta
 										linkMapping.PropertyChanged += (s, e) =>
 										{
 											linkRelationship.NotifyPropertyChanged("LinkMapping");
+										};
+
+										linkMapping.ChangedStagingColumn += (s, e) =>
+										{
+											// I dislike having this method be internal instead of private. Need advice on how to do it better.
+											dataSource.GetColumnsNotInHubsOrLinks();
 										};
 
 										linkRelationship.Mappings.Add(linkMapping);

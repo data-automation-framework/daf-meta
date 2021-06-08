@@ -17,7 +17,7 @@ namespace Daf.Meta.Editor.ViewModels
 			DataSource = dataSource;
 
 			// Forces the binding for ColumnsNotInHubsOrLinks property to update. This needs to happen both when a StagingColumn is added/removed and when a HubMapping is changed.
-			WeakReferenceMessenger.Default.Register<DataSourceViewModel, HubRelationshipChanged>(this, (r, m) => OnPropertyChanged(nameof(ColumnsNotInHubsOrLinks)));
+			WeakReferenceMessenger.Default.Register<DataSourceViewModel, HubLinkRelationshipChanged>(this, (r, m) => OnPropertyChanged(nameof(ColumnsNotInHubsOrLinks)));
 
 			WeakReferenceMessenger.Default.Register<DataSourceViewModel, StagingColumnAddedRemoved>(this, (r, m) => OnPropertyChanged(nameof(ColumnsNotInHubsOrLinks)));
 		}
