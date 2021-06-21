@@ -1008,7 +1008,6 @@ namespace Daf.Meta
 
 										hubMapping.ChangedStagingColumn += (s, e) =>
 										{
-											// I dislike having this method be internal instead of private. Need advice on how to do it better.
 											dataSource.GetColumnsNotInHubsOrLinks();
 										};
 
@@ -1069,7 +1068,6 @@ namespace Daf.Meta
 
 										linkMapping.ChangedStagingColumn += (s, e) =>
 										{
-											// I dislike having this method be internal instead of private. Need advice on how to do it better.
 											dataSource.GetColumnsNotInHubsOrLinks();
 										};
 
