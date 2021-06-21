@@ -59,7 +59,7 @@
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
-							<ComboBox Grid.Column="0" MinWidth="240" SelectedItem="{Binding Path=LoadColumn}" ItemsSource="{Binding Path=DataContext.SelectedDataSource.LoadTable.Columns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" DisplayMemberPath="Name" />
+							<ComboBox Grid.Column="0" MinWidth="240" SelectedItem="{Binding Path=LoadColumn}" ItemsSource="{Binding Path=DataContext.SelectedDataSource.DataSource.LoadTable.Columns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" DisplayMemberPath="Name" />
 							<TextBox Grid.Column="1" HorizontalAlignment="Left" Text="{Binding Path=Name}" MinWidth="240" Margin="8, 0, 0, 0" PreviewGotKeyboardFocus="TextBox_PreviewGotKeyboardFocus" PreviewKeyDown="TextBox_PreviewKeyDown" />
 							<Label Grid.Column="2" HorizontalAlignment="Left" Content="{Binding Path=DataTypeString}" FontFamily="Consolas" Margin="8, 0, 0, 0" />
 							<Image Grid.Column="3" Source="/Icons/page_white_code.png" Margin="8, 0, 0, 0">

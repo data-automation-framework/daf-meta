@@ -3,10 +3,10 @@
 
 using System;
 using System.Collections.ObjectModel;
+using Daf.Meta.Layers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
-using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -26,7 +26,7 @@ namespace Daf.Meta.Editor.ViewModels
 			AddSatelliteCommand = new RelayCommand<Type?>(OpenAddSatelliteDialog);
 			DeleteSatelliteCommand = new RelayCommand(DeleteSatellite, CanDeleteSatellite);
 
-			//WeakReferenceMessenger.Default.Register<SatelliteViewModel, ModifiedRelationships>(this, (r, m) => { ModifiedRelationships(); });
+			//WeakReferenceMessenger.Default.Register<SatelliteViewModel, StagingColumnAddedRemoved>(this, (r, m) => { ModifiedRelationships(); });
 		}
 
 		private ObservableCollection<SatelliteViewModel> _satellites = new();
@@ -52,9 +52,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSource? _selectedDataSource;
+		private DataSourceViewModel? _selectedDataSource;
 
-		public DataSource? SelectedDataSource
+		public DataSourceViewModel? SelectedDataSource
 		{
 			get => _selectedDataSource;
 			set
@@ -89,7 +89,7 @@ namespace Daf.Meta.Editor.ViewModels
 			{
 				AddSatelliteViewModel vm = (AddSatelliteViewModel)dataContext;
 
-				AddSatellite(vm.Name, SelectedDataSource);
+				AddSatellite(vm.Name, SelectedDataSource.DataSource);
 			}
 		}
 
@@ -120,7 +120,7 @@ namespace Daf.Meta.Editor.ViewModels
 				throw new InvalidOperationException();
 
 			// Call on SelectedDataSource to remove the Satellite.
-			SelectedDataSource.RemoveSatellite(SelectedSatellite.Satellite);
+			SelectedDataSource.DataSource.RemoveSatellite(SelectedSatellite.Satellite);
 
 			// Remove the SatelliteViewModel in Satellites.
 			Satellites.Remove(SelectedSatellite);
