@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Daf.Meta.Layers;
 using Daf.Meta.Editor.ViewModels;
 
 namespace Daf.Meta.Editor.Windows
@@ -61,7 +60,7 @@ namespace Daf.Meta.Editor.Windows
 		{
 			MainViewModel viewModel = (MainViewModel)DataContext;
 
-			List<DataSource>? dataSources = dataSourceList.SelectedItems.Cast<DataSource>().ToList();
+			List<DataSourceViewModel>? dataSources = dataSourceList.SelectedItems.Cast<DataSourceViewModel>().ToList();
 
 			viewModel.SelectedDataSources = dataSources;
 			viewModel.SelectedDataSourceSingle = dataSources.FirstOrDefault();

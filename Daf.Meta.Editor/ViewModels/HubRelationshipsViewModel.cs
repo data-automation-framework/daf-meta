@@ -26,6 +26,9 @@ namespace Daf.Meta.Editor.ViewModels
 
 			AddHubRelationshipCommand = new RelayCommand<Type?>(OpenAddHubRelationshipDialog);
 			DeleteHubRelationshipCommand = new RelayCommand(OpenDeleteHubRelationshipDialog, CanDeleteHubRelationship);
+
+			// For updating the combobox dropdown-list of available staging columns. This does NOT need to update when a HubMapping is changed.
+			WeakReferenceMessenger.Default.Register<HubRelationshipsViewModel, StagingColumnAddedRemoved>(this, (r, m) => OnPropertyChanged(nameof(StagingColumns)));
 		}
 
 		private ObservableCollection<HubRelationshipViewModel> _hubRelationships = new();
@@ -51,9 +54,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSource? _selectedDataSource;
+		private DataSourceViewModel? _selectedDataSource;
 
-		public DataSource? SelectedDataSource
+		public DataSourceViewModel? SelectedDataSource
 		{
 			get => _selectedDataSource;
 			set
@@ -64,7 +67,6 @@ namespace Daf.Meta.Editor.ViewModels
 
 		public ObservableCollection<StagingColumn>? StagingColumns
 		{
-			// This needs to be fixed so it refers to ColumnViewModels instead, but have to make View Model for DataSource first.
 			get { return new ObservableCollection<StagingColumn>(SelectedDataSource?.StagingTable?.Columns!); }
 		}
 
@@ -82,7 +84,7 @@ namespace Daf.Meta.Editor.ViewModels
 			{
 				Hub hub = ((AddHubRelationshipViewModel)dataContext!).SelectedHub!;
 
-				AddHubRelationship(hub, SelectedDataSource);
+				AddHubRelationship(hub, SelectedDataSource.DataSource);
 			}
 		}
 
@@ -104,7 +106,7 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedHubRelationship == null || SelectedDataSource == null)
 				throw new InvalidOperationException("SelectedHubRelationship or SelectedDataSource was null!");
 
-			DeleteHubRelationship(SelectedHubRelationship, SelectedDataSource);
+			DeleteHubRelationship(SelectedHubRelationship, SelectedDataSource.DataSource);
 		}
 
 		private void DeleteHubRelationship(HubRelationshipViewModel hubRelationshipViewModel, DataSource dataSource)
@@ -115,6 +117,9 @@ namespace Daf.Meta.Editor.ViewModels
 			HubRelationships.Remove(hubRelationshipViewModel);
 
 			WeakReferenceMessenger.Default.Send(new RemoveHubRelationship(hubRelationshipViewModel.HubRelationship, dataSource));
+
+			// To repopulate the list of StagingColumnsNotInHubsOrLinks whenever a HubRelationship is removed.
+			WeakReferenceMessenger.Default.Send(new HubLinkRelationshipChanged());
 		}
 	}
 }

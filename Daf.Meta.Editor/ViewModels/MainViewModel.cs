@@ -108,7 +108,7 @@ namespace Daf.Meta.Editor.ViewModels
 				IsDirty = true;
 			};
 
-			_dataSources = Model.DataSources;
+			_dataSources = GetDataSources(Model.DataSources);
 
 			HubsVM = new HubsViewModel
 			{
@@ -141,17 +141,17 @@ namespace Daf.Meta.Editor.ViewModels
 		}
 
 
-		private ObservableCollection<DataSource> _dataSources;
+		private ObservableCollection<DataSourceViewModel> _dataSources;
 
-		public ObservableCollection<DataSource> DataSources
+		public ObservableCollection<DataSourceViewModel> DataSources
 		{
 			get { return _dataSources; }
 			set { SetProperty(ref _dataSources, value); }
 		}
 
-		private List<DataSource>? _selectedDataSources;
+		private List<DataSourceViewModel>? _selectedDataSources;
 
-		public List<DataSource>? SelectedDataSources
+		public List<DataSourceViewModel>? SelectedDataSources
 		{
 			get { return _selectedDataSources; }
 			set
@@ -181,9 +181,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSource? _selectedDataSourceSingle;
+		private DataSourceViewModel? _selectedDataSourceSingle;
 
-		public DataSource? SelectedDataSourceSingle
+		public DataSourceViewModel? SelectedDataSourceSingle
 		{
 			get
 			{
@@ -202,17 +202,18 @@ namespace Daf.Meta.Editor.ViewModels
 
 				HubRelationshipsVM.SelectedDataSource = value;
 
+				// TODO: I think this ought to be set from inside HubRelationshipsVM instead.
 				if (value != null)
-					HubRelationshipsVM.HubRelationships = new(value.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
+					HubRelationshipsVM.HubRelationships = new(value.DataSource.HubRelationships.Select(hubRelationship => new HubRelationshipViewModel(hubRelationship)));
 
 				LinkRelationshipsVM.SelectedDataSource = value;
 
 				if (value != null)
-					LinkRelationshipsVM.LinkRelationships = new(value.LinkRelationships.Select(linkRelationship => new LinkRelationshipViewModel(linkRelationship)));
+					LinkRelationshipsVM.LinkRelationships = new(value.DataSource.LinkRelationships.Select(linkRelationship => new LinkRelationshipViewModel(linkRelationship)));
 
 				SatellitesVM.SelectedDataSource = value;
 				if (value != null)
-					SatellitesVM.Satellites = new(value.Satellites.Select(satellite => new SatelliteViewModel(satellite)));
+					SatellitesVM.Satellites = new(value.DataSource.Satellites.Select(satellite => new SatelliteViewModel(satellite)));
 			}
 		}
 
@@ -243,7 +244,7 @@ namespace Daf.Meta.Editor.ViewModels
 				IsDirty = true;
 			};
 
-			DataSources = Model.DataSources;
+			DataSources = GetDataSources(Model.DataSources);
 
 			HubsVM.Hubs = new(Model.Hubs.Select(hub => new HubViewModel(hub)));
 			LinksVM.Links = new(Model.Links.Select(link => new LinkViewModel(link)));
@@ -297,6 +298,40 @@ namespace Daf.Meta.Editor.ViewModels
 						break;
 					default:
 						throw new InvalidOperationException("Invalid connection type");
+				}
+			}
+
+			return viewModels;
+		}
+
+		internal static ObservableCollection<DataSourceViewModel> GetDataSources(ObservableCollection<DataSource> dataSources)
+		{
+			ObservableCollection<DataSourceViewModel> viewModels = new();
+
+			foreach (DataSource dataSource in dataSources)
+			{
+				switch (dataSource)
+				{
+					case FlatFileDataSource:
+						viewModels.Add(new FlatFileDataSourceViewModel(dataSource));
+						break;
+					case GraphQlDataSource:
+						viewModels.Add(new GraphQlDataSourceViewModel(dataSource));
+						break;
+					//case JsonFileDataSource:
+					//	viewModels.Add(new JsonFileDataSourceViewModel(dataSource));
+					//	break;
+					case RestDataSource:
+						viewModels.Add(new RestDataSourceViewModel(dataSource));
+						break;
+					case ScriptDataSource:
+						viewModels.Add(new ScriptDataSourceViewModel(dataSource));
+						break;
+					case SqlDataSource:
+						viewModels.Add(new SqlDataSourceViewModel(dataSource));
+						break;
+					default:
+						throw new InvalidOperationException("Invalid Data Source type");
 				}
 			}
 
@@ -360,6 +395,8 @@ namespace Daf.Meta.Editor.ViewModels
 				}
 
 				Model.AddDataSource(source);
+
+				AddDataSourceViewModel(source);
 			}
 		}
 
@@ -375,7 +412,7 @@ namespace Daf.Meta.Editor.ViewModels
 		{
 			if (SelectedDataSources!.FirstOrDefault() != null)
 			{
-				DataSource selectedDataSource = SelectedDataSources!.FirstOrDefault()!;
+				DataSourceViewModel selectedDataSource = SelectedDataSources!.FirstOrDefault()!;
 
 				if (MetadataPath == null)
 					throw new ArgumentException("MetadataPath is null in RemoveDataSource_Click");
@@ -422,12 +459,12 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedDataSourceSingle == null)
 				throw new InvalidOperationException();
 
-			if (SelectedDataSourceSingle.StagingTable?.Columns.Count > 0 || SelectedDataSourceSingle.LoadTable?.Columns.Count > 0)
+			if (SelectedDataSourceSingle.DataSource.StagingTable?.Columns.Count > 0 || SelectedDataSourceSingle.DataSource.LoadTable?.Columns.Count > 0)
 			{
 				if (_windowService.ShowDialog(windowType, out _))
 				{
-					SelectedDataSourceSingle.LoadTable?.Columns.Clear();
-					SelectedDataSourceSingle.StagingTable?.Columns.Clear();
+					SelectedDataSourceSingle.DataSource.LoadTable?.Columns.Clear();
+					SelectedDataSourceSingle.DataSource.StagingTable?.Columns.Clear();
 				}
 				else
 					return; // If the user didn't click OK, return early.
@@ -435,7 +472,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 			try
 			{
-				SelectedDataSourceSingle.GetMetadata();
+				SelectedDataSourceSingle.DataSource.GetMetadata();
 
 				WeakReferenceMessenger.Default.Send(new RefreshedMetadata());
 			}
@@ -455,15 +492,15 @@ namespace Daf.Meta.Editor.ViewModels
 
 			Connection? connection = null;
 
-			if (SelectedDataSourceSingle is RestDataSource rest)
+			if (SelectedDataSourceSingle.DataSource is RestDataSource rest)
 			{
 				connection = rest.Connection;
 			}
-			else if (SelectedDataSourceSingle is GraphQlDataSource graphQl)
+			else if (SelectedDataSourceSingle.DataSource is GraphQlDataSource graphQl)
 			{
 				connection = graphQl.Connection;
 			}
-			else if (SelectedDataSourceSingle is SqlDataSource sql)
+			else if (SelectedDataSourceSingle.DataSource is SqlDataSource sql)
 			{
 				connection = sql.Connection;
 			}
@@ -478,36 +515,44 @@ namespace Daf.Meta.Editor.ViewModels
 
 			if (_windowService.ShowDialog(windowType, vm))
 			{
-				DataSource clonedDataSource = SelectedDataSourceSingle.Clone();
-
-				clonedDataSource.Name = vm.Name;
-				clonedDataSource.SourceSystem = vm.SourceSystem;
-				clonedDataSource.Tenant = vm.Tenant;
-
-				// Replace names with new ones
-				clonedDataSource.FileName = $"{clonedDataSource.Tenant.ShortName}_{clonedDataSource.Name}";
-				clonedDataSource.QualifiedName = $"{clonedDataSource.SourceSystem.ShortName}_{clonedDataSource.FileName}";
-
-				foreach (Satellite cloneSatellite in clonedDataSource.Satellites)
+				// Attempt to clone the Data Source. Catch the error and inform the user if they attempt to clone a Data Source type which does not have the Clone-method implemented.
+				try
 				{
-					cloneSatellite.Name = cloneSatellite.Name.Replace(SelectedDataSourceSingle.SourceSystem.ShortName, clonedDataSource.SourceSystem.ShortName);
-					cloneSatellite.Name = cloneSatellite.Name.Replace(SelectedDataSourceSingle.FileName!, clonedDataSource.FileName);
-				}
+					DataSource clonedDataSource = Model.CopyDataSource(SelectedDataSourceSingle.DataSource, vm.Name, vm.SourceSystem, vm.Tenant, vm.Connection!);
 
-				if (clonedDataSource is RestDataSource restSource)
-				{
-					restSource.Connection = (RestConnection)vm.Connection!;
+					AddDataSourceViewModel(clonedDataSource);
 				}
-				else if (clonedDataSource is GraphQlDataSource graphQlSource)
+				catch (NotImplementedException)
 				{
-					graphQlSource.Connection = (GraphQlConnection)vm.Connection!;
+					MessageBox.Show($"Clone method not implemented for Data Source Type: {SelectedDataSourceSingle.DataSource.DataSourceType}", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
-				else if (clonedDataSource is SqlDataSource sqlSource)
-				{
-					sqlSource.Connection = (OleDBConnection)vm.Connection!;
-				}
+			}
+		}
 
-				Model.AddDataSource(clonedDataSource);
+		private void AddDataSourceViewModel(DataSource dataSource)
+		{
+			switch (dataSource)
+			{
+				case FlatFileDataSource:
+					DataSources.Add(new FlatFileDataSourceViewModel(dataSource));
+					break;
+				case GraphQlDataSource:
+					DataSources.Add(new GraphQlDataSourceViewModel(dataSource));
+					break;
+				//case JsonFileDataSource:
+				//	DataSources.Add(new JsonFileDataSourceViewModel(dataSource));
+				//	break;
+				case RestDataSource:
+					DataSources.Add(new RestDataSourceViewModel(dataSource));
+					break;
+				case ScriptDataSource:
+					DataSources.Add(new ScriptDataSourceViewModel(dataSource));
+					break;
+				case SqlDataSource:
+					DataSources.Add(new SqlDataSourceViewModel(dataSource));
+					break;
+				default:
+					throw new InvalidOperationException("Invalid connection type");
 			}
 		}
 

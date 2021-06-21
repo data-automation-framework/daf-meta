@@ -29,7 +29,7 @@ namespace Daf.Meta.Layers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "We need at least an init setter in order to support deserialization.")]
-		public ObservableCollection<StagingColumn> BusinessKeys { get; init; } = new ObservableCollection<StagingColumn>();
+		public ObservableCollection<StagingColumn> BusinessKeys { get; init; } = new();
 
 		/// <summary>
 		/// Adds a new StagingColumn to <see cref="BusinessKeys">BusinessKeys</see>.

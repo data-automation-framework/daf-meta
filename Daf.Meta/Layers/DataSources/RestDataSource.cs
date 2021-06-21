@@ -9,7 +9,6 @@ using Dahomey.Json.Attributes;
 using Daf.Meta.Interfaces;
 using Daf.Meta.JsonConverters;
 using Daf.Meta.Layers.Connections;
-using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Layers.DataSources
 {
@@ -21,18 +20,12 @@ namespace Daf.Meta.Layers.DataSources
 			_connection = connection;
 		}
 
-		[Browsable(false)]
 		[JsonIgnore]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
 		public ObservableCollection<Connection> Connections { get { return Model.Instance.Connections; } }
 
 		private RestConnection _connection;
 
-		[Category("REST")]
-		[SelectorStyle(SelectorStyle.ComboBox)]
-		[ItemsSourceProperty("Connections")]
-		[DisplayMemberPath("Name")]
-		[SortIndex(100)]
 		[JsonConverter(typeof(RestConnectionConverter))]
 		public RestConnection Connection
 		{
@@ -50,10 +43,6 @@ namespace Daf.Meta.Layers.DataSources
 
 		private uint _connectionRetryAttempts;
 
-		[Category("REST")]
-		[SortIndex(100)]
-		[Spinnable(1, 10)]
-		[Width(60)]
 		public uint ConnectionRetryAttempts
 		{
 			get { return _connectionRetryAttempts; }
@@ -70,10 +59,6 @@ namespace Daf.Meta.Layers.DataSources
 
 		private uint _connectionRetryMinutes;
 
-		[Category("REST")]
-		[SortIndex(100)]
-		[Spinnable(1, 10)]
-		[Width(60)]
 		public uint ConnectionRetryMinutes
 		{
 			get { return _connectionRetryMinutes; }
@@ -90,8 +75,6 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _relativeUrl;
 
-		[Category("REST")]
-		[SortIndex(100)]
 		public string? RelativeUrl
 		{
 			get { return _relativeUrl; }
@@ -108,8 +91,6 @@ namespace Daf.Meta.Layers.DataSources
 
 		private bool _saveCookie;
 
-		[Category("REST")]
-		[SortIndex(100)]
 		public bool SaveCookie
 		{
 			get { return _saveCookie; }
@@ -126,8 +107,6 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _customScriptPath;
 
-		[Category("REST")]
-		[SortIndex(100)]
 		public string? CustomScriptPath
 		{
 			get { return _customScriptPath; }
@@ -142,15 +121,10 @@ namespace Daf.Meta.Layers.DataSources
 			}
 		}
 
-		[Category("REST")]
-		[VisibleBy("Authorization", HttpAuthorization.Token)]
-		[SortIndex(100)]
 		public List<KeyValue> Parameters { get; } = new();
 
 		private string? _destinationEncoding;
 
-		[Category("General")]
-		[VisibleBy(nameof(DestinationType), DestinationType.Blob)]
 		public string? DestinationEncoding
 		{
 			get { return _destinationEncoding; }
@@ -168,8 +142,6 @@ namespace Daf.Meta.Layers.DataSources
 
 		private bool _mergeToBlob;
 
-		[Category("General")]
-		[VisibleBy(nameof(DestinationType), DestinationType.Blob)]
 		public bool MergeToBlob
 		{
 			get { return _mergeToBlob; }
@@ -186,11 +158,6 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _incrementalExpression;
 
-		[Category("REST")]
-		[Description(
-			"Azure Data Factory expression that should evaluate to HTTP parameters relevant to incremental filtering." +
-			"The text '{incremental}' will be replaced with the output column name of the IncrementalQuery SQL statement." +
-			"The text '{load}' will be replaced with the load column corresponding to IncrementalStagingColumn.")]
 		public string? IncrementalExpression
 		{
 			get { return _incrementalExpression; }
@@ -207,8 +174,6 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _collectionReference;
 
-		[Category("REST")]
-		[SortIndex(100)]
 		public string? CollectionReference
 		{
 			get { return _collectionReference; }
@@ -225,8 +190,6 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _paginationNextLink;
 
-		[Category("REST")]
-		[SortIndex(100)]
 		public string? PaginationNextLink
 		{
 			get { return _paginationNextLink; }
@@ -243,8 +206,6 @@ namespace Daf.Meta.Layers.DataSources
 
 		private bool _paginationLinkIsRelative;
 
-		[Category("REST")]
-		[SortIndex(100)]
 		public bool PaginationLinkIsRelative
 		{
 			get { return _paginationLinkIsRelative; }
