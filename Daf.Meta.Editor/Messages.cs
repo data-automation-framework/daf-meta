@@ -5,8 +5,6 @@ using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor
 {
-	public sealed class ModifiedRelationships { }
-
 	public sealed class RefreshedMetadata { }
 
 	/// <summary>
@@ -216,4 +214,14 @@ namespace Daf.Meta.Editor
 		public LinkRelationship LinkRelationship { get; }
 		public DataSource DataSource { get; }
 	}
+
+	/// <summary>
+	/// For announcing to subscribers that a StagingColumn has been added or removed.
+	/// </summary>
+	public sealed class StagingColumnAddedRemoved { }
+
+	/// <summary>
+	/// For announcing to subscribers that a HubMapping on a HubRelationship has changed.
+	/// </summary>
+	public sealed class HubLinkRelationshipChanged { }
 }

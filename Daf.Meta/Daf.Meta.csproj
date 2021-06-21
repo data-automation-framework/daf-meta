@@ -15,6 +15,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Layers\DataSources\JsonFileDataSource.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Dahomey.Json" Version="1.11.1" />
     <PackageReference Include="LumenWorksCsvReader" Version="4.0.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.3" />
