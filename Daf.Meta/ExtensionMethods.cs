@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Daf.Meta
 {
-	public static class Extensions
+	public static class ExtensionMethods
 	{
 		public static void AddSorted<T>(this IList<T> list, T item, IComparer<T>? comparer = null)
 		{
