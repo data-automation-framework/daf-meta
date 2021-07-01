@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -28,7 +29,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 			if (_selectedDataSource != null)
 			{
-				foreach (StagingColumn column in SelectedDataSource!.DataSource.StagingTable!.Columns)
+				foreach (StagingColumn column in SelectedDataSource!.StagingTable!.Columns)
 				{
 					StagingColumnViewModel columnViewModel = new(column);
 					StagingColumns.Add(columnViewModel);
@@ -38,9 +39,9 @@ namespace Daf.Meta.Editor.ViewModels
 
 		public ObservableCollection<StagingColumnViewModel> StagingColumns { get; } = new();
 
-		private List<DataSourceViewModel>? _selectedDataSources;
+		private List<DataSource>? _selectedDataSources;
 
-		public List<DataSourceViewModel>? SelectedDataSources
+		public List<DataSource>? SelectedDataSources
 		{
 			get { return _selectedDataSources; }
 			set
@@ -49,9 +50,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSourceViewModel? _selectedDataSource;
+		private DataSource? _selectedDataSource;
 
-		public DataSourceViewModel? SelectedDataSource
+		public DataSource? SelectedDataSource
 		{
 			get
 			{
@@ -65,7 +66,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 				if (_selectedDataSource != null)
 				{
-					foreach (StagingColumn column in SelectedDataSource!.DataSource.StagingTable!.Columns)
+					foreach (StagingColumn column in SelectedDataSource!.StagingTable!.Columns)
 					{
 						StagingColumnViewModel columnViewModel = new(column);
 						StagingColumns.Add(columnViewModel);
@@ -103,12 +104,11 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedDataSource == null)
 				throw new InvalidOperationException();
 
-			StagingColumn stagingColumn = SelectedDataSource.DataSource.AddStagingColumn();
+			StagingColumn stagingColumn = SelectedDataSource.AddStagingColumn();
 
-			// Add new StagingColumnViewModel passing the new StagingColumn as an argument.
-			StagingColumns.Add(new StagingColumnViewModel(stagingColumn));
-
-			WeakReferenceMessenger.Default.Send(new StagingColumnAddedRemoved());
+			// Create a new view model column and add it to the list.
+			StagingColumnViewModel stagingColumnViewModel = new(stagingColumn);
+			StagingColumns.Add(stagingColumnViewModel);
 		}
 
 		private bool CanDeleteStagingColumn()
@@ -124,13 +124,10 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedDataSource == null || SelectedColumn == null)
 				throw new InvalidOperationException();
 
-			SelectedDataSource.DataSource.RemoveStagingColumn(SelectedColumn.StagingColumn);
+			SelectedDataSource.RemoveStagingColumn(SelectedColumn.StagingColumn);
 
 			// Remove the view model column from the list.
 			StagingColumns.Remove(SelectedColumn);
-
-			// Inform subscribers that the StagingColumn is being removed.
-			WeakReferenceMessenger.Default.Send(new StagingColumnAddedRemoved());
 		}
 	}
 }

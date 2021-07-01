@@ -47,7 +47,7 @@ namespace Daf.Meta.Layers
 			// Will write unit tests for this.
 		}
 
-		public void Unsubscribe()
+		public void Unsubscribe() // Discuss whether this can be done differently.
 		{
 			Link.ChangedBusinessKeyColumn -= BusinessKeys_CollectionChanged;
 		}
@@ -77,8 +77,6 @@ namespace Daf.Meta.Layers
 
 	public class LinkMapping : PropertyChangedBaseClass
 	{
-		internal event EventHandler? ChangedStagingColumn;
-
 		public LinkMapping(StagingColumn linkColumn)
 		{
 			_linkColumn = linkColumn;
@@ -100,7 +98,6 @@ namespace Daf.Meta.Layers
 						_stagingColumn.Satellite = null;
 
 					NotifyPropertyChanged("StagingColumn");
-					OnChangedStagingColumn();
 				}
 			}
 		}
@@ -120,11 +117,6 @@ namespace Daf.Meta.Layers
 					NotifyPropertyChanged("LinkColumn");
 				}
 			}
-		}
-
-		protected void OnChangedStagingColumn()
-		{
-			ChangedStagingColumn?.Invoke(this, new EventArgs());
 		}
 	}
 }

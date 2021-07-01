@@ -14,6 +14,7 @@ using Microsoft.Data.SqlClient;
 using Daf.Meta.Interfaces;
 using Daf.Meta.JsonConverters;
 using Daf.Meta.Layers.Connections;
+using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Layers.DataSources
 {
@@ -25,12 +26,18 @@ namespace Daf.Meta.Layers.DataSources
 			_connection = connection;
 		}
 
+		[Browsable(false)]
 		[JsonIgnore]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
 		public ObservableCollection<Connection> Connections { get { return Model.Instance.Connections; } }
 
 		private Connection _connection;
 
+		[Category("Database")]
+		[SelectorStyle(SelectorStyle.ComboBox)]
+		[ItemsSourceProperty("Connections")]
+		[DisplayMemberPath("Name")]
+		[SortIndex(100)]
 		[JsonConverter(typeof(ConnectionConverter))]
 		public Connection Connection
 		{
@@ -48,6 +55,10 @@ namespace Daf.Meta.Layers.DataSources
 
 		private uint _connectionRetryAttempts;
 
+		[Category("Database")]
+		[SortIndex(100)]
+		[Spinnable(1, 10)]
+		[Width(60)]
 		public uint ConnectionRetryAttempts
 		{
 			get { return _connectionRetryAttempts; }
@@ -64,6 +75,10 @@ namespace Daf.Meta.Layers.DataSources
 
 		private uint _connectionRetryMinutes;
 
+		[Category("Database")]
+		[SortIndex(100)]
+		[Spinnable(1, 10)]
+		[Width(60)]
 		public uint ConnectionRetryMinutes
 		{
 			get { return _connectionRetryMinutes; }
@@ -80,6 +95,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _tableName;
 
+		[Category("Database")]
+		[SortIndex(100)]
 		public string? TableName
 		{
 			get { return _tableName; }
@@ -96,6 +113,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _sqlStatement;
 
+		[Category("Database")]
+		[SortIndex(100)]
 		public string? SqlStatement
 		{
 			get { return _sqlStatement; }
@@ -112,6 +131,9 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _sqlReadyCondition;
 
+		[Category("Database")]
+		[SortIndex(100)]
+		[Description("Sql query to run in order to check if data is ready to be imported. Should return 1 for true, 0 or zero rows for false.")]
 		[DataType(DataType.MultilineText)]
 		public string? SqlReadyCondition
 		{

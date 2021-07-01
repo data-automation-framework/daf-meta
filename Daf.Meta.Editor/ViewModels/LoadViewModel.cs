@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
@@ -28,7 +29,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 			if (_selectedDataSource != null)
 			{
-				foreach (Column column in SelectedDataSource!.DataSource.LoadTable!.Columns)
+				foreach (Column column in SelectedDataSource!.LoadTable!.Columns)
 				{
 					ColumnViewModel columnViewModel = new(column);
 					Columns.Add(columnViewModel);
@@ -38,9 +39,9 @@ namespace Daf.Meta.Editor.ViewModels
 
 		public ObservableCollection<ColumnViewModel> Columns { get; } = new();
 
-		private List<DataSourceViewModel>? _selectedDataSources;
+		private List<DataSource>? _selectedDataSources;
 
-		public List<DataSourceViewModel>? SelectedDataSources
+		public List<DataSource>? SelectedDataSources
 		{
 			get { return _selectedDataSources; }
 			set
@@ -49,9 +50,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSourceViewModel? _selectedDataSource;
+		private DataSource? _selectedDataSource;
 
-		public DataSourceViewModel? SelectedDataSource
+		public DataSource? SelectedDataSource
 		{
 			get
 			{
@@ -65,7 +66,7 @@ namespace Daf.Meta.Editor.ViewModels
 
 				if (_selectedDataSource != null)
 				{
-					foreach (Column column in SelectedDataSource!.DataSource.LoadTable!.Columns)
+					foreach (Column column in SelectedDataSource!.LoadTable!.Columns)
 					{
 						ColumnViewModel columnViewModel = new(column);
 						Columns.Add(columnViewModel);
@@ -103,7 +104,7 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedDataSource == null)
 				throw new InvalidOperationException();
 
-			Column column = SelectedDataSource.DataSource.AddLoadColumn();
+			Column column = SelectedDataSource.AddLoadColumn();
 
 			// Create a new view model column and add it to the list.
 			ColumnViewModel columnViewModel = new(column);
@@ -123,7 +124,7 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedDataSource == null || SelectedColumn == null)
 				throw new InvalidOperationException();
 
-			SelectedDataSource.DataSource.RemoveLoadColumn(SelectedColumn.Column);
+			SelectedDataSource.RemoveLoadColumn(SelectedColumn.Column);
 
 			// Remove the view model column from the list.
 			Columns.Remove(SelectedColumn);

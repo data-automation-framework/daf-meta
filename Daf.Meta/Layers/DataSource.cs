@@ -13,30 +13,26 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Daf.Meta.JsonConverters;
+using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Layers
 {
 	public abstract class DataSource : PropertyChangedBaseClass, IComparable<DataSource>
 	{
-		internal event EventHandler? StagingColumnAddedRemoved;
-
 		protected DataSource(string name, SourceSystem sourceSystem, Tenant tenant)
 		{
 			_name = name;
 			_sourceSystem = sourceSystem;
 			_tenant = tenant;
 
-			// May want to create specific EventHandlers for these but not doing so until we're
-			// starting the upcoming re-design of Hub-/LinkRelationship so as to not have to duplicate code.
 			HubRelationships.CollectionChanged += HubRelationshipsChanged;
 			LinkRelationships.CollectionChanged += LinkRelationshipsChanged;
-
-			// Both lists need to be updated when columns are changed. May need to split into separate events or add EventArgs.
-			StagingColumnAddedRemoved += (s, e) => { GetColumnsNotInHubsOrLinks(); };
 		}
 
 		private string _name; // This is initialized in the constructor of each derived class.
 
+		[Category("General")]
+		[Description("The name of the data source")]
 		public string Name
 		{
 			get { return _name; }
@@ -53,6 +49,7 @@ namespace Daf.Meta.Layers
 			}
 		}
 
+		[Browsable(false)]
 		[JsonIgnore]
 		public string QualifiedName
 		{
@@ -63,6 +60,7 @@ namespace Daf.Meta.Layers
 			}
 		}
 
+		[Browsable(false)]
 		[JsonIgnore]
 		public string TenantName
 		{
@@ -73,12 +71,16 @@ namespace Daf.Meta.Layers
 			}
 		}
 
+		[Browsable(false)]
 		[JsonIgnore]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
 		public ObservableCollection<SourceSystem> SourceSystems => Model.Instance.SourceSystems;
 
 		private SourceSystem _sourceSystem; // This is initialized in the constructor of each derived class. Dahomey.Json doesn't support constructors in abstract classes.
 
+		[Category("General")]
+		[ItemsSourceProperty("SourceSystems")]
+		[DisplayMemberPath("Name")]
 		[JsonConverter(typeof(SourceSystemConverter))]
 		public SourceSystem SourceSystem
 		{
@@ -97,12 +99,16 @@ namespace Daf.Meta.Layers
 			}
 		}
 
+		[Browsable(false)]
 		[JsonIgnore]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
 		public ObservableCollection<Tenant> Tenants => Model.Instance.Tenants;
 
 		private Tenant _tenant; // This is initialized in the constructor of each derived class. Dahomey.Json doesn't support constructors in abstract classes.
 
+		[Category("General")]
+		[ItemsSourceProperty("Tenants")]
+		[DisplayMemberPath("Name")]
 		[JsonConverter(typeof(TenantConverter))]
 		public Tenant Tenant
 		{
@@ -123,6 +129,7 @@ namespace Daf.Meta.Layers
 
 		private DataSourceType _dataSourceType;
 
+		[Browsable(false)]
 		public DataSourceType DataSourceType
 		{
 			get { return _dataSourceType; }
@@ -138,6 +145,8 @@ namespace Daf.Meta.Layers
 
 		private DestinationType _destinationType;
 
+		[Category("General")]
+		[SelectorStyle(SelectorStyle.ComboBox)]
 		public DestinationType DestinationType
 		{
 			get { return _destinationType; }
@@ -164,6 +173,7 @@ namespace Daf.Meta.Layers
 
 		private LoadWidth _defaultLoadWidth;
 
+		[Category("General")]
 		public LoadWidth DefaultLoadWidth
 		{
 			get { return _defaultLoadWidth; }
@@ -180,6 +190,7 @@ namespace Daf.Meta.Layers
 
 		private bool _generateLatestViews;
 
+		[Category("General")]
 		public bool GenerateLatestViews
 		{
 			get { return _generateLatestViews; }
@@ -196,6 +207,7 @@ namespace Daf.Meta.Layers
 
 		private bool? _containsMultiStructuredJson;
 
+		[Category("General")]
 		public bool? ContainsMultiStructuredJson
 		{
 			get { return _containsMultiStructuredJson; }
@@ -212,6 +224,7 @@ namespace Daf.Meta.Layers
 
 		private string? _fileName;
 
+		[Category("General")]
 		public string? FileName
 		{
 			get { return _fileName; }
@@ -228,6 +241,7 @@ namespace Daf.Meta.Layers
 
 		private string? _incrementalStagingColumn;
 
+		[Category("General")]
 		public string? IncrementalStagingColumn
 		{
 			get { return _incrementalStagingColumn; }
@@ -245,6 +259,7 @@ namespace Daf.Meta.Layers
 		private string? _incrementalQuery;
 
 		[DataType(DataType.MultilineText)]
+		[Category("General")]
 		public string? IncrementalQuery
 		{
 			get { return _incrementalQuery; }
@@ -261,6 +276,7 @@ namespace Daf.Meta.Layers
 
 		private string? _businessDateColumn;
 
+		[Category("General")]
 		public string? BusinessDateColumn
 		{
 			get { return _businessDateColumn; }
@@ -277,6 +293,8 @@ namespace Daf.Meta.Layers
 
 		private string? _sqlSelectQuery;
 
+		[Category("General")]
+		[Description("The custom select query that is run against the load table when loading the staging table.")]
 		public string? SqlSelectQuery
 		{
 			get { return _sqlSelectQuery; }
@@ -293,6 +311,7 @@ namespace Daf.Meta.Layers
 
 		private string? _azureLinkedServiceReference;
 
+		[Category("Azure")]
 		public string? AzureLinkedServiceReference
 		{
 			get { return _azureLinkedServiceReference; }
@@ -309,6 +328,8 @@ namespace Daf.Meta.Layers
 
 		private Build _build;
 
+		[Category("General")]
+		[SelectorStyle(SelectorStyle.ComboBox)]
 		public Build Build
 		{
 			get { return _build; }
@@ -325,6 +346,7 @@ namespace Daf.Meta.Layers
 
 		private string? _errorHandling;
 
+		[Category("General")]
 		public string? ErrorHandling
 		{
 			get { return _errorHandling; }
@@ -341,6 +363,7 @@ namespace Daf.Meta.Layers
 
 		private BusinessKey? _businessKey;
 
+		[Browsable(false)]
 		[JsonConverter(typeof(BusinessKeyConverter))]
 		public BusinessKey? BusinessKey
 		{
@@ -356,11 +379,6 @@ namespace Daf.Meta.Layers
 			}
 		}
 
-		protected void OnColumnsChanged()
-		{
-			StagingColumnAddedRemoved?.Invoke(this, new EventArgs());
-		}
-
 		public StagingColumn? GetBusinessKey()
 		{
 			if (BusinessKey == null)
@@ -369,28 +387,20 @@ namespace Daf.Meta.Layers
 			return Model.Instance.GetBusinessKey(BusinessKey.Name);
 		}
 
-		public ObservableCollection<HubRelationship> HubRelationships { get; } = new();
-		public ObservableCollection<LinkRelationship> LinkRelationships { get; } = new();
-		public ObservableCollection<Satellite> Satellites { get; } = new();
-		public LoadTable? LoadTable { get; set; } = new();
+		[Browsable(false)]
+		public ObservableCollection<HubRelationship> HubRelationships { get; } = new ObservableCollection<HubRelationship>();
 
-		private StagingTable? _stagingTable = new();
+		[Browsable(false)]
+		public ObservableCollection<LinkRelationship> LinkRelationships { get; } = new ObservableCollection<LinkRelationship>();
 
-		public StagingTable? StagingTable
-		{
-			get => _stagingTable;
-			set
-			{
-				if (_stagingTable != value)
-				{
-					_stagingTable = value;
+		[Browsable(false)]
+		public ObservableCollection<Satellite> Satellites { get; } = new ObservableCollection<Satellite>();
 
-					// Update ColumnsNotInHubsOrLinks when the StagingTable is updated after deserialization.
-					// This method is run repeatedly.. Figure out if that's unnecessary.
-					GetColumnsNotInHubsOrLinks();
-				}
-			}
-		}
+		[Browsable(false)]
+		public LoadTable? LoadTable { get; set; } = new LoadTable();
+
+		[Browsable(false)]
+		public StagingTable? StagingTable { get; set; } = new StagingTable();
 
 		public abstract DataSource Clone();
 
@@ -450,8 +460,6 @@ namespace Daf.Meta.Layers
 
 			StagingTable.Columns.Add(stagingColumn);
 
-			OnColumnsChanged();
-
 			return stagingColumn;
 		}
 
@@ -466,8 +474,6 @@ namespace Daf.Meta.Layers
 			columnToRemove.ClearSubscribers();
 
 			StagingTable.Columns.Remove(columnToRemove);
-
-			OnColumnsChanged();
 		}
 
 		public Satellite AddSatellite(string name = "New Satellite")
@@ -713,6 +719,7 @@ namespace Daf.Meta.Layers
 			}
 		}
 
+		[Browsable(false)]
 		[JsonIgnore]
 		public ObservableCollection<StagingColumn> HubList
 		{
@@ -807,6 +814,7 @@ namespace Daf.Meta.Layers
 			return relevantKeySet.ToList();
 		}
 
+		[Browsable(false)]
 		[JsonIgnore]
 		public ObservableCollection<StagingColumn>? LinkList
 		{
@@ -875,56 +883,26 @@ namespace Daf.Meta.Layers
 			return sortedLinkList;
 		}
 
-		private ObservableCollection<StagingColumn> _columnsNotInHubsOrLinks = new();
-
+		[Browsable(false)]
 		[JsonIgnore]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "<Pending>")]
 		public ObservableCollection<StagingColumn> ColumnsNotInHubsOrLinks
 		{
-			get => _columnsNotInHubsOrLinks;
-			set
+			get
 			{
-				if (_columnsNotInHubsOrLinks != value)
+				ObservableCollection<StagingColumn> columns = new();
+
+				if (StagingTable == null || StagingTable.Columns == null)
 				{
-					_columnsNotInHubsOrLinks = value;
-
-					NotifyPropertyChanged(nameof(ColumnsNotInHubsOrLinks));
-				}
-			}
-		}
-
-		internal void GetColumnsNotInHubsOrLinks()
-		{
-			ObservableCollection<StagingColumn> columns = new();
-
-			// Neither of these should ever be null.
-			if (StagingTable == null || StagingTable.Columns == null)
-				throw new InvalidOperationException();
-
-			foreach (StagingColumn stgColumn in StagingTable.Columns)
-			{
-				bool foundInHubOrLink = false;
-
-				foreach (HubRelationship relationship in HubRelationships)
-				{
-					foreach (HubMapping mapping in relationship.Mappings)
-					{
-						if (stgColumn == mapping.StagingColumn)
-						{
-							foundInHubOrLink = true;
-							break;
-						}
-					}
-
-					if (foundInHubOrLink)
-						break;
+					return columns;
 				}
 
-				if (!foundInHubOrLink)
+				foreach (StagingColumn stgColumn in StagingTable.Columns)
 				{
-					foreach (LinkRelationship relationship in LinkRelationships)
+					bool foundInHubOrLink = false;
+
+					foreach (HubRelationship relationship in HubRelationships)
 					{
-						foreach (LinkMapping mapping in relationship.Mappings)
+						foreach (HubMapping mapping in relationship.Mappings)
 						{
 							if (stgColumn == mapping.StagingColumn)
 							{
@@ -936,16 +914,34 @@ namespace Daf.Meta.Layers
 						if (foundInHubOrLink)
 							break;
 					}
+
+					if (!foundInHubOrLink)
+					{
+						foreach (LinkRelationship relationship in LinkRelationships)
+						{
+							foreach (LinkMapping mapping in relationship.Mappings)
+							{
+								if (stgColumn == mapping.StagingColumn)
+								{
+									foundInHubOrLink = true;
+									break;
+								}
+							}
+
+							if (foundInHubOrLink)
+								break;
+						}
+					}
+
+					if (!foundInHubOrLink)
+						columns.Add(stgColumn);
 				}
 
-				if (!foundInHubOrLink)
-					columns.Add(stgColumn);
+				return columns;
 			}
-
-			ColumnsNotInHubsOrLinks = columns;
-			NotifyPropertyChanged(nameof(ColumnsNotInHubsOrLinks));
 		}
 
+		[Browsable(false)]
 		[JsonIgnore]
 		public ObservableCollection<StagingColumn> SatelliteList
 		{
@@ -1014,32 +1010,41 @@ namespace Daf.Meta.Layers
 			return stagingList;
 		}
 
-		// This one runs several times, probably once for every hub/link-relationship that exists.
 		private void HubRelationshipsChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
-			// OldItems contains the HubRelationship(s) that were removed. OldItems is null if no HubRelationship(s) were removed.
+			//_associatedBusinessKeys.Clear();
+
+			//List<BusinessKey> addedItems = new();
+			//foreach (BusinessKey newItem in e.NewItems!)
+			//{
+			//	addedItems.Add(newItem);
+			//}
+
 			if (e.OldItems != null)
 			{
 				foreach (HubRelationship oldItem in e.OldItems)
 				{
-					// Removes each Hub from the list of AssociatedBusinessKeys that no longer participates in a HubRelationship.
 					AssociatedBusinessKeys.Remove(oldItem.Hub);
 				}
 			}
 
-			// For each HubRelationship in HubRelationships, checks if AssociatedBusinessKeys contains the Hub associated with that HubRelationship.
-			// If AssociatedBusinessKeys does not already contain that Hub, it adds that Hub to AssociatedBusinessKeys.
 			foreach (HubRelationship relationship in HubRelationships)
 			{
 				if (!AssociatedBusinessKeys.Contains(relationship.Hub))
 					AssociatedBusinessKeys.Add(relationship.Hub);
 			}
-
-			GetColumnsNotInHubsOrLinks();
 		}
 
 		private void LinkRelationshipsChanged(object? sender, NotifyCollectionChangedEventArgs e)
 		{
+			//_associatedBusinessKeys.Clear();
+
+			//List<BusinessKey> addedItems = new();
+			//foreach (BusinessKey newItem in e.NewItems!)
+			//{
+			//	addedItems.Add(newItem);
+			//}
+
 			if (e.OldItems != null)
 			{
 				foreach (LinkRelationship oldItem in e.OldItems)
@@ -1053,15 +1058,11 @@ namespace Daf.Meta.Layers
 				if (!AssociatedBusinessKeys.Contains(relationship.Link))
 					AssociatedBusinessKeys.Add(relationship.Link);
 			}
-
-			GetColumnsNotInHubsOrLinks();
 		}
 
-		/// <summary>
-		/// A collection of all Hubs and/or Links which participate in a Hub- or LinkRelationship.
-		/// </summary>
+		[Browsable(false)]
 		[JsonIgnore]
-		public ObservableCollection<BusinessKey> AssociatedBusinessKeys { get; } = new();
+		public ObservableCollection<BusinessKey> AssociatedBusinessKeys { get; } = new ObservableCollection<BusinessKey>();
 
 		public HashSet<string> GetLinkNames()
 		{
@@ -1078,6 +1079,7 @@ namespace Daf.Meta.Layers
 			return linkList;
 		}
 
+		[Browsable(false)]
 		[JsonIgnore]
 		public List<string> SatelliteNames
 		{
@@ -1284,6 +1286,7 @@ namespace Daf.Meta.Layers
 			return satelliteList;
 		}
 
+		[Browsable(false)]
 		[JsonIgnore]
 		public Dictionary<string, List<StagingColumn>> HubandHubColumns
 		{

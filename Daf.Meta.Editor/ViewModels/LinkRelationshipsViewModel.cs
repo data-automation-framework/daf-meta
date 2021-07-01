@@ -26,8 +26,6 @@ namespace Daf.Meta.Editor.ViewModels
 
 			AddLinkRelationshipCommand = new RelayCommand<Type?>(OpenAddLinkRelationshipDialog);
 			DeleteLinkRelationshipCommand = new RelayCommand(OpenDeleteLinkRelationshipDialog, CanDeleteLinkRelationship);
-
-			WeakReferenceMessenger.Default.Register<LinkRelationshipsViewModel, StagingColumnAddedRemoved>(this, (r, m) => OnPropertyChanged(nameof(StagingColumns)));
 		}
 
 		private ObservableCollection<LinkRelationshipViewModel>? _linkRelationships;
@@ -59,9 +57,9 @@ namespace Daf.Meta.Editor.ViewModels
 			}
 		}
 
-		private DataSourceViewModel? _selectedDataSource;
+		private DataSource? _selectedDataSource;
 
-		public DataSourceViewModel? SelectedDataSource
+		public DataSource? SelectedDataSource
 		{
 			get
 			{
@@ -92,7 +90,7 @@ namespace Daf.Meta.Editor.ViewModels
 			{
 				Link link = ((AddLinkRelationshipViewModel)dataContext!).SelectedLink!;
 
-				AddLinkRelationship(link, SelectedDataSource.DataSource);
+				AddLinkRelationship(link, SelectedDataSource);
 			}
 		}
 
@@ -114,7 +112,7 @@ namespace Daf.Meta.Editor.ViewModels
 			if (SelectedLinkRelationship == null || SelectedDataSource == null)
 				throw new InvalidOperationException("SelectedLinkRelationship or SelectedDataSource was null!");
 
-			DeleteLinkRelationship(SelectedLinkRelationship, SelectedDataSource.DataSource);
+			DeleteLinkRelationship(SelectedLinkRelationship, SelectedDataSource);
 		}
 
 		private void DeleteLinkRelationship(LinkRelationshipViewModel linkRelationshipViewModel, DataSource dataSource)

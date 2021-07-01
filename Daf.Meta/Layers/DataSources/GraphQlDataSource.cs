@@ -10,6 +10,7 @@ using Dahomey.Json.Attributes;
 using Daf.Meta.Interfaces;
 using Daf.Meta.JsonConverters;
 using Daf.Meta.Layers.Connections;
+using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Layers.DataSources
 {
@@ -21,12 +22,18 @@ namespace Daf.Meta.Layers.DataSources
 			_connection = connection;
 		}
 
+		[Browsable(false)]
 		[JsonIgnore]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Static collections don't appear to work when binding to WPF.")]
 		public ObservableCollection<Connection> Connections { get { return Model.Instance.Connections; } }
 
 		private GraphQlConnection _connection;
 
+		[Category("GraphQL")]
+		[SelectorStyle(SelectorStyle.ComboBox)]
+		[ItemsSourceProperty("Connections")]
+		[DisplayMemberPath("Name")]
+		[SortIndex(100)]
 		[JsonConverter(typeof(GraphQlConnectionConverter))]
 		public GraphQlConnection Connection
 		{
@@ -44,6 +51,10 @@ namespace Daf.Meta.Layers.DataSources
 
 		private uint _connectionRetryAttempts;
 
+		[Category("GraphQL")]
+		[SortIndex(100)]
+		[Spinnable(1, 10)]
+		[Width(60)]
 		public uint ConnectionRetryAttempts
 		{
 			get { return _connectionRetryAttempts; }
@@ -60,6 +71,10 @@ namespace Daf.Meta.Layers.DataSources
 
 		private uint _connectionRetryMinutes;
 
+		[Category("GraphQL")]
+		[SortIndex(100)]
+		[Spinnable(1, 10)]
+		[Width(60)]
 		public uint ConnectionRetryMinutes
 		{
 			get { return _connectionRetryMinutes; }
@@ -76,6 +91,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _relativeUrl;
 
+		[Category("GraphQL")]
+		[SortIndex(100)]
 		public string? RelativeUrl
 		{
 			get { return _relativeUrl; }
@@ -92,6 +109,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private int _numberToFetch;
 
+		[Category("GraphQL")]
+		[SortIndex(100)]
 		public int NumberToFetch
 		{
 			get { return _numberToFetch; }
@@ -108,6 +127,9 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string _graphQlQuery = "";
 
+		[Category("GraphQL")]
+		[DataType(DataType.MultilineText)]
+		[SortIndex(100)]
 		public string GraphQlQuery
 		{
 			get { return _graphQlQuery; }
@@ -124,6 +146,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _parent;
 
+		[Category("GraphQL")]
+		[SortIndex(100)]
 		public string? Parent
 		{
 			get { return _parent; }
@@ -140,6 +164,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _collectionReference;
 
+		[Category("GraphQL")]
+		[SortIndex(100)]
 		public string? CollectionReference
 		{
 			get { return _collectionReference; }
@@ -156,6 +182,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private string? _destinationEncoding;
 
+		[Category("General")]
+		[VisibleBy(nameof(DestinationType), DestinationType.Blob)]
 		public string? DestinationEncoding
 		{
 			get { return _destinationEncoding; }
@@ -173,6 +201,8 @@ namespace Daf.Meta.Layers.DataSources
 
 		private bool _mergeToBlob;
 
+		[Category("General")]
+		[VisibleBy(nameof(DestinationType), DestinationType.Blob)]
 		public bool MergeToBlob
 		{
 			get { return _mergeToBlob; }

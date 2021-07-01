@@ -3,16 +3,17 @@
 
 using System.Collections.Generic;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
 {
 	public class GeneralViewModel : ObservableObject
 	{
-		private List<DataSourceViewModel>? _selectedDataSources;
+		private List<DataSource>? _selectedDataSources;
 
-		public List<DataSourceViewModel>? SelectedDataSources
+		public List<DataSource>? SelectedDataSources
 		{
-			get => _selectedDataSources;
+			get { return _selectedDataSources; }
 			set
 			{
 				SetProperty(ref _selectedDataSources, value);
