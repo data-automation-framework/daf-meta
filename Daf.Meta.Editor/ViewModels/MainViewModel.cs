@@ -430,11 +430,9 @@ namespace Daf.Meta.Editor.ViewModels
 					{
 						Model.RemoveDataSource(selectedDataSource.DataSource);
 
-						File.Delete(dataSourcePath);
-
-						Model.RemoveDataSource(selectedDataSource.DataSource);
-
 						DataSources.Remove(selectedDataSource);
+
+						File.Delete(dataSourcePath);
 					}
 					else
 					{
