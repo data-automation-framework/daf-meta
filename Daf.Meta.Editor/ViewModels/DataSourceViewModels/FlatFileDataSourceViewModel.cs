@@ -47,7 +47,7 @@ namespace Daf.Meta.Editor.ViewModels
 			get => _flatFileDataSource.RowDelimiter;
 			set
 			{
-				SetProperty(_flatFileDataSource.Format, value, _flatFileDataSource, (dataSource, format) => _flatFileDataSource.Format = format, true);
+				SetProperty(_flatFileDataSource.RowDelimiter, value, _flatFileDataSource, (dataSource, rowDelimiter) => _flatFileDataSource.RowDelimiter = rowDelimiter, true);
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace Daf.Meta.Editor.ViewModels
 			get => _flatFileDataSource.ColumnDelimiter;
 			set
 			{
-				SetProperty(_flatFileDataSource.Format, value, _flatFileDataSource, (dataSource, format) => _flatFileDataSource.Format = format, true);
+				SetProperty(_flatFileDataSource.ColumnDelimiter, value, _flatFileDataSource, (dataSource, columnDelimiter) => _flatFileDataSource.ColumnDelimiter = columnDelimiter, true);
 			}
 		}
 
