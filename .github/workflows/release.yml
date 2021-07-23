@@ -79,7 +79,7 @@ jobs:
           name: release
           path: editor
       - name: Zip release
-        uses: TheDoctor0/zip-release@0.4.2
+        uses: TheDoctor0/zip-release@0.6.0
         with:
           filename: 'editor-${{ steps.nbgv.outputs.SimpleVersion }}.zip'
           path: editor
