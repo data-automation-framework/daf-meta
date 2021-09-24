@@ -13,6 +13,6 @@ jobs:
   WIP:
     runs-on: ubuntu-latest
     steps:
-      - uses: bubkoo/check-wip@v1.0.2
+      - uses: bubkoo/check-wip@v1.0.4
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
