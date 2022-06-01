@@ -37,7 +37,7 @@ jobs:
       - name: Build project
         run: dotnet build --configuration Release
       - name: Upload Daf Meta Editor arifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: release
           path: Daf.Meta.Editor/bin/Release
