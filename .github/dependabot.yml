@@ -6,7 +6,7 @@ updates:
     directory: "/"
     # Check for updates once a week
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "friday"
       time: "18:00"
       timezone: "Europe/Stockholm"
@@ -16,7 +16,7 @@ updates:
     directory: "/"
     # Check for updates once a week
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "friday"
       time: "18:00"
       timezone: "Europe/Stockholm"

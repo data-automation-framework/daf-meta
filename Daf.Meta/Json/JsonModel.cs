@@ -73,9 +73,9 @@ namespace Daf.Meta.Json
 		public string? Password { get; set; }
 		public string? AuthorizationToken { get; set; }
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "We need at least an init setter in order to support deserialization.")]
-		public List<Layers.Connections.KeyValue>? TokenBody { get; init; }
+		public List<KeyValue>? TokenBody { get; init; }
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "We need at least an init setter in order to support deserialization.")]
-		public List<Layers.Connections.KeyValue>? TokenParameters { get; init; }
+		public List<KeyValue>? TokenParameters { get; init; }
 		public string? TokenAbsoluteUrl { get; set; }
 		public string? TokenJsonIdentifier { get; set; }
 		public string? ClientID { get; set; }
@@ -142,7 +142,7 @@ namespace Daf.Meta.Json
 		public Layers.Satellite[] Satellites { get; set; }
 		public Layers.LoadTable? LoadTable { get; set; }
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "We need at least an init setter in order to support deserialization.")]
-		public List<Layers.Connections.KeyValue>? Parameters { get; init; }
+		public List<KeyValue>? Parameters { get; init; }
 		public StagingTable? StagingTable { get; set; }
 		public string? Connection { get; set; }
 		public string? SqlStatement { get; set; }
