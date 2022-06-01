@@ -501,7 +501,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				WriteIndented = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.SetupExtensions();
@@ -525,7 +525,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				AllowTrailingCommas = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.SetupExtensions();
@@ -1109,7 +1109,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				WriteIndented = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.SetupExtensions();
@@ -1129,7 +1129,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				AllowTrailingCommas = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.SetupExtensions();
@@ -1146,7 +1146,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				WriteIndented = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.SetupExtensions();
@@ -1166,7 +1166,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				AllowTrailingCommas = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.SetupExtensions();
@@ -1183,7 +1183,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				WriteIndented = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.SetupExtensions();
@@ -1212,7 +1212,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				AllowTrailingCommas = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.SetupExtensions();
@@ -1237,7 +1237,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				WriteIndented = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.SetupExtensions();
@@ -1268,7 +1268,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				AllowTrailingCommas = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			//options.SetupExtensions();
@@ -1299,7 +1299,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				WriteIndented = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.Converters.Add(new JsonStringEnumConverter());
@@ -1317,7 +1317,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				AllowTrailingCommas = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.Converters.Add(new JsonStringEnumConverter());
@@ -1332,7 +1332,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				WriteIndented = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.Converters.Add(new JsonStringEnumConverter());
@@ -1350,7 +1350,7 @@ namespace Daf.Meta
 			var options = new JsonSerializerOptions
 			{
 				AllowTrailingCommas = true,
-				IgnoreNullValues = true
+				DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
 			};
 
 			options.Converters.Add(new JsonStringEnumConverter());

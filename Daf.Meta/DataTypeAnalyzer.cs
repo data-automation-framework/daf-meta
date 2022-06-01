@@ -22,7 +22,9 @@ namespace Daf.Meta
 
 		private const int UNKNOWN_VARCHAR_DEFAULT_LENGTH = 30;
 		private DataSource DataSource { get; set; }
+#pragma warning disable SYSLIB0014 // Type or member is obsolete. This should be taken care of ASAP.
 		private WebClient Client { get; set; } = new WebClient();
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
 		private string? Url { get; set; }
 
 		/// <summary>
@@ -930,7 +932,7 @@ namespace Daf.Meta
 
 					int suggestedPrecision;
 
-					if (value.Contains("."))
+					if (value.Contains('.'))
 					{
 						string[] decimalParts = value.Split(".");
 
@@ -994,7 +996,7 @@ namespace Daf.Meta
 
 						string timeDecimals = "";
 
-						if (valueElement.Contains("."))
+						if (valueElement.Contains('.'))
 						{
 							timeDecimals = valueElement.Split(".")[1];
 						}
@@ -1032,7 +1034,7 @@ namespace Daf.Meta
 						// Do nothing
 					}
 				}
-				else if ((valueElement.ToString()!.Contains("Z") || valueElement.ToString()!.Contains("+") || valueElement.ToString()!.Contains(" -")) && suggestedColumn.DataType != SqlServerDataType.DateTime2 && suggestedColumn.DataType != SqlServerDataType.UniqueIdentifier && (suggestedColumn.DataType != SqlServerDataType.VarChar || !ColumnTypeDecided[suggestedColumn.Name!]))
+				else if ((valueElement.ToString()!.Contains('Z') || valueElement.ToString()!.Contains('+') || valueElement.ToString()!.Contains(" -")) && suggestedColumn.DataType != SqlServerDataType.DateTime2 && suggestedColumn.DataType != SqlServerDataType.UniqueIdentifier && (suggestedColumn.DataType != SqlServerDataType.VarChar || !ColumnTypeDecided[suggestedColumn.Name!]))
 				{
 					suggestedColumn.DataType = SqlServerDataType.DateTimeOffset;
 
@@ -1044,7 +1046,7 @@ namespace Daf.Meta
 
 					string dateTimeDecimals = "";
 
-					if (valueElement.Contains("."))
+					if (valueElement.Contains('.'))
 					{
 						dateTimeDecimals = valueElement.Split(".")[1];
 					}

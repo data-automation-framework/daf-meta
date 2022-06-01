@@ -619,7 +619,7 @@ namespace Daf.Meta.Layers
 
 			if (formattedName.EndsWith("id", StringComparison.Ordinal) || formattedName.EndsWith("Id", StringComparison.Ordinal))
 			{
-				formattedName = formattedName.Substring(0, formattedName.Length - 2) + formattedName[^2].ToString().ToUpper(CultureInfo.InvariantCulture) + formattedName[^1].ToString().ToUpper(CultureInfo.InvariantCulture);
+				formattedName = string.Concat(formattedName.AsSpan(0, formattedName.Length - 2), formattedName[^2].ToString().ToUpper(CultureInfo.InvariantCulture), formattedName[^1].ToString().ToUpper(CultureInfo.InvariantCulture));
 			}
 
 			return formattedName;
