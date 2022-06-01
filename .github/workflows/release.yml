@@ -74,7 +74,7 @@ jobs:
           configuration: "configs/configuration.json"
           toTag: v${{ steps.nbgv.outputs.SimpleVersion }}
       - name: Download Daf Meta Editor artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: release
           path: editor
