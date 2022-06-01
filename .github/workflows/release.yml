@@ -24,7 +24,7 @@ jobs:
       - name: Continue only if the create-release label exists, fail otherwise.
         if: steps.labelcheck.outputs.result != 'true'
         run: exit 1
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Avoid shallow clone so nbgv can do its work.
       - name: Setup .NET Core
@@ -52,7 +52,7 @@ jobs:
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/release/*' # Only run this job in master and release branches.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Avoid shallow clone so nbgv can do its work.
       - name: Setup Nerdbank.GitVersioning
