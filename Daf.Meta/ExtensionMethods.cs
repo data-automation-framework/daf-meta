@@ -13,8 +13,7 @@ namespace Daf.Meta
 			if (list == null)
 				throw new ArgumentNullException($"Can't sort a {nameof(IList<T>)} that is null.");
 
-			if (comparer == null)
-				comparer = Comparer<T>.Default;
+			comparer ??= Comparer<T>.Default;
 
 			int i = 0;
 

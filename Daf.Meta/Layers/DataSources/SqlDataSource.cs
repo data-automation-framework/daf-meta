@@ -340,15 +340,8 @@ namespace Daf.Meta.Layers.DataSources
 			if (suggestedColumnDict == null)
 				throw new ArgumentNullException(nameof(suggestedColumnDict));
 
-			if (LoadTable == null)
-			{
-				LoadTable = new LoadTable();
-			}
-
-			if (StagingTable == null)
-			{
-				StagingTable = new StagingTable();
-			}
+			LoadTable ??= new LoadTable();
+			StagingTable ??= new StagingTable();
 
 			// Update existing columns
 			foreach (Column stagingColumn in StagingTable.Columns!)
