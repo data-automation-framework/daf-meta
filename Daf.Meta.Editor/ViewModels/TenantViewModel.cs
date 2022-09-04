@@ -3,7 +3,7 @@
 
 using System.ComponentModel;
 using Daf.Meta.Layers;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Daf.Meta.Editor.ViewModels
 {
