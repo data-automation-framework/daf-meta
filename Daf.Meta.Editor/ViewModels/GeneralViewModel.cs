@@ -2,7 +2,7 @@
 // Copyright © 2021 Oscar Björhn, Petter Löfgren and contributors
 
 using System.Collections.Generic;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Daf.Meta.Editor.ViewModels
 {

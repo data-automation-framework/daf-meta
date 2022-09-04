@@ -4,8 +4,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using Daf.Meta.Layers;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Editor.ViewModels

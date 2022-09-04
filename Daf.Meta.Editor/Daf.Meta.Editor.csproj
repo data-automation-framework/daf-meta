@@ -14,11 +14,11 @@
       <Resource Include="Icons\*.png" />
     </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
     <PackageReference Include="gong-wpf-dragdrop" Version="3.1.1" />
     <PackageReference Include="Jot" Version="2.1.13" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.107">
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.109">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -32,4 +32,12 @@
       <_Parameter1>Daf.Meta.Editor.Tests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
+    <Target Name="RemoveDuplicateAnalyzers" BeforeTargets="CoreCompile">
+    <!-- Workaround for https://github.com/dotnet/wpf/issues/6792, still needesd as of 2022-09-04 -->
+    <ItemGroup>
+        <FilteredAnalyzer Include="@(Analyzer-&gt;Distinct())" />
+        <Analyzer Remove="@(Analyzer)" />
+        <Analyzer Include="@(FilteredAnalyzer)" />
+    </ItemGroup>
+    </Target>
 </Project>
