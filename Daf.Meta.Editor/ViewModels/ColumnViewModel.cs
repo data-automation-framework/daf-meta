@@ -3,7 +3,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using PropertyTools.DataAnnotations;
 
 namespace Daf.Meta.Editor.ViewModels
