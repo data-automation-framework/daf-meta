@@ -11,10 +11,10 @@ using Daf.Meta.Layers;
 using Daf.Meta.Layers.Connections;
 using Daf.Meta.Layers.DataSources;
 using Microsoft.Data.SqlClient;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Daf.Meta.Editor.ViewModels
 {
