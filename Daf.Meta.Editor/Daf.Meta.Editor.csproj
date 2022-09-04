@@ -32,4 +32,12 @@
       <_Parameter1>Daf.Meta.Editor.Tests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
+    <Target Name="RemoveDuplicateAnalyzers" BeforeTargets="CoreCompile">
+    <!-- Workaround for https://github.com/dotnet/wpf/issues/6792, still needesd as of 2022-09-04 -->
+    <ItemGroup>
+        <FilteredAnalyzer Include="@(Analyzer-&gt;Distinct())" />
+        <Analyzer Remove="@(Analyzer)" />
+        <Analyzer Include="@(FilteredAnalyzer)" />
+    </ItemGroup>
+    </Target>
 </Project>

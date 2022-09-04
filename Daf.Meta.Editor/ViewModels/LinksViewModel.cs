@@ -48,8 +48,7 @@ namespace Daf.Meta.Editor.ViewModels
 			{
 				SetProperty(ref _links, value);
 
-				if (SelectedLink == null)
-					SelectedLink = Links.FirstOrDefault();
+				SelectedLink ??= Links.FirstOrDefault();
 			}
 		}
 

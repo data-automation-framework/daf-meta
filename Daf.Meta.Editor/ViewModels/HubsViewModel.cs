@@ -49,8 +49,7 @@ namespace Daf.Meta.Editor.ViewModels
 			{
 				SetProperty(ref _hubs, value);
 
-				if (SelectedHub == null)
-					SelectedHub = Hubs.FirstOrDefault();
+				SelectedHub ??= Hubs.FirstOrDefault();
 			}
 		}
 
