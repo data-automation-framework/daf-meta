@@ -3,7 +3,7 @@
 
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Daf.Meta.Layers;
 
 namespace Daf.Meta.Editor.ViewModels
