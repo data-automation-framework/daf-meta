@@ -18,7 +18,7 @@
     <Compile Remove="Layers\DataSources\JsonFileDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Dahomey.Json" Version="1.11.3" />
+    <PackageReference Include="Dahomey.Json" Version="1.12.2" />
     <PackageReference Include="LumenWorksCsvReader" Version="4.0.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.0" />
     <PackageReference Include="MySqlConnector" Version="2.1.13" />
