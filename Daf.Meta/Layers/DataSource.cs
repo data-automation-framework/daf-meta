@@ -409,10 +409,7 @@ namespace Daf.Meta.Layers
 				NotifyPropertyChanged("Column");
 			};
 
-			if (LoadTable == null)
-			{
-				LoadTable = new LoadTable();
-			}
+			LoadTable ??= new LoadTable();
 
 			LoadTable.Columns.Add(column);
 
@@ -630,15 +627,8 @@ namespace Daf.Meta.Layers
 			if (suggestedColumnDict == null)
 				throw new ArgumentNullException(nameof(suggestedColumnDict));
 
-			if (LoadTable == null)
-			{
-				LoadTable = new LoadTable();
-			}
-
-			if (StagingTable == null)
-			{
-				StagingTable = new StagingTable();
-			}
+			LoadTable ??= new LoadTable();
+			StagingTable ??= new StagingTable();
 
 			// Update existing columns
 			foreach (Column stagingColumn in StagingTable.Columns!)
